@@ -1,0 +1,6 @@
+[submodule "libs/thrift"]
+	path = libs/thrift
+	url = https://github.com/apache/thrift
+[submodule "libs/Catch2"]
+	path = libs/Catch2
+	url = https://github.com/catchorg/Catch2
