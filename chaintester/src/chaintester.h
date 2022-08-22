@@ -145,7 +145,7 @@ private:
     std::shared_ptr<IPCChainTesterClient> client;
     int32_t id;
 public:
-    ChainTester();
+    ChainTester(bool initialize=true);
     ~ChainTester();
 
     JsonObject get_info();

@@ -1,17 +1,12 @@
 #include "chaintester.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
+#include <catch2/catch_test_macros.hpp>
 
 #include "test.h"
 
-#include <catch2/catch_test_macros.hpp>
-
-unsigned int Factorial( unsigned int number ) {
-    return number <= 1 ? number : Factorial(number-1)*number;
-}
-
 TEST_CASE( "Factorials are computed", "[factorial]" ) {
-    ChainTester tester;
+    ChainTester tester(true);
 
     tester.enable_debug_contract("hello", true);
     auto key = tester.create_key();

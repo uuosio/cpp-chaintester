@@ -1196,7 +1196,20 @@ uint32_t IPCChainTester_new_chain_args::read(::apache::thrift::protocol::TProtoc
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    xfer += iprot->skip(ftype);
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_BOOL) {
+          xfer += iprot->readBool(this->initialize);
+          this->__isset.initialize = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
     xfer += iprot->readFieldEnd();
   }
 
@@ -1209,6 +1222,10 @@ uint32_t IPCChainTester_new_chain_args::write(::apache::thrift::protocol::TProto
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
   xfer += oprot->writeStructBegin("IPCChainTester_new_chain_args");
+
+  xfer += oprot->writeFieldBegin("initialize", ::apache::thrift::protocol::T_BOOL, 1);
+  xfer += oprot->writeBool(this->initialize);
+  xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
@@ -1224,6 +1241,10 @@ uint32_t IPCChainTester_new_chain_pargs::write(::apache::thrift::protocol::TProt
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
   xfer += oprot->writeStructBegin("IPCChainTester_new_chain_pargs");
+
+  xfer += oprot->writeFieldBegin("initialize", ::apache::thrift::protocol::T_BOOL, 1);
+  xfer += oprot->writeBool((*(this->initialize)));
+  xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
@@ -4449,18 +4470,19 @@ void IPCChainTesterClient::recv_unpack_action_args(std::string& _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "unpack_action_args failed: unknown result");
 }
 
-int32_t IPCChainTesterClient::new_chain()
+int32_t IPCChainTesterClient::new_chain(const bool initialize)
 {
-  send_new_chain();
+  send_new_chain(initialize);
   return recv_new_chain();
 }
 
-void IPCChainTesterClient::send_new_chain()
+void IPCChainTesterClient::send_new_chain(const bool initialize)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("new_chain", ::apache::thrift::protocol::T_CALL, cseqid);
 
   IPCChainTester_new_chain_pargs args;
+  args.initialize = &initialize;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -5614,7 +5636,7 @@ void IPCChainTesterProcessor::process_new_chain(int32_t seqid, ::apache::thrift:
 
   IPCChainTester_new_chain_result result;
   try {
-    result.success = iface_->new_chain();
+    result.success = iface_->new_chain(args.initialize);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != nullptr) {
@@ -6764,19 +6786,20 @@ void IPCChainTesterConcurrentClient::recv_unpack_action_args(std::string& _retur
   } // end while(true)
 }
 
-int32_t IPCChainTesterConcurrentClient::new_chain()
+int32_t IPCChainTesterConcurrentClient::new_chain(const bool initialize)
 {
-  int32_t seqid = send_new_chain();
+  int32_t seqid = send_new_chain(initialize);
   return recv_new_chain(seqid);
 }
 
-int32_t IPCChainTesterConcurrentClient::send_new_chain()
+int32_t IPCChainTesterConcurrentClient::send_new_chain(const bool initialize)
 {
   int32_t cseqid = this->sync_->generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
   oprot_->writeMessageBegin("new_chain", ::apache::thrift::protocol::T_CALL, cseqid);
 
   IPCChainTester_new_chain_pargs args;
+  args.initialize = &initialize;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();

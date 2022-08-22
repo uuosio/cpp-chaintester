@@ -21,9 +21,9 @@ std::shared_ptr<IPCChainTesterClient> GetChainTesterClient() {
     return gChainTesterClient;
 }
 
-ChainTester::ChainTester() {
+ChainTester::ChainTester(bool initialize) {
     client = GetChainTesterClient();
-    id = client->new_chain();
+    id = client->new_chain(initialize);
 }
 
 ChainTester::~ChainTester() {

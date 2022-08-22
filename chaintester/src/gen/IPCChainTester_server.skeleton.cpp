@@ -55,7 +55,7 @@ class IPCChainTesterHandler : virtual public IPCChainTesterIf {
     printf("unpack_action_args\n");
   }
 
-  int32_t new_chain() {
+  int32_t new_chain(const bool initialize) {
     // Your implementation goes here
     printf("new_chain\n");
   }

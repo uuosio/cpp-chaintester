@@ -29,7 +29,7 @@ class IPCChainTesterIf {
   virtual void pack_abi(std::string& _return, const std::string& abi) = 0;
   virtual void pack_action_args(std::string& _return, const int32_t id, const std::string& contract, const std::string& action, const std::string& action_args) = 0;
   virtual void unpack_action_args(std::string& _return, const int32_t id, const std::string& contract, const std::string& action, const std::string& raw_args) = 0;
-  virtual int32_t new_chain() = 0;
+  virtual int32_t new_chain(const bool initialize) = 0;
   virtual int32_t free_chain(const int32_t id) = 0;
   virtual void get_info(std::string& _return, const int32_t id) = 0;
   virtual void create_key(std::string& _return, const std::string& key_type) = 0;
@@ -93,7 +93,7 @@ class IPCChainTesterNull : virtual public IPCChainTesterIf {
   void unpack_action_args(std::string& /* _return */, const int32_t /* id */, const std::string& /* contract */, const std::string& /* action */, const std::string& /* raw_args */) override {
     return;
   }
-  int32_t new_chain() override {
+  int32_t new_chain(const bool /* initialize */) override {
     int32_t _return = 0;
     return _return;
   }
@@ -794,19 +794,31 @@ class IPCChainTester_unpack_action_args_presult {
 
 };
 
+typedef struct _IPCChainTester_new_chain_args__isset {
+  _IPCChainTester_new_chain_args__isset() : initialize(false) {}
+  bool initialize :1;
+} _IPCChainTester_new_chain_args__isset;
 
 class IPCChainTester_new_chain_args {
  public:
 
   IPCChainTester_new_chain_args(const IPCChainTester_new_chain_args&) noexcept;
   IPCChainTester_new_chain_args& operator=(const IPCChainTester_new_chain_args&) noexcept;
-  IPCChainTester_new_chain_args() noexcept {
+  IPCChainTester_new_chain_args() noexcept
+                                : initialize(0) {
   }
 
   virtual ~IPCChainTester_new_chain_args() noexcept;
+  bool initialize;
 
-  bool operator == (const IPCChainTester_new_chain_args & /* rhs */) const
+  _IPCChainTester_new_chain_args__isset __isset;
+
+  void __set_initialize(const bool val);
+
+  bool operator == (const IPCChainTester_new_chain_args & rhs) const
   {
+    if (!(initialize == rhs.initialize))
+      return false;
     return true;
   }
   bool operator != (const IPCChainTester_new_chain_args &rhs) const {
@@ -826,6 +838,7 @@ class IPCChainTester_new_chain_pargs {
 
 
   virtual ~IPCChainTester_new_chain_pargs() noexcept;
+  const bool* initialize;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -2438,8 +2451,8 @@ class IPCChainTesterClient : virtual public IPCChainTesterIf {
   void unpack_action_args(std::string& _return, const int32_t id, const std::string& contract, const std::string& action, const std::string& raw_args) override;
   void send_unpack_action_args(const int32_t id, const std::string& contract, const std::string& action, const std::string& raw_args);
   void recv_unpack_action_args(std::string& _return);
-  int32_t new_chain() override;
-  void send_new_chain();
+  int32_t new_chain(const bool initialize) override;
+  void send_new_chain(const bool initialize);
   int32_t recv_new_chain();
   int32_t free_chain(const int32_t id) override;
   void send_free_chain(const int32_t id);
@@ -2629,13 +2642,13 @@ class IPCChainTesterMultiface : virtual public IPCChainTesterIf {
     return;
   }
 
-  int32_t new_chain() override {
+  int32_t new_chain(const bool initialize) override {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->new_chain();
+      ifaces_[i]->new_chain(initialize);
     }
-    return ifaces_[i]->new_chain();
+    return ifaces_[i]->new_chain(initialize);
   }
 
   int32_t free_chain(const int32_t id) override {
@@ -2806,8 +2819,8 @@ class IPCChainTesterConcurrentClient : virtual public IPCChainTesterIf {
   void unpack_action_args(std::string& _return, const int32_t id, const std::string& contract, const std::string& action, const std::string& raw_args) override;
   int32_t send_unpack_action_args(const int32_t id, const std::string& contract, const std::string& action, const std::string& raw_args);
   void recv_unpack_action_args(std::string& _return, const int32_t seqid);
-  int32_t new_chain() override;
-  int32_t send_new_chain();
+  int32_t new_chain(const bool initialize) override;
+  int32_t send_new_chain(const bool initialize);
   int32_t recv_new_chain(const int32_t seqid);
   int32_t free_chain(const int32_t id) override;
   int32_t send_free_chain(const int32_t id);
