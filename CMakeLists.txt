@@ -2,8 +2,7 @@ cmake_minimum_required(VERSION 3.16.3)
 
 project(chaintester)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-# add_subdirectory(libs/unittest-cpp)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 # add_subdirectory(libs/thrift)
 
 include(ExternalProject)
@@ -21,7 +20,8 @@ ExternalProject_Add(
 )
 
 add_library(thrift STATIC IMPORTED)
-set_target_properties(thrift PROPERTIES IMPORTED_LOCATION  ${CMAKE_BINARY_DIR}/libs/thrift/lib/libthriftd.a)
+set_target_properties(thrift PROPERTIES IMPORTED_LOCATION  ${CMAKE_BINARY_DIR}/libs/thrift/lib/libthriftd${CMAKE_STATIC_LIBRARY_SUFFIX})
 
+add_subdirectory(libs/Catch2)
 add_subdirectory(chaintester)
 add_subdirectory(tests)

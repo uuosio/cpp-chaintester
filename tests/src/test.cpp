@@ -1,28 +1,56 @@
 #include "chaintester.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
 
-int main(int argc, char **argv) {
+#include "test.h"
+
+#include <catch2/catch_test_macros.hpp>
+
+unsigned int Factorial( unsigned int number ) {
+    return number <= 1 ? number : Factorial(number-1)*number;
+}
+
+TEST_CASE( "Factorials are computed", "[factorial]" ) {
     ChainTester tester;
-    cout<<tester.get_info()<<endl;
 
-//   std::shared_ptr<TTransport> socket(new TSocket("127.0.0.1", 9090));
-//   std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
-//   std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
-//   IPCChainTesterClient client(protocol);
+    tester.enable_debug_contract("hello", true);
+    auto key = tester.create_key();
+    std::cout<<key.String()<<std::endl;
 
-//   try {
-//     transport->open();
+    auto pub_key = key.GetString("public");
+    auto priv_key = key.GetString("private");
+    tester.import_key(pub_key, priv_key);
 
-//     int32_t id = client.new_chain();
+    auto info = tester.get_info();
 
-//     string info;
-//     client.get_info(info, id);
-//     cout<<info<<endl;
+    std::cout<<info.GetUint64("head_block_num")<<std::endl;
+    std::cout<<info.GetString("chain_id")<<std::endl;
+    cout<<info.String()<<endl;
 
-//     client.free_chain(id);
 
-//     transport->close();
-    
-//   } catch (TException& tx) {
-//     cout << "ERROR: " << tx.what() << endl;
-//   }
+    tester.create_account("hello", "helloworld33", pub_key, pub_key, 10*1024*1024, 100000, 1000000);
+    tester.produce_block();
+
+    auto account_info = tester.get_account("helloworld33");
+    cout<<account_info.GetString("head_block_time")<<endl;
+
+    std::vector<char> buffer;
+    buffer.resize(512);
+    snprintf(buffer.data(), buffer.size(), "%s/%s", APP_PATH, "hello.wasm");
+    string wasm_file(buffer.data());
+
+    snprintf(buffer.data(), buffer.size(), "%s/%s", APP_PATH, "hello.abi");
+    string abi_file(buffer.data());
+
+    tester.deploy_contract("helloworld33", wasm_file, abi_file);
+    auto permissions = R""""(
+    {
+        "helloworld33": "active"
+    }
+    )"""";
+    for (int i=0; i<5; i++) {
+        tester.push_action("helloworld33", "sayhello", "{}", permissions);
+        tester.produce_block();
+    }
+    REQUIRE( true == true);
 }

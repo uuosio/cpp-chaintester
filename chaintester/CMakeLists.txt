@@ -11,10 +11,10 @@ target_link_libraries ( chaintester thrift )
 
 target_include_directories(chaintester PUBLIC
     "./gen"
-    "../libs/thrift/lib/cpp/src"
-    "../build/libs/thrift"
+    "${CMAKE_SOURCE_DIR}/libs/thrift/lib/cpp/src"
+    "${CMAKE_SOURCE_DIR}/build/libs/thrift"
+    "${CMAKE_SOURCE_DIR}/libs/rapidjson/include"
     "/usr/local/include"
-    # "/usr/local/Cellar/eosio.cdt/1.7.0/opt/eosio.cdt/include"
 )
 
 add_dependencies(chaintester thrift_external)
