@@ -20,10 +20,8 @@
 #include <algorithm>
 #include <stdexcept>
 #include <stdint.h>
-#include <thrift/server/TServerFramework.h>
+#include "TServerFramework.h"
 
-namespace apache {
-namespace thrift {
 namespace server {
 
 using apache::thrift::concurrency::Synchronized;
@@ -100,17 +98,12 @@ static void releaseOneDescriptor(const string& name, T& pTransport) {
       pTransport->close();
     } catch (const TTransportException& ttx) {
       string errStr = string("TServerFramework " + name + " close failed: ") + ttx.what();
-      GlobalOutput(errStr.c_str());
+      apache::thrift::GlobalOutput(errStr.c_str());
     }
   }
 }
 
-void TServerFramework::serve() {
-  shared_ptr<TTransport> client;
-  shared_ptr<TTransport> inputTransport;
-  shared_ptr<TTransport> outputTransport;
-  shared_ptr<TProtocol> inputProtocol;
-  shared_ptr<TProtocol> outputProtocol;
+void TServerFramework::prepare() {
 
   // Start the server listening
   serverTransport_->listen();
@@ -120,48 +113,43 @@ void TServerFramework::serve() {
   if (eventHandler_) {
     eventHandler_->preServe();
   }
+}
 
+void TServerFramework::wait_for_connection() {
+  // If we have reached the limit on the number of concurrent
+  // clients allowed, wait for one or more clients to drain before
+  // accepting another.
+  {
+    Synchronized sync(mon_);
+    while (clients_ >= limit_) {
+      mon_.wait();
+    }
+  }
+
+  client = serverTransport_->accept();
+
+  inputTransport = inputTransportFactory_->getTransport(client);
+  outputTransport = outputTransportFactory_->getTransport(client);
+  if (!outputProtocolFactory_) {
+    inputProtocol = inputProtocolFactory_->getProtocol(inputTransport, outputTransport);
+    outputProtocol = inputProtocol;
+  } else {
+    inputProtocol = inputProtocolFactory_->getProtocol(inputTransport);
+    outputProtocol = outputProtocolFactory_->getProtocol(outputTransport);
+  }
+  conn = std::shared_ptr<TConnectedClient>(new TConnectedClient(getProcessor(inputProtocol, outputProtocol, client),
+                              inputProtocol,
+                              outputProtocol,
+                              eventHandler_,
+                              client));
+
+}
+
+void TServerFramework::serve_once() {
   // Fetch client from server
-  for (;;) {
+  do {
     try {
-      // Dereference any resources from any previous client creation
-      // such that a blocking accept does not hold them indefinitely.
-      outputProtocol.reset();
-      inputProtocol.reset();
-      outputTransport.reset();
-      inputTransport.reset();
-      client.reset();
-
-      // If we have reached the limit on the number of concurrent
-      // clients allowed, wait for one or more clients to drain before
-      // accepting another.
-      {
-        Synchronized sync(mon_);
-        while (clients_ >= limit_) {
-          mon_.wait();
-        }
-      }
-
-      client = serverTransport_->accept();
-
-      inputTransport = inputTransportFactory_->getTransport(client);
-      outputTransport = outputTransportFactory_->getTransport(client);
-      if (!outputProtocolFactory_) {
-        inputProtocol = inputProtocolFactory_->getProtocol(inputTransport, outputTransport);
-        outputProtocol = inputProtocol;
-      } else {
-        inputProtocol = inputProtocolFactory_->getProtocol(inputTransport);
-        outputProtocol = outputProtocolFactory_->getProtocol(outputTransport);
-      }
-
-      newlyConnectedClient(shared_ptr<TConnectedClient>(
-          new TConnectedClient(getProcessor(inputProtocol, outputProtocol, client),
-                               inputProtocol,
-                               outputProtocol,
-                               eventHandler_,
-                               client),
-          bind(&TServerFramework::disposeConnectedClient, this, std::placeholders::_1)));
-
+      conn->run();
     } catch (TTransportException& ttx) {
       releaseOneDescriptor("inputTransport", inputTransport);
       releaseOneDescriptor("outputTransport", outputTransport);
@@ -178,13 +166,16 @@ void TServerFramework::serve() {
         // All other transport exceptions are logged.
         // State of connection is unknown.  Done.
         string errStr = string("TServerTransport died: ") + ttx.what();
-        GlobalOutput(errStr.c_str());
+        apache::thrift::GlobalOutput(errStr.c_str());
         break;
       }
     }
-  }
+  } while(false);
 
-  releaseOneDescriptor("serverTransport", serverTransport_);
+  // releaseOneDescriptor("serverTransport", serverTransport_);
+}
+
+void TServerFramework::serve() {
 }
 
 int64_t TServerFramework::getConcurrentClientLimit() const {
@@ -240,6 +231,4 @@ void TServerFramework::disposeConnectedClient(TConnectedClient* pClient) {
   }
 }
 
-}
-}
-} // apache::thrift::server
+} // server

@@ -8,7 +8,9 @@
 TEST_CASE( "Factorials are computed", "[factorial]" ) {
     ChainTester tester(true);
 
-    tester.enable_debug_contract("hello", true);
+    // tester.enable_debug_contract("hello", true);
+    tester.enable_debug_contract("helloworld33", true);
+
     auto key = tester.create_key();
     std::cout<<key.String()<<std::endl;
 
@@ -38,6 +40,7 @@ TEST_CASE( "Factorials are computed", "[factorial]" ) {
     string abi_file(buffer.data());
 
     tester.deploy_contract("helloworld33", wasm_file, abi_file);
+
     auto permissions = R""""(
     {
         "helloworld33": "active"

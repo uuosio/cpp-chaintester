@@ -526,6 +526,9 @@ bool ApplyRequestProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* 
     return true;
   }
   (this->*(pfn->second))(seqid, iprot, oprot, callContext);
+  if (fname == "apply_end") {
+    return false;
+  }
   return true;
 }
 

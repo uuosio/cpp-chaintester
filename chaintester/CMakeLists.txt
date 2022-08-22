@@ -5,6 +5,11 @@ add_library ( chaintester
     src/gen/PushActions.cpp
     src/gen/interfaces_types.cpp
     src/chaintester.cpp
+    src/intrinsics.cpp
+
+    src/TServerFramework.cpp
+    src/TSimpleServer.cpp
+    src/TConnectedClient.cpp
 )
 
 target_link_libraries ( chaintester thrift )

@@ -17,10 +17,8 @@
  * under the License.
  */
 
-#include <thrift/server/TSimpleServer.h>
+#include "TSimpleServer.h"
 
-namespace apache {
-namespace thrift {
 namespace server {
 
 using apache::thrift::protocol::TProtocol;
@@ -100,7 +98,5 @@ void TSimpleServer::onClientDisconnected(TConnectedClient*) {
  * of having more than one client at a time, so we hide it.
  */
 void TSimpleServer::setConcurrentClientLimit(int64_t) {
-}
-}
 }
 } // apache::thrift::server

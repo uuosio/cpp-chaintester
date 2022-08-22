@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <thrift/protocol/TBinaryProtocol.h>
-#include <thrift/server/TSimpleServer.h>
 #include <thrift/transport/TServerSocket.h>
 #include <thrift/transport/TBufferTransports.h>
 
@@ -10,15 +9,21 @@
 #include <thrift/transport/TTransportUtils.h>
 
 #include "gen/IPCChainTester.h"
+#include "gen/Apply.h"
+#include "gen/ApplyRequest.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 
+#include "TSimpleServer.h"
+
 using namespace ::apache::thrift;
 using namespace ::apache::thrift::protocol;
 using namespace ::apache::thrift::transport;
-using namespace ::apache::thrift::server;
+// using namespace ::apache::thrift::server;
+
+using namespace ::server;
 
 using namespace  ::chaintester;
 using namespace ::rapidjson;

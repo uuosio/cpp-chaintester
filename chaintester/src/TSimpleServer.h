@@ -20,10 +20,8 @@
 #ifndef _THRIFT_SERVER_TSIMPLESERVER_H_
 #define _THRIFT_SERVER_TSIMPLESERVER_H_ 1
 
-#include <thrift/server/TServerFramework.h>
+#include "TServerFramework.h"
 
-namespace apache {
-namespace thrift {
 namespace server {
 
 /**
@@ -31,7 +29,7 @@ namespace server {
  * continuous loop of accepting a single connection, processing requests on
  * that connection until it closes, and then repeating.
  */
-class TSimpleServer : public TServerFramework {
+class TSimpleServer : public ::server::TServerFramework {
 public:
   TSimpleServer(
       const std::shared_ptr<apache::thrift::TProcessorFactory>& processorFactory,
@@ -70,8 +68,6 @@ protected:
 private:
   void setConcurrentClientLimit(int64_t newLimit) override; // hide
 };
-}
-}
 } // apache::thrift::server
 
 #endif // #ifndef _THRIFT_SERVER_TSIMPLESERVER_H_

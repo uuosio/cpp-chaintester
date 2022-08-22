@@ -24,13 +24,15 @@
 #include <stdint.h>
 #include <thrift/TProcessor.h>
 #include <thrift/concurrency/Monitor.h>
-#include <thrift/server/TConnectedClient.h>
 #include <thrift/server/TServer.h>
 #include <thrift/transport/TServerTransport.h>
 #include <thrift/transport/TTransport.h>
 
-namespace apache {
-namespace thrift {
+#include "TConnectedClient.h"
+
+using namespace apache::thrift::server;
+using namespace apache::thrift;
+
 namespace server {
 
 /**
@@ -76,6 +78,12 @@ public:
       const std::shared_ptr<apache::thrift::protocol::TProtocolFactory>& outputProtocolFactory);
 
   ~TServerFramework() override;
+
+  void prepare();
+
+  void serve_once();
+
+  void wait_for_connection();
 
   /**
    * Accept clients from the TServerTransport and add them for processing.
@@ -176,9 +184,14 @@ private:
    * The limit on the number of concurrent clients.
    */
   int64_t limit_;
+
+  std::shared_ptr<TTransport> client;
+  std::shared_ptr<TTransport> inputTransport;
+  std::shared_ptr<TTransport> outputTransport;
+  std::shared_ptr<TProtocol> inputProtocol;
+  std::shared_ptr<TProtocol> outputProtocol;
+  std::shared_ptr<TConnectedClient> conn;
 };
-}
-}
-} // apache::thrift::server
+} // server
 
 #endif // #ifndef _THRIFT_SERVER_TSERVERFRAMEWORK_H_
