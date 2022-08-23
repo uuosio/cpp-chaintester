@@ -1,0 +1,54 @@
+name: PR
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pr:
+    strategy:
+      matrix:
+        python-version: [3.9]
+        step: ['test']
+        # step: ['lint', 'test:chain']
+    name: ${{ matrix.step }}
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: Install dependencies
+        run: |
+          python3 -m pip install -U pip setuptools
+          python3 -m pip install pytest
+          python3 -m pip install pyeoskit
+      - name: Install cdt
+        run: |
+          wget https://github.com/EOSIO/eosio.cdt/releases/download/v1.7.0/eosio.cdt_1.7.0-1-ubuntu-18.04_amd64.deb
+          sudo apt install ./eosio.cdt_1.7.0-1-ubuntu-18.04_amd64.deb
+      - name: Install EOS test framework
+        run: |
+          python3 -m pip install ipyeos
+      - name: Run eos-debugger
+        run: |
+          PYTHON_SHARED_LIB_PATH=${{ env.pythonLocation }}/lib/libpython3.9.so eos-debugger &
+      - name: build
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          make -j4
+      - name: test
+        run: |
+          cd build
+          ./tests/tests
