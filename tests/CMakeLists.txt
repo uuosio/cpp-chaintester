@@ -10,10 +10,10 @@ target_link_libraries ( tests
     chaintester
     Catch2
     Catch2WithMain
-    ${CMAKE_CURRENT_BINARY_DIR}/hello/hello/libhello_static.a
+    ${CMAKE_CURRENT_BINARY_DIR}/hello/native/libhello_static.a
 )
 
-add_dependencies(tests chaintester Catch2 Catch2WithMain hello_project)
+add_dependencies(tests chaintester Catch2 Catch2WithMain hello_project hello_native_project)
 
 target_include_directories(tests PUBLIC
     "${CMAKE_SOURCE_DIR}/libs/thrift/lib/cpp/src"
