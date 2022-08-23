@@ -30,6 +30,6 @@ TEST_CASE( "test hello", "[hello]" ) {
         "hello": "active"
     }
     )"""";
-    tester.push_action("hello", "hi", "0000000000855c34", permissions);
+    tester.push_action("hello", "hi", args, permissions);
     tester.produce_block();
 }
