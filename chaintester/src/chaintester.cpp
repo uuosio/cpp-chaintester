@@ -24,6 +24,15 @@ std::shared_ptr<ApplyClient> GetApplyClient() {
     return gApplyClient;
 }
 
+fn_apply gApply = nullptr;
+
+void SetApplyFn(fn_apply fn) {
+    gApply = fn;
+}
+
+fn_apply GetApplyFn() {
+    return gApply;
+}
 
 class ApplyRequestHandler : virtual public ApplyRequestIf {
  public:
@@ -31,14 +40,24 @@ class ApplyRequestHandler : virtual public ApplyRequestIf {
     // Your initialization goes here
   }
 
-  int32_t apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action) {
-    GetApplyClient()->prints("hello, c++\n");
+  int32_t apply_request(const Uint64& receiver, const Uint64& first_receiver, const Uint64& action) {
+    fn_apply apply = GetApplyFn();
+    if (apply != nullptr) {
+        uint64_t _receiver;
+        uint64_t _first_receiver;
+        uint64_t _action;
+        memcpy(&_receiver, receiver.rawValue.c_str(), 8);
+        memcpy(&_first_receiver, first_receiver.rawValue.c_str(), 8);
+        memcpy(&_action, action.rawValue.c_str(), 8);
+
+        apply(_receiver, _first_receiver, _action);
+    }
     GetApplyClient()->end_apply();
     return 1;
   }
 
   int32_t apply_end() {
-    return 0;
+    return 1;
   }
 };
 

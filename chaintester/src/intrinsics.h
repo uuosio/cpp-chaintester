@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#ifndef __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -148,7 +148,7 @@ uint32_t expiration();
 int get_action( uint32_t type, uint32_t index, char* buff, size_t size );
 int get_context_free_data( uint32_t index, char* buff, size_t size );
 
-#ifndef __cplusplus
+#ifdef __cplusplus
 }
 #endif
 

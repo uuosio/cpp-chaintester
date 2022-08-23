@@ -165,3 +165,9 @@ public:
     JsonObject push_action(const string& account, const string& action, const string& arguments, const string& permissions);
     JsonObject deploy_contract(const string& account, const string& wasmFile, const string& abiFile);
 };
+
+std::shared_ptr<ApplyClient> GetApplyClient();
+
+typedef void (*fn_apply)(uint64_t receiver, uint64_t first_receiver, uint64_t action);
+void SetApplyFn(fn_apply fn);
+fn_apply GetApplyFn();
