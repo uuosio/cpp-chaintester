@@ -17,24 +17,24 @@ TEST_CASE( "Factorials are computed", "[factorial]" ) {
     tester.enable_debug_contract("helloworld33", true);
 
     auto key = tester.create_key();
-    std::cout<<key.String()<<std::endl;
+    std::cout<<key->String()<<std::endl;
 
-    auto pub_key = key.GetString("public");
-    auto priv_key = key.GetString("private");
+    auto pub_key = key->GetString("public");
+    auto priv_key = key->GetString("private");
     tester.import_key(pub_key, priv_key);
 
     auto info = tester.get_info();
 
-    std::cout<<info.GetUint64("head_block_num")<<std::endl;
-    std::cout<<info.GetString("chain_id")<<std::endl;
-    cout<<info.String()<<endl;
+    std::cout<<info->GetUint64("head_block_num")<<std::endl;
+    std::cout<<info->GetString("chain_id")<<std::endl;
+    cout<<info->String()<<endl;
 
 
     tester.create_account("hello", "helloworld33", pub_key, pub_key, 10*1024*1024, 100000, 1000000);
     tester.produce_block();
 
     auto account_info = tester.get_account("helloworld33");
-    cout<<account_info.GetString("head_block_time")<<endl;
+    cout<<account_info->GetString("head_block_time")<<endl;
 
     std::vector<char> buffer;
     buffer.resize(512);

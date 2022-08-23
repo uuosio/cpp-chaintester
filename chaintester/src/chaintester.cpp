@@ -8,6 +8,7 @@
 
 #include <chrono>
 #include <thread>
+#include <memory>
 
 #include "chaintester.h"
 
@@ -145,16 +146,16 @@ ChainTester::~ChainTester() {
     client->free_chain(id);
 }
 
-JsonObject ChainTester::get_info() {
+std::shared_ptr<JsonObject> ChainTester::get_info() {
     string info;
     client->get_info(info, id);
-    return JsonObject(info);
+    return std::make_shared<JsonObject>(info);
 }
 
-JsonObject ChainTester::create_key(const char* key_type) {
+std::shared_ptr<JsonObject> ChainTester::create_key(const char* key_type) {
     string key;
     client->create_key(key, key_type);
-    return JsonObject(key);
+    return std::make_shared<JsonObject>(key);
 }
 
 void ChainTester::enable_debug_contract(const char* contract, bool enable) {
@@ -165,26 +166,26 @@ bool ChainTester::import_key(const string& pub_key, const string& priv_key) {
     return client->import_key(id, pub_key, priv_key);    
 }
 
-JsonObject ChainTester::create_account(const string& creator, const string& account, const string& owner_key, const string& active_key, int64_t ram_bytes, int64_t stake_net, int64_t stake_cpu) {
+std::shared_ptr<JsonObject> ChainTester::create_account(const string& creator, const string& account, const string& owner_key, const string& active_key, int64_t ram_bytes, int64_t stake_net, int64_t stake_cpu) {
     string ret;
     client->create_account(ret, id, creator, account, owner_key, active_key, ram_bytes, stake_net, stake_cpu);
-    return JsonObject(ret);
+    return std::make_shared<JsonObject>(ret);
 }
 
-JsonObject ChainTester::get_account(const string& account) {
+std::shared_ptr<JsonObject> ChainTester::get_account(const string& account) {
     string ret;
     client->get_account(ret, id, account);
-    return JsonObject(ret);
+    return std::make_shared<JsonObject>(ret);
 }
 
 void ChainTester::produce_block(int64_t next_block_delay_seconds) {
     client->produce_block(id, next_block_delay_seconds);
 }
 
-JsonObject ChainTester::push_action(const string& account, const string& action, const string& arguments, const string& permissions) {
+std::shared_ptr<JsonObject> ChainTester::push_action(const string& account, const string& action, const string& arguments, const string& permissions) {
     string ret;
     client->push_action(ret, id, account, action, arguments, permissions);
-    return JsonObject(ret);
+    return std::make_shared<JsonObject>(ret);
 }
 
 std::string hex_str(const uint8_t *data, int len)
@@ -198,7 +199,7 @@ std::string hex_str(const uint8_t *data, int len)
      return ss.str();
 }
 
-JsonObject ChainTester::deploy_contract(const string& account, const string& wasmFile, const string& abiFile) {
+std::shared_ptr<JsonObject> ChainTester::deploy_contract(const string& account, const string& wasmFile, const string& abiFile) {
     string ret;
     std::ifstream wasm(wasmFile, std::ios::binary);
     std::ifstream abi(abiFile, std::ios::binary);
@@ -209,5 +210,5 @@ JsonObject ChainTester::deploy_contract(const string& account, const string& was
     auto hex_wasm_data = hex_str(wasm_data.data(), wasm_data.size());
     auto str_abi_data = string((char *)abi_data.data(), abi_data.size());
     client->deploy_contract(ret, id, account, hex_wasm_data, str_abi_data);
-    return JsonObject(ret);
+    return std::make_shared<JsonObject>(ret);
 }

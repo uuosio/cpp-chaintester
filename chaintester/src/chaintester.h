@@ -93,23 +93,17 @@ public:
 
 class JsonObject: private Document {
 private:
-    Document d;
+    JsonObject (const JsonObject& other);
+    JsonObject (const JsonObject&& other);
+    JsonObject& operator=(const JsonObject&);
 public:
     JsonObject(const string& s) {
-        d.Parse(s.c_str());
+        this->Parse(s.c_str());
     }
 
     JsonObject(const char* s) {
-        d.Parse(s);
+        this->Parse(s);
     }
-
-    // string GetString(string& key) {
-    //     return d[key.c_str()].GetString();
-    // }
-
-    // string GetString(const char* key) {
-    //     return d[key].GetString();
-    // }
 
     template<typename... Ts>
     Value GetValue(Ts... args) {
@@ -119,7 +113,7 @@ public:
         for (int i=0; i<size; i++) {
             auto key = &_args[i];
             if (key->GetType() == KeyType::String) {
-                v = d[key->GetString().c_str()];
+                v = (*this)[key->GetString().c_str()];
             }
         }
         return v;
@@ -140,7 +134,7 @@ public:
     string String() {
         StringBuffer buffer;
         Writer<StringBuffer> writer(buffer);
-        d.Accept(writer);
+        this->Accept(writer);
         return string(buffer.GetString(), buffer.GetLength());
     }
 };
@@ -149,21 +143,25 @@ class ChainTester {
 private:
     std::shared_ptr<IPCChainTesterClient> client;
     int32_t id;
+private:
+    ChainTester (const ChainTester& other);
+    ChainTester (const ChainTester&& other);
+    ChainTester& operator=(const ChainTester&);
 public:
     ChainTester(bool initialize=true);
     ~ChainTester();
 
-    JsonObject get_info();
+    std::shared_ptr<JsonObject> get_info();
 
-    JsonObject create_key(const char* key_type="K1");
+    std::shared_ptr<JsonObject> create_key(const char* key_type="K1");
     void enable_debug_contract(const char* contract, bool enable);
     bool import_key(const string& pub_key, const string& priv_key);
-    JsonObject create_account(const string& creator, const string& account, const string& owner_key, const string& active_key, int64_t ram_bytes=10*1024*1024, int64_t stake_net=100000, int64_t stake_cpu=1000000);
-    JsonObject get_account(const string& account);
+    std::shared_ptr<JsonObject> create_account(const string& creator, const string& account, const string& owner_key, const string& active_key, int64_t ram_bytes=10*1024*1024, int64_t stake_net=100000, int64_t stake_cpu=1000000);
+    std::shared_ptr<JsonObject> get_account(const string& account);
     void produce_block(int64_t next_block_delay_seconds = 0);
 
-    JsonObject push_action(const string& account, const string& action, const string& arguments, const string& permissions);
-    JsonObject deploy_contract(const string& account, const string& wasmFile, const string& abiFile);
+    std::shared_ptr<JsonObject> push_action(const string& account, const string& action, const string& arguments, const string& permissions);
+    std::shared_ptr<JsonObject> deploy_contract(const string& account, const string& wasmFile, const string& abiFile);
 };
 
 std::shared_ptr<ApplyClient> GetApplyClient();
