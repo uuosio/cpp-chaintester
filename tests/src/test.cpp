@@ -5,8 +5,13 @@
 
 #include "test.h"
 
+static void apply(uint64_t receiver, uint64_t first_receiver, uint64_t action) {
+    GetApplyClient()->prints("hello, c++\n");
+}
+
 TEST_CASE( "Factorials are computed", "[factorial]" ) {
     ChainTester tester(true);
+    SetApplyFn(apply);
 
     // tester.enable_debug_contract("hello", true);
     tester.enable_debug_contract("helloworld33", true);

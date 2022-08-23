@@ -1,10 +1,19 @@
+add_subdirectory(hello)
+
 add_executable( tests 
     src/test.cpp
+    src/test_hello.cpp
+    src/intrinsics_test.cpp
 )
 
-target_link_libraries ( tests chaintester Catch2 Catch2WithMain)
+target_link_libraries ( tests
+    chaintester
+    Catch2
+    Catch2WithMain
+    ${CMAKE_CURRENT_BINARY_DIR}/hello/hello/libhello_static.a
+)
 
-add_dependencies(tests chaintester Catch2 Catch2WithMain)
+add_dependencies(tests chaintester Catch2 Catch2WithMain hello_project)
 
 target_include_directories(tests PUBLIC
     "${CMAKE_SOURCE_DIR}/libs/thrift/lib/cpp/src"
