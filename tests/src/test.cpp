@@ -38,13 +38,18 @@ TEST_CASE( "Factorials are computed", "[factorial]" ) {
 
     std::vector<char> buffer;
     buffer.resize(512);
-    snprintf(buffer.data(), buffer.size(), "%s/%s", APP_PATH, "hello.wasm");
+    snprintf(buffer.data(), buffer.size(), "%s/%s", APP_PATH, "hello/hello/hello.wasm");
     string wasm_file(buffer.data());
 
-    snprintf(buffer.data(), buffer.size(), "%s/%s", APP_PATH, "hello.abi");
+    snprintf(buffer.data(), buffer.size(), "%s/%s", APP_PATH, "hello/hello/hello.abi");
     string abi_file(buffer.data());
+    tester.deploy_contract("hello", wasm_file, abi_file);
 
-    tester.deploy_contract("helloworld33", wasm_file, abi_file);
+    auto args = R""""(
+    {
+        "nm": "alice"
+    }
+    )"""";
 
     auto permissions = R""""(
     {
@@ -52,7 +57,7 @@ TEST_CASE( "Factorials are computed", "[factorial]" ) {
     }
     )"""";
     for (int i=0; i<5; i++) {
-        tester.push_action("helloworld33", "sayhello", "{}", permissions);
+        tester.push_action("helloworld33", "hi", args, permissions);
         tester.produce_block();
     }
     REQUIRE( true == true);
