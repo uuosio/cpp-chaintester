@@ -16,11 +16,19 @@ ExternalProject_Add(
    BUILD_ALWAYS 1
 )
 
+if (APPLE)
+   set(PLATFORM APPLE)
+elseif(LINUX)
+   set(PLATFORM LINUX)
+elseif(WIN32)
+   set(PLATFORM WIN32)
+endif()
+
 ExternalProject_Add(
    hello_native_project
    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/native
    BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/native
-   CMAKE_ARGS -DCMAKE_BUILD_TYPE=Debug -DEOSIO_CDT_ROOT=${EOSIO_CDT_ROOT} -DCMAKE_TOOLCHAIN_FILE=${EOSIO_CDT_ROOT}/lib/cmake/eosio.cdt/EosioWasmToolchain.cmake
+   CMAKE_ARGS -DCMAKE_BUILD_TYPE=Debug -DPLATFORM=${PLATFORM} -DEOSIO_CDT_ROOT=${EOSIO_CDT_ROOT} -DCMAKE_TOOLCHAIN_FILE=${EOSIO_CDT_ROOT}/lib/cmake/eosio.cdt/EosioWasmToolchain.cmake
    UPDATE_COMMAND ""
    PATCH_COMMAND ""
    TEST_COMMAND ""

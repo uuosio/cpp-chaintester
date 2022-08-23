@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.21)
+
 project(hello)
 
 set(EOSIO_WASM_OLD_BEHAVIOR "Off")
@@ -16,18 +18,24 @@ add_library( hello_static
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/main.cpp
 )
 
+if (${PLATFORM} MATCHES APPLE)
+    set(PLATFORM_OPTIONS  --target=x86_64-unknown-darwin-macho -mmacosx-version-min=10.13 -fno-stack-protector)
+elseif(${PLATFORM} MATCHES LINUX)
+    set(PLATFORM_OPTIONS --target=x86_64-unknown-linux-gnu)
+else()
+    message( FATAL_ERROR "Unsupported platform: ${PLATFORM}")
+endif()
+
 target_compile_options(hello_static PRIVATE 
     -g
     ${OPT_LEVEL}
+    ${PLATFORM_OPTIONS}
     --sysroot=${EOSIO_CDT_ROOT}/opt/eosio.cdt/bin/..
     -D__eosio_cdt__
-    -D__eosio_cdt_major__=1
-    -D__eosio_cdt_minor__=7
+    # -D__eosio_cdt_major__=1
+    # -D__eosio_cdt_minor__=7
     -D__eosio_cdt_patchlevel__=0 
     -Wunused-command-line-argument
-    --target=x86_64-unknown-darwin-macho
-    -mmacosx-version-min=10.13
-    -fno-stack-protector
     -m64
     -fno-builtin
     -mstackrealign
@@ -40,10 +48,9 @@ target_compile_options(hello_static PRIVATE
     -fmodules-ts
     -DBOOST_DISABLE_ASSERTS
     -DBOOST_EXCEPTION_DISABLE
-    -fplugin=${EOSIO_CDT_ROOT}/opt/eosio.cdt/bin/eosio_plugin.dylib
     -mllvm
     -use-cfl-aa-in-codegen=both
-    -MF 
+    # -MF
 )
 
 target_include_directories(hello_static PUBLIC 
