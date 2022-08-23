@@ -24,5 +24,3 @@ target_include_directories(tests PUBLIC
 )
 
 configure_file(src/test.h.in ${CMAKE_CURRENT_BINARY_DIR}/test.h @ONLY )
-configure_file(hello.wasm ${CMAKE_CURRENT_BINARY_DIR}/hello.wasm COPYONLY)
-configure_file(hello.abi ${CMAKE_CURRENT_BINARY_DIR}/hello.abi COPYONLY)
