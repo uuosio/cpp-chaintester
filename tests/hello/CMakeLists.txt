@@ -24,6 +24,12 @@ elseif(WIN32)
    set(PLATFORM WIN32)
 endif()
 
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+   set(PLATFORM LINUX)
+elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Apple")
+   set(PLATFORM APPLE)
+endif()
+
 ExternalProject_Add(
    hello_native_project
    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/native
