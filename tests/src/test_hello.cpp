@@ -32,4 +32,12 @@ TEST_CASE( "test hello", "[hello]" ) {
     )"""";
     tester.push_action("hello", "hi", args, permissions);
     tester.produce_block();
+
+    args = R""""(
+    {
+        "nm": "hello"
+    }
+    )"""";
+    tester.push_action("hello", "check", args, permissions);
+    tester.produce_block();
 }
