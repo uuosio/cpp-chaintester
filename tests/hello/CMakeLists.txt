@@ -26,15 +26,17 @@ endif()
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
    set(PLATFORM LINUX)
-elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Apple")
+elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
    set(PLATFORM APPLE)
 endif()
+
+execute_process(COMMAND python3 ${CMAKE_SOURCE_DIR}/scripts/find_cdt_path.py OUTPUT_VARIABLE CDT_PATH)
 
 ExternalProject_Add(
    hello_native_project
    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/native
    BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/native
-   CMAKE_ARGS -DCMAKE_BUILD_TYPE=Debug -DPLATFORM=${PLATFORM} -DEOSIO_CDT_ROOT=${EOSIO_CDT_ROOT} -DCMAKE_TOOLCHAIN_FILE=${EOSIO_CDT_ROOT}/lib/cmake/eosio.cdt/EosioWasmToolchain.cmake
+   CMAKE_ARGS -DCMAKE_BUILD_TYPE=Debug -DPLATFORM=${PLATFORM} -DCDT_PATH=${CDT_PATH} -DCMAKE_TOOLCHAIN_FILE=${EOSIO_CDT_ROOT}/lib/cmake/eosio.cdt/EosioWasmToolchain.cmake
    UPDATE_COMMAND ""
    PATCH_COMMAND ""
    TEST_COMMAND ""
