@@ -21,7 +21,7 @@ add_library( hello_static
 if (${PLATFORM} MATCHES APPLE)
     set(PLATFORM_OPTIONS  --target=x86_64-unknown-darwin-macho -mmacosx-version-min=10.13 -fno-stack-protector)
 elseif(${PLATFORM} MATCHES LINUX)
-    set(PLATFORM_OPTIONS --target=x86_64-unknown-linux-gnu)
+    set(PLATFORM_OPTIONS -fPIC --target=x86_64-unknown-linux-gnu)
 else()
     message( FATAL_ERROR "Unsupported platform: ${PLATFORM}")
 endif()
