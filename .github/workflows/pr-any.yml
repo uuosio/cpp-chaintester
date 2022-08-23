@@ -37,6 +37,8 @@ jobs:
       - name: Install boost
         run: |
           sudo apt-get install libboost-all-dev
+          sudo apt install aptitude
+          aptitude search boost
       - name: Install EOS test framework
         run: |
           python3 -m pip install ipyeos
