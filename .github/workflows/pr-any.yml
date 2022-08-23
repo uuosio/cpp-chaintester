@@ -30,12 +30,13 @@ jobs:
       - name: Install dependencies
         run: |
           python3 -m pip install -U pip setuptools
-          python3 -m pip install pytest
-          python3 -m pip install pyeoskit
       - name: Install cdt
         run: |
           wget https://github.com/EOSIO/eosio.cdt/releases/download/v1.7.0/eosio.cdt_1.7.0-1-ubuntu-18.04_amd64.deb
           sudo apt install ./eosio.cdt_1.7.0-1-ubuntu-18.04_amd64.deb
+      - name: Install boost
+        run: |
+          sudo apt-get install libboost-all-dev
       - name: Install EOS test framework
         run: |
           python3 -m pip install ipyeos
