@@ -30,66 +30,619 @@ uint32_t get_active_producers( capi_name* producers, uint32_t datalen ) {
 }
 
 //db.h
-// int32_t db_store_i64(uint64_t scope, capi_name table, capi_name payer, uint64_t id,  const void* data, uint32_t len);
-// void db_update_i64(int32_t iterator, capi_name payer, const void* data, uint32_t len);
-// void db_remove_i64(int32_t iterator);
-// int32_t db_get_i64(int32_t iterator, const void* data, uint32_t len);
-// int32_t db_next_i64(int32_t iterator, uint64_t* primary);
-// int32_t db_previous_i64(int32_t iterator, uint64_t* primary);
-// int32_t db_find_i64(capi_name code, uint64_t scope, capi_name table, uint64_t id);
-// int32_t db_lowerbound_i64(capi_name code, uint64_t scope, capi_name table, uint64_t id);
-// int32_t db_upperbound_i64(capi_name code, uint64_t scope, capi_name table, uint64_t id);
-// int32_t db_end_i64(capi_name code, uint64_t scope, capi_name table);
-// int32_t db_idx64_store(uint64_t scope, capi_name table, capi_name payer, uint64_t id, const uint64_t* secondary);
-// void db_idx64_update(int32_t iterator, capi_name payer, const uint64_t* secondary);
-// void db_idx64_remove(int32_t iterator);
-// int32_t db_idx64_next(int32_t iterator, uint64_t* primary);
-// int32_t db_idx64_previous(int32_t iterator, uint64_t* primary);
-// int32_t db_idx64_find_primary(capi_name code, uint64_t scope, capi_name table, uint64_t* secondary, uint64_t primary);
-// int32_t db_idx64_find_secondary(capi_name code, uint64_t scope, capi_name table, const uint64_t* secondary, uint64_t* primary);
-// int32_t db_idx64_lowerbound(capi_name code, uint64_t scope, capi_name table, uint64_t* secondary, uint64_t* primary);
-// int32_t db_idx64_upperbound(capi_name code, uint64_t scope, capi_name table, uint64_t* secondary, uint64_t* primary);
-// int32_t db_idx64_end(capi_name code, uint64_t scope, capi_name table);
-// int32_t db_idx128_store(uint64_t scope, capi_name table, capi_name payer, uint64_t id, const uint128_t* secondary);
-// void db_idx128_update(int32_t iterator, capi_name payer, const uint128_t* secondary);
-// void db_idx128_remove(int32_t iterator);
-// int32_t db_idx128_next(int32_t iterator, uint64_t* primary);
-// int32_t db_idx128_previous(int32_t iterator, uint64_t* primary);
-// int32_t db_idx128_find_primary(capi_name code, uint64_t scope, capi_name table, uint128_t* secondary, uint64_t primary);
-// int32_t db_idx128_find_secondary(capi_name code, uint64_t scope, capi_name table, const uint128_t* secondary, uint64_t* primary);
-// int32_t db_idx128_lowerbound(capi_name code, uint64_t scope, capi_name table, uint128_t* secondary, uint64_t* primary);
-// int32_t db_idx128_upperbound(capi_name code, uint64_t scope, capi_name table, uint128_t* secondary, uint64_t* primary);
-// int32_t db_idx128_end(capi_name code, uint64_t scope, capi_name table);
-// int32_t db_idx256_store(uint64_t scope, capi_name table, capi_name payer, uint64_t id, const uint128_t* data, uint32_t data_len );
-// void db_idx256_update(int32_t iterator, capi_name payer, const uint128_t* data, uint32_t data_len);
-// void db_idx256_remove(int32_t iterator);
-// int32_t db_idx256_next(int32_t iterator, uint64_t* primary);
-// int32_t db_idx256_previous(int32_t iterator, uint64_t* primary);
-// int32_t db_idx256_find_primary(capi_name code, uint64_t scope, capi_name table, uint128_t* data, uint32_t data_len, uint64_t primary);
-// int32_t db_idx256_find_secondary(capi_name code, uint64_t scope, capi_name table, const uint128_t* data, uint32_t data_len, uint64_t* primary);
-// int32_t db_idx256_lowerbound(capi_name code, uint64_t scope, capi_name table, uint128_t* data, uint32_t data_len, uint64_t* primary);
-// int32_t db_idx256_upperbound(capi_name code, uint64_t scope, capi_name table, uint128_t* data, uint32_t data_len, uint64_t* primary);
-// int32_t db_idx256_end(capi_name code, uint64_t scope, capi_name table);
-// int32_t db_idx_double_store(uint64_t scope, capi_name table, capi_name payer, uint64_t id, const double* secondary);
-// void db_idx_double_update(int32_t iterator, capi_name payer, const double* secondary);
-// void db_idx_double_remove(int32_t iterator);
-// int32_t db_idx_double_next(int32_t iterator, uint64_t* primary);
-// int32_t db_idx_double_previous(int32_t iterator, uint64_t* primary);
-// int32_t db_idx_double_find_primary(capi_name code, uint64_t scope, capi_name table, double* secondary, uint64_t primary);
-// int32_t db_idx_double_find_secondary(capi_name code, uint64_t scope, capi_name table, const double* secondary, uint64_t* primary);
-// int32_t db_idx_double_lowerbound(capi_name code, uint64_t scope, capi_name table, double* secondary, uint64_t* primary);
-// int32_t db_idx_double_upperbound(capi_name code, uint64_t scope, capi_name table, double* secondary, uint64_t* primary);
-// int32_t db_idx_double_end(capi_name code, uint64_t scope, capi_name table);
-// int32_t db_idx_long_double_store(uint64_t scope, capi_name table, capi_name payer, uint64_t id, const long double* secondary);
-// void db_idx_long_double_update(int32_t iterator, capi_name payer, const long double* secondary);
-// void db_idx_long_double_remove(int32_t iterator);
-// int32_t db_idx_long_double_next(int32_t iterator, uint64_t* primary);
-// int32_t db_idx_long_double_previous(int32_t iterator, uint64_t* primary);
-// int32_t db_idx_long_double_find_primary(capi_name code, uint64_t scope, capi_name table, long double* secondary, uint64_t primary);
-// int32_t db_idx_long_double_find_secondary(capi_name code, uint64_t scope, capi_name table, const long double* secondary, uint64_t* primary);
-// int32_t db_idx_long_double_lowerbound(capi_name code, uint64_t scope, capi_name table, long double* secondary, uint64_t* primary);
-// int32_t db_idx_long_double_upperbound(capi_name code, uint64_t scope, capi_name table, long double* secondary, uint64_t* primary);
-// int32_t db_idx_long_double_end(capi_name code, uint64_t scope, capi_name table);
+int32_t db_store_i64(uint64_t scope, capi_name table, capi_name payer, uint64_t id,  const void* data, uint32_t len) {
+    return GetApplyClient()->db_store_i64(
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        to_raw_uint64(payer),
+        to_raw_uint64(id),
+        string((char *)data, len)
+    );
+}
+
+void db_update_i64(int32_t iterator, capi_name payer, const void* data, uint32_t len) {
+    GetApplyClient()->db_update_i64(iterator, to_raw_uint64(payer), string((char *)data, len));
+}
+
+void db_remove_i64(int32_t iterator) {
+    GetApplyClient()->db_remove_i64(iterator);
+}
+
+size_t copy_data(void* dest, size_t dest_len, string& src) {
+    if (dest_len == 0) {
+        return src.size();
+    }
+    size_t copy_size = std::min(dest_len, src.size());
+    memcpy(dest, src.c_str(), copy_size);
+    return copy_size;
+}
+
+int32_t db_get_i64(int32_t iterator, void* data, uint32_t len) {
+    string ret;
+    GetApplyClient()->db_get_i64(ret, iterator);
+    return copy_data(data, len, ret);
+}
+
+int32_t db_next_i64(int32_t iterator, uint64_t* primary) {
+    NextPreviousReturn ret;
+    GetApplyClient()->db_next_i64(ret, iterator);
+    *primary = from_raw_uint64(ret.primary);
+    return ret.iterator;
+}
+
+int32_t db_previous_i64(int32_t iterator, uint64_t* primary) {
+    NextPreviousReturn ret;
+    GetApplyClient()->db_previous_i64(ret, iterator);
+    *primary = from_raw_uint64(ret.primary);
+    return ret.iterator;
+}
+
+int32_t db_find_i64(capi_name code, uint64_t scope, capi_name table, uint64_t id) {
+    return GetApplyClient()->db_find_i64(
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        to_raw_uint64(id)
+    );
+}
+
+int32_t db_lowerbound_i64(capi_name code, uint64_t scope, capi_name table, uint64_t id) {
+    return GetApplyClient()->db_lowerbound_i64(
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        to_raw_uint64(id)
+    );
+}
+
+int32_t db_upperbound_i64(capi_name code, uint64_t scope, capi_name table, uint64_t id) {
+    return GetApplyClient()->db_upperbound_i64(
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        to_raw_uint64(id)
+    );
+}
+
+int32_t db_end_i64(capi_name code, uint64_t scope, capi_name table) {
+    return GetApplyClient()->db_end_i64(
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table)
+    );
+}
+
+int32_t db_idx64_store(uint64_t scope, capi_name table, capi_name payer, uint64_t id, const uint64_t* secondary) {
+    return GetApplyClient()->db_idx64_store(
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        to_raw_uint64(payer),
+        to_raw_uint64(id),
+        to_raw_uint64(*secondary)
+    );
+}
+
+void db_idx64_update(int32_t iterator, capi_name payer, const uint64_t* secondary) {
+    GetApplyClient()->db_idx64_update(iterator, to_raw_uint64(payer), to_raw_uint64(*secondary));    
+}
+
+void db_idx64_remove(int32_t iterator) {
+    GetApplyClient()->db_idx64_remove(iterator);    
+}
+
+int32_t db_idx64_next(int32_t iterator, uint64_t* primary) {
+    NextPreviousReturn ret;
+    GetApplyClient()->db_idx64_next(ret, iterator);
+    *primary = from_raw_uint64(ret.primary);
+    return ret.iterator;
+}
+
+int32_t db_idx64_previous(int32_t iterator, uint64_t* primary) {
+    NextPreviousReturn ret;
+    GetApplyClient()->db_idx64_previous(ret, iterator);
+    *primary = from_raw_uint64(ret.primary);
+    return ret.iterator;
+}
+
+int32_t db_idx64_find_primary(capi_name code, uint64_t scope, capi_name table, uint64_t* secondary, uint64_t primary) {
+    FindPrimaryReturn ret;
+    GetApplyClient()->db_idx64_find_primary(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        to_raw_uint64(primary)
+
+    );
+    if (ret.iterator >= 0) {
+        memcpy(secondary, ret.secondary.c_str(), ret.secondary.size());
+    }
+    return ret.iterator;
+}
+
+int32_t db_idx64_find_secondary(capi_name code, uint64_t scope, capi_name table, const uint64_t* secondary, uint64_t* primary) {
+    FindSecondaryReturn ret;
+    GetApplyClient()->db_idx64_find_secondary(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        to_raw_uint64(*secondary)
+    );
+
+    if (ret.iterator >= 0) {
+        *primary = from_raw_uint64(ret.primary);
+    }
+    return ret.iterator;
+}
+
+int32_t db_idx64_lowerbound(capi_name code, uint64_t scope, capi_name table, uint64_t* secondary, uint64_t* primary) {
+    LowerBoundUpperBoundReturn ret;
+    GetApplyClient()->db_idx64_lowerbound(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        to_raw_uint64(*secondary),
+        to_raw_uint64(*primary)
+    );
+    if (ret.iterator >= 0) {
+        memcpy(secondary, ret.secondary.c_str(), 8);
+        *primary = from_raw_uint64(ret.primary);
+    }
+    return ret.iterator;
+}
+
+int32_t db_idx64_upperbound(capi_name code, uint64_t scope, capi_name table, uint64_t* secondary, uint64_t* primary) {
+    LowerBoundUpperBoundReturn ret;
+    GetApplyClient()->db_idx64_upperbound(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        to_raw_uint64(*secondary),
+        to_raw_uint64(*primary)
+    );
+    if (ret.iterator >= 0) {
+        memcpy(secondary, ret.secondary.c_str(), 8);
+        *primary = from_raw_uint64(ret.primary);
+    }
+    return ret.iterator;
+}
+
+int32_t db_idx64_end(capi_name code, uint64_t scope, capi_name table) {
+    return GetApplyClient()->db_idx64_end(
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table)
+    );
+}
+
+int32_t db_idx128_store(uint64_t scope, capi_name table, capi_name payer, uint64_t id, const uint128_t* secondary) {
+    return GetApplyClient()->db_idx128_store(
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        to_raw_uint64(payer),
+        to_raw_uint64(id),
+        string((char *)secondary, 16)
+    );    
+}
+
+void db_idx128_update(int32_t iterator, capi_name payer, const uint128_t* secondary) {
+    GetApplyClient()->db_idx128_update(iterator, to_raw_uint64(payer), string((char *)secondary, 16));
+}
+
+void db_idx128_remove(int32_t iterator) {
+    GetApplyClient()->db_idx128_remove(iterator);    
+}
+
+int32_t db_idx128_next(int32_t iterator, uint64_t* primary) {
+    NextPreviousReturn ret;
+    GetApplyClient()->db_idx128_next(ret, iterator);
+    *primary = from_raw_uint64(ret.primary);
+    return ret.iterator;
+}
+
+int32_t db_idx128_previous(int32_t iterator, uint64_t* primary) {
+    NextPreviousReturn ret;
+    GetApplyClient()->db_idx128_previous(ret, iterator);
+    *primary = from_raw_uint64(ret.primary);
+    return ret.iterator;
+}
+
+int32_t db_idx128_find_primary(capi_name code, uint64_t scope, capi_name table, uint128_t* secondary, uint64_t primary) {
+    FindPrimaryReturn ret;
+    GetApplyClient()->db_idx128_find_primary(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        to_raw_uint64(primary)
+
+    );
+    if (ret.iterator >= 0) {
+        memcpy(secondary, ret.secondary.c_str(), ret.secondary.size());
+    }
+    return ret.iterator;
+}
+
+int32_t db_idx128_find_secondary(capi_name code, uint64_t scope, capi_name table, const uint128_t* secondary, uint64_t* primary) {
+    FindSecondaryReturn ret;
+    GetApplyClient()->db_idx128_find_secondary(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        string((char *)secondary, 16)
+    );
+
+    if (ret.iterator >= 0) {
+        *primary = from_raw_uint64(ret.primary);
+    }
+    return ret.iterator;
+
+}
+
+int32_t db_idx128_lowerbound(capi_name code, uint64_t scope, capi_name table, uint128_t* secondary, uint64_t* primary) {
+    LowerBoundUpperBoundReturn ret;
+    GetApplyClient()->db_idx128_lowerbound(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        string((char *)secondary, 16),
+        to_raw_uint64(*primary)
+    );
+    if (ret.iterator >= 0) {
+        memcpy(secondary, ret.secondary.c_str(), 16);
+        *primary = from_raw_uint64(ret.primary);
+    }
+    return ret.iterator;
+}
+
+int32_t db_idx128_upperbound(capi_name code, uint64_t scope, capi_name table, uint128_t* secondary, uint64_t* primary) {
+    LowerBoundUpperBoundReturn ret;
+    GetApplyClient()->db_idx128_upperbound(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        string((char *)secondary, 16),
+        to_raw_uint64(*primary)
+    );
+    if (ret.iterator >= 0) {
+        memcpy(secondary, ret.secondary.c_str(), 16);
+        *primary = from_raw_uint64(ret.primary);
+    }
+    return ret.iterator;
+}
+
+int32_t db_idx128_end(capi_name code, uint64_t scope, capi_name table) {
+    return GetApplyClient()->db_idx128_end(
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table)
+    );
+}
+
+int32_t db_idx256_store(uint64_t scope, capi_name table, capi_name payer, uint64_t id, const uint128_t* data, uint32_t data_len ) {
+    return GetApplyClient()->db_idx256_store(
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        to_raw_uint64(payer),
+        to_raw_uint64(id),
+        string((char *)data, data_len)
+    );    
+}
+
+void db_idx256_update(int32_t iterator, capi_name payer, const uint128_t* data, uint32_t data_len) {
+    GetApplyClient()->db_idx256_update(iterator, to_raw_uint64(payer), string((char *)data, data_len));    
+}
+
+void db_idx256_remove(int32_t iterator) {
+    GetApplyClient()->db_idx256_remove(iterator);    
+}
+
+int32_t db_idx256_next(int32_t iterator, uint64_t* primary) {
+    NextPreviousReturn ret;
+    GetApplyClient()->db_idx256_next(ret, iterator);
+    *primary = from_raw_uint64(ret.primary);
+    return ret.iterator;
+}
+
+int32_t db_idx256_previous(int32_t iterator, uint64_t* primary) {
+    NextPreviousReturn ret;
+    GetApplyClient()->db_idx256_previous(ret, iterator);
+    *primary = from_raw_uint64(ret.primary);
+    return ret.iterator;
+}
+
+int32_t db_idx256_find_primary(capi_name code, uint64_t scope, capi_name table, uint128_t* data, uint32_t data_len, uint64_t primary) {
+    FindPrimaryReturn ret;
+    GetApplyClient()->db_idx256_find_primary(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        to_raw_uint64(primary)
+
+    );
+    if (ret.iterator >= 0) {
+        memcpy(data, ret.secondary.c_str(), ret.secondary.size());
+    }
+    return ret.iterator;
+}
+
+int32_t db_idx256_find_secondary(capi_name code, uint64_t scope, capi_name table, const uint128_t* data, uint32_t data_len, uint64_t* primary) {
+    FindSecondaryReturn ret;
+    GetApplyClient()->db_idx256_find_secondary(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        string((char *)data, 16)
+    );
+
+    if (ret.iterator >= 0) {
+        *primary = from_raw_uint64(ret.primary);
+    }
+    return ret.iterator;
+}
+
+int32_t db_idx256_lowerbound(capi_name code, uint64_t scope, capi_name table, uint128_t* data, uint32_t data_len, uint64_t* primary) {
+    LowerBoundUpperBoundReturn ret;
+    GetApplyClient()->db_idx256_lowerbound(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        string((char *)data, 32),
+        to_raw_uint64(*primary)
+    );
+    if (ret.iterator >= 0) {
+        memcpy(data, ret.secondary.c_str(), 32);
+        *primary = from_raw_uint64(ret.primary);
+    }
+    return ret.iterator;
+}
+
+int32_t db_idx256_upperbound(capi_name code, uint64_t scope, capi_name table, uint128_t* data, uint32_t data_len, uint64_t* primary) {
+    LowerBoundUpperBoundReturn ret;
+    GetApplyClient()->db_idx256_lowerbound(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        string((char *)data, 32),
+        to_raw_uint64(*primary)
+    );
+    if (ret.iterator >= 0) {
+        memcpy(data, ret.secondary.c_str(), 32);
+        *primary = from_raw_uint64(ret.primary);
+    }
+    return ret.iterator;
+}
+
+int32_t db_idx256_end(capi_name code, uint64_t scope, capi_name table) {
+    return GetApplyClient()->db_idx256_end(
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table)
+    );
+}
+
+int32_t db_idx_double_store(uint64_t scope, capi_name table, capi_name payer, uint64_t id, const double* secondary) {
+    return GetApplyClient()->db_idx_double_store(
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        to_raw_uint64(payer),
+        to_raw_uint64(id),
+        string((char *)secondary, 8)
+    );
+}
+
+void db_idx_double_update(int32_t iterator, capi_name payer, const double* secondary) {
+    GetApplyClient()->db_idx_double_update(iterator, to_raw_uint64(payer), string((char *)secondary, 8));    
+}
+
+void db_idx_double_remove(int32_t iterator) {
+    GetApplyClient()->db_idx_double_remove(iterator);    
+}
+
+int32_t db_idx_double_next(int32_t iterator, uint64_t* primary) {
+    NextPreviousReturn ret;
+    GetApplyClient()->db_idx_double_next(ret, iterator);
+    *primary = from_raw_uint64(ret.primary);
+    return ret.iterator;    
+}
+
+int32_t db_idx_double_previous(int32_t iterator, uint64_t* primary) {
+    NextPreviousReturn ret;
+    GetApplyClient()->db_idx_double_previous(ret, iterator);
+    *primary = from_raw_uint64(ret.primary);
+    return ret.iterator;
+}
+
+int32_t db_idx_double_find_primary(capi_name code, uint64_t scope, capi_name table, double* secondary, uint64_t primary) {
+    FindPrimaryReturn ret;
+    GetApplyClient()->db_idx_double_find_primary(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        to_raw_uint64(primary)
+
+    );
+    if (ret.iterator >= 0) {
+        memcpy(secondary, ret.secondary.c_str(), ret.secondary.size());
+    }
+    return ret.iterator;
+}
+
+int32_t db_idx_double_find_secondary(capi_name code, uint64_t scope, capi_name table, const double* secondary, uint64_t* primary) {
+    FindSecondaryReturn ret;
+    GetApplyClient()->db_idx_double_find_secondary(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        string((char *)secondary, 8)
+    );
+
+    if (ret.iterator >= 0) {
+        *primary = from_raw_uint64(ret.primary);
+    }
+    return ret.iterator;
+}
+
+int32_t db_idx_double_lowerbound(capi_name code, uint64_t scope, capi_name table, double* secondary, uint64_t* primary) {
+    LowerBoundUpperBoundReturn ret;
+    GetApplyClient()->db_idx_double_lowerbound(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        string((char *)secondary, 8),
+        to_raw_uint64(*primary)
+    );
+    if (ret.iterator >= 0) {
+        memcpy(secondary, ret.secondary.c_str(), 8);
+        *primary = from_raw_uint64(ret.primary);
+    }
+    return ret.iterator;
+}
+
+int32_t db_idx_double_upperbound(capi_name code, uint64_t scope, capi_name table, double* secondary, uint64_t* primary) {
+    LowerBoundUpperBoundReturn ret;
+    GetApplyClient()->db_idx_double_upperbound(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        string((char *)secondary, 8),
+        to_raw_uint64(*primary)
+    );
+    if (ret.iterator >= 0) {
+        memcpy(secondary, ret.secondary.c_str(), 8);
+        *primary = from_raw_uint64(ret.primary);
+    }
+    return ret.iterator;
+}
+
+int32_t db_idx_double_end(capi_name code, uint64_t scope, capi_name table) {
+    return GetApplyClient()->db_idx_double_end(
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table)
+    );
+}
+
+int32_t db_idx_long_double_store(uint64_t scope, capi_name table, capi_name payer, uint64_t id, const long double* secondary) {
+    return GetApplyClient()->db_idx_long_double_store(
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        to_raw_uint64(payer),
+        to_raw_uint64(id),
+        string((char *)secondary, 16)
+    );    
+}
+
+void db_idx_long_double_update(int32_t iterator, capi_name payer, const long double* secondary) {
+    GetApplyClient()->db_idx_long_double_update(iterator, to_raw_uint64(payer), string((char *)secondary, 16));    
+}
+
+void db_idx_long_double_remove(int32_t iterator) {
+    GetApplyClient()->db_idx_long_double_remove(iterator);    
+}
+
+int32_t db_idx_long_double_next(int32_t iterator, uint64_t* primary) {
+    NextPreviousReturn ret;
+    GetApplyClient()->db_idx_long_double_next(ret, iterator);
+    *primary = from_raw_uint64(ret.primary);
+    return ret.iterator;    
+}
+
+int32_t db_idx_long_double_previous(int32_t iterator, uint64_t* primary) {
+    NextPreviousReturn ret;
+    GetApplyClient()->db_idx_long_double_previous(ret, iterator);
+    *primary = from_raw_uint64(ret.primary);
+    return ret.iterator;
+}
+
+int32_t db_idx_long_double_find_primary(capi_name code, uint64_t scope, capi_name table, long double* secondary, uint64_t primary) {
+    FindPrimaryReturn ret;
+    GetApplyClient()->db_idx_long_double_find_primary(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        to_raw_uint64(primary)
+
+    );
+    if (ret.iterator >= 0) {
+        memcpy(secondary, ret.secondary.c_str(), ret.secondary.size());
+    }
+    return ret.iterator;
+}
+
+int32_t db_idx_long_double_find_secondary(capi_name code, uint64_t scope, capi_name table, const long double* secondary, uint64_t* primary) {
+    FindSecondaryReturn ret;
+    GetApplyClient()->db_idx_long_double_find_secondary(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        string((char *)secondary, 16)
+    );
+
+    if (ret.iterator >= 0) {
+        *primary = from_raw_uint64(ret.primary);
+    }
+    return ret.iterator;
+
+}
+
+int32_t db_idx_long_double_lowerbound(capi_name code, uint64_t scope, capi_name table, long double* secondary, uint64_t* primary) {
+    LowerBoundUpperBoundReturn ret;
+    GetApplyClient()->db_idx_long_double_lowerbound(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        string((char *)secondary, 16),
+        to_raw_uint64(*primary)
+    );
+    if (ret.iterator >= 0) {
+        memcpy(secondary, ret.secondary.c_str(), 16);
+        *primary = from_raw_uint64(ret.primary);
+    }
+    return ret.iterator;
+}
+
+int32_t db_idx_long_double_upperbound(capi_name code, uint64_t scope, capi_name table, long double* secondary, uint64_t* primary) {
+    LowerBoundUpperBoundReturn ret;
+    GetApplyClient()->db_idx_long_double_upperbound(
+        ret,
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table),
+        string((char *)secondary, 16),
+        to_raw_uint64(*primary)
+    );
+    if (ret.iterator >= 0) {
+        memcpy(secondary, ret.secondary.c_str(), 16);
+        *primary = from_raw_uint64(ret.primary);
+    }
+    return ret.iterator;
+}
+
+int32_t db_idx_long_double_end(capi_name code, uint64_t scope, capi_name table) {
+    return GetApplyClient()->db_idx_long_double_end(
+        to_raw_uint64(code),
+        to_raw_uint64(scope),
+        to_raw_uint64(table)
+    );
+}
 
 int32_t check_transaction_authorization( const char* trx_data,     uint32_t trx_size,
                                  const char* pubkeys_data, uint32_t pubkeys_size,
