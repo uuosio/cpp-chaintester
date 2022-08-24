@@ -74,6 +74,10 @@ public:
         return *static_cast<string*>(value);
     }
 
+    int GetInt() {
+        return *static_cast<int*>(value);
+    }
+
     ~JsonKey() {
         if (key_type == KeyType::String) {
             delete (string*)value;
@@ -127,6 +131,8 @@ public:
             auto key = &_args[i];
             if (key->GetType() == KeyType::String) {
                 v = d[key->GetString().c_str()];
+            } else if (key->GetType() == KeyType::Int) {
+                v = d[key->GetInt()];
             }
         }
         return v;
