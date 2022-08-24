@@ -40,7 +40,18 @@ public:
     KeyType key_type;
 private:
     void *value;
+private:
+    JsonKey (const JsonKey& other);
+    // JsonKey (JsonKey&& other);
+    JsonKey& operator=(const JsonKey&);
 public:
+    JsonKey (JsonKey&& other) {
+        this->key_type = other.key_type;
+        this->value = other.value;
+        other.key_type = KeyType::Unknown;
+        other.value = nullptr;
+    }
+
     JsonKey() {
         key_type = KeyType::Unknown;
     }
@@ -91,18 +102,20 @@ public:
 };
 
 
-class JsonObject: private Document {
+class JsonObject {
+private:
+    Document d;
 private:
     JsonObject (const JsonObject& other);
     JsonObject (const JsonObject&& other);
     JsonObject& operator=(const JsonObject&);
 public:
     JsonObject(const string& s) {
-        this->Parse(s.c_str());
+        d.Parse(s.c_str());
     }
 
     JsonObject(const char* s) {
-        this->Parse(s);
+        d.Parse(s);
     }
 
     template<typename... Ts>
@@ -113,7 +126,7 @@ public:
         for (int i=0; i<size; i++) {
             auto key = &_args[i];
             if (key->GetType() == KeyType::String) {
-                v = (*this)[key->GetString().c_str()];
+                v = d[key->GetString().c_str()];
             }
         }
         return v;
@@ -134,7 +147,7 @@ public:
     string String() {
         StringBuffer buffer;
         Writer<StringBuffer> writer(buffer);
-        this->Accept(writer);
+        d.Accept(writer);
         return string(buffer.GetString(), buffer.GetLength());
     }
 };
