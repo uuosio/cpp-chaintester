@@ -68,9 +68,12 @@ target_include_directories(hello_static PUBLIC
     ${CDT_PATH}/include/eosiolib/contracts 
 )
 
-target_link_options(hello_static PRIVATE -L${CDT_PATH}/lib -lnative_c++ -lnative_c -lnative_rt)
+# target_link_options(hello_static PRIVATE -L${CDT_PATH}/lib -lnative_c++ -lnative_c -lnative_rt)
 
 target_link_libraries (hello_static
     ${CMAKE_CURRENT_BINARY_DIR}/../../chainlib/native/libchain_static.a
     ${CMAKE_CURRENT_BINARY_DIR}/../../intrinsics/native/libintrinsics_static.a
+    ${CDT_PATH}/lib/libnative_c++.a
+    ${CDT_PATH}/lib/libnative_c.a
+    ${CDT_PATH}/lib/libnative_rt.a
 )
