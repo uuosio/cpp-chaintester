@@ -1,14 +1,9 @@
 #include <catch2/catch_test_macros.hpp>
 #include "chaintester.h"
 #include "test.h"
+#include "utils.h"
 
 extern "C" size_t n2s(uint64_t n, char *cstr, size_t length);
-
-string n2s(uint64_t n) {
-    char buf[13];
-    size_t size = n2s(n, buf, 13);
-    return string(buf, size);
-}
 
 static constexpr unsigned int DJBH(const char* cp)
 {

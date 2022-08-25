@@ -14,7 +14,10 @@ add_executable( tests
     src/test_hello.cpp
     src/intrinsics_test.cpp
     src/test_api.cpp
+    src/utils.cpp
 )
+
+target_link_options(tests PRIVATE -ldl)
 
 target_link_libraries ( tests
     chaintester
@@ -23,7 +26,7 @@ target_link_libraries ( tests
     # ${CMAKE_CURRENT_BINARY_DIR}/hello/native/libhello_static.so
     # ${CMAKE_CURRENT_BINARY_DIR}/test-contracts/test_api_native/libtest_api_static.a
     # ${CMAKE_CURRENT_BINARY_DIR}/test-contracts/test_api_multi_index/native/libtest_api_multi_index_static.a
-    ${CMAKE_CURRENT_BINARY_DIR}/chainlib/native/libchain_static.a
+    # ${CMAKE_CURRENT_BINARY_DIR}/chainlib/native/libchain_static.a
     ${CMAKE_BINARY_DIR}/libs/thrift/lib/libthriftd${CMAKE_STATIC_LIBRARY_SUFFIX}
 )
 
