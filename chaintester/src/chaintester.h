@@ -106,41 +106,74 @@ public:
 };
 
 
-class JsonObject {
-private:
-    Document d;
+class JsonObject: public Document {
 private:
     JsonObject (const JsonObject& other);
     JsonObject (const JsonObject&& other);
     JsonObject& operator=(const JsonObject&);
 public:
     JsonObject(const string& s) {
-        d.Parse(s.c_str());
+        this->Parse(s.c_str());
     }
 
     JsonObject(const char* s) {
-        d.Parse(s);
+        this->Parse(s);
     }
 
     template<typename... Ts>
     Value GetValue(Ts... args) {
         const int size = sizeof...(args);
         JsonKey _args[size] = {args...};
+
+        auto key = &_args[0];
         Value v;
-        for (int i=0; i<size; i++) {
+        if (key->GetType() == KeyType::String) {
+            v = (*this)[key->GetString().c_str()];
+        } else if (key->GetType() == KeyType::Int) {
+            v = (*this)[key->GetInt()];
+        }
+        for (int i=1; i<size; i++) {
             auto key = &_args[i];
             if (key->GetType() == KeyType::String) {
-                v = d[key->GetString().c_str()];
+                v = v[key->GetString().c_str()];
             } else if (key->GetType() == KeyType::Int) {
-                v = d[key->GetInt()];
+                v = v[key->GetInt()];
             }
         }
         return v;
     }
 
     template<typename... Ts>
+    bool HasValue(Ts... args) {
+        const int size = sizeof...(args);
+        JsonKey _args[size] = {args...};
+        Value& v = *this;
+        for (int i=0; i<size; i++) {
+            auto key = &_args[i];
+            if (key->GetType() == KeyType::String) {
+                string _key = key->GetString();
+                if (v.HasMember(_key.c_str())) {
+                    v = v[_key.c_str()];
+                } else {
+                    return false;
+                }
+            } else if (key->GetType() == KeyType::Int) {
+                int _key = key->GetInt();
+                if (!v.IsArray()) {
+                    return false;
+                }
+                if (_key >= v.Size()) {
+                    return false;
+                }
+                v = v[_key];
+            }
+        }
+        return true;
+    }
+
+    template<typename... Ts>
     string GetString(Ts... args) {
-        auto v = GetValue(args...);
+        Value v = GetValue(args...);
         return v.GetString();
     }
 
@@ -153,10 +186,17 @@ public:
     string String() {
         StringBuffer buffer;
         Writer<StringBuffer> writer(buffer);
-        d.Accept(writer);
+        this->Accept(writer);
         return string(buffer.GetString(), buffer.GetLength());
     }
 };
+
+static inline string JsonToString(Value& value) {
+    StringBuffer buffer;
+    Writer<StringBuffer> writer(buffer);
+    value.Accept(writer);
+    return string(buffer.GetString(), buffer.GetLength());
+}
 
 class ChainTester {
 private:
@@ -182,6 +222,8 @@ public:
     std::shared_ptr<JsonObject> push_action(const string& account, const string& action, const string& arguments, const string& permissions);
     std::shared_ptr<JsonObject> deploy_contract(const string& account, const string& wasmFile, const string& abiFile);
 };
+
+std::string hex_str(const uint8_t *data, int len);
 
 std::shared_ptr<ApplyClient> GetApplyClient();
 
