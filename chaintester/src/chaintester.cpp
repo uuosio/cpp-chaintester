@@ -43,17 +43,21 @@ class ApplyRequestHandler : virtual public ApplyRequestIf {
 
   int32_t apply_request(const Uint64& receiver, const Uint64& first_receiver, const Uint64& action) {
     fn_apply apply = GetApplyFn();
-    if (apply != nullptr) {
-        uint64_t _receiver;
-        uint64_t _first_receiver;
-        uint64_t _action;
-        memcpy(&_receiver, receiver.rawValue.c_str(), 8);
-        memcpy(&_first_receiver, first_receiver.rawValue.c_str(), 8);
-        memcpy(&_action, action.rawValue.c_str(), 8);
+    try {
+        if (apply != nullptr) {
+            uint64_t _receiver;
+            uint64_t _first_receiver;
+            uint64_t _action;
+            memcpy(&_receiver, receiver.rawValue.c_str(), 8);
+            memcpy(&_first_receiver, first_receiver.rawValue.c_str(), 8);
+            memcpy(&_action, action.rawValue.c_str(), 8);
 
-        apply(_receiver, _first_receiver, _action);
+            apply(_receiver, _first_receiver, _action);
+        }
+        GetApplyClient()->end_apply();
+    } catch (apache::thrift::TException ex) {
+        printf("+++++++exception on apply:%s\n", ex.what());
     }
-    GetApplyClient()->end_apply();
     return 1;
   }
 
@@ -204,11 +208,19 @@ std::shared_ptr<JsonObject> ChainTester::deploy_contract(const string& account, 
     std::ifstream wasm(wasmFile, std::ios::binary);
     std::ifstream abi(abiFile, std::ios::binary);
 
-    std::vector<uint8_t> wasm_data(std::istreambuf_iterator<char>(wasm), {});
-    std::vector<uint8_t> abi_data(std::istreambuf_iterator<char>(abi), {});
+    string hex_wasm_data;
+    string str_abi_data;
 
-    auto hex_wasm_data = hex_str(wasm_data.data(), wasm_data.size());
-    auto str_abi_data = string((char *)abi_data.data(), abi_data.size());
+    if (wasm.is_open()) {
+        std::vector<uint8_t> wasm_data(std::istreambuf_iterator<char>(wasm), {});
+        hex_wasm_data = hex_str(wasm_data.data(), wasm_data.size());
+    }
+
+    if (abi.is_open()) {
+        std::vector<uint8_t> abi_data(std::istreambuf_iterator<char>(abi), {});
+        str_abi_data = string((char *)abi_data.data(), abi_data.size());
+    }
+
     client->deploy_contract(ret, id, account, hex_wasm_data, str_abi_data);
     return std::make_shared<JsonObject>(ret);
 }
