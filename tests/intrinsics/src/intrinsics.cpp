@@ -1109,6 +1109,4 @@ extern "C" __attribute__ ((visibility ("default"))) void native_init(struct Intr
     //          });
 }
 
-extern "C" int main(int argc, char **argv) {
-    return 0;
-}
+

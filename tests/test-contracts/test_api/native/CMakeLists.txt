@@ -69,7 +69,9 @@ target_include_directories(test_api_static PUBLIC
 target_link_libraries (test_api_static
     ${CMAKE_CURRENT_BINARY_DIR}/../../chainlib/native/libchain_static.a
     ${CMAKE_CURRENT_BINARY_DIR}/../../intrinsics/native/libintrinsics_static.a
-    ${CDT_PATH}/lib/libnative_c++.a
-    ${CDT_PATH}/lib/libnative_c.a
-    ${CDT_PATH}/lib/libnative_rt.a
+    ${CMAKE_CURRENT_BINARY_DIR}/../../../libs/libc/native/libnative_c.a
+    ${CMAKE_CURRENT_BINARY_DIR}/../../../libs/libc++/native/libnative_c++.a
+    # ${CDT_PATH}/lib/libnative_c++.a
+    # ${CDT_PATH}/lib/libnative_c.a
+    # ${CDT_PATH}/lib/libnative_rt.a
 )

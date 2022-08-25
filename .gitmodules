@@ -7,3 +7,9 @@
 [submodule "libs/rapidjson"]
 	path = libs/rapidjson
 	url = https://github.com/Tencent/rapidjson
+[submodule "libs/libc++/libcxx"]
+	path = libs/libc++/libcxx
+	url = https://github.com/EOSIO/libcxx
+[submodule "libs/libc/musl"]
+	path = libs/libc/musl
+	url = https://github.com/eosio/musl

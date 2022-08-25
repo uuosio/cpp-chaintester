@@ -31,6 +31,6 @@ ExternalProject_Add(
 add_library(thrift STATIC IMPORTED)
 set_target_properties(thrift PROPERTIES IMPORTED_LOCATION  ${CMAKE_BINARY_DIR}/libs/thrift/lib/libthriftd${CMAKE_STATIC_LIBRARY_SUFFIX})
 
-add_subdirectory(libs/Catch2)
+add_subdirectory(libs)
 add_subdirectory(chaintester)
 add_subdirectory(tests)
