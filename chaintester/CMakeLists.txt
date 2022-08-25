@@ -6,6 +6,7 @@ add_library ( chaintester
     src/gen/interfaces_types.cpp
     src/chaintester.cpp
     src/intrinsics.cpp
+    src/loader.cpp
 
     src/TServerFramework.cpp
     src/TSimpleServer.cpp

@@ -1,1 +1,3 @@
 #define APP_PATH "@CMAKE_CURRENT_BINARY_DIR@"
+#define TEST_API_SO "@CMAKE_CURRENT_BINARY_DIR@/test-contracts/test_api_native/libtest_api_static.so"
+#define HELLO_SO "@CMAKE_CURRENT_BINARY_DIR@/hello/native/libhello_static.so"

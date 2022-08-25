@@ -978,3 +978,140 @@ int get_context_free_data( uint32_t index, char* buff, size_t size ) {
 void set_action_return_value(void* data, size_t size) {
 
 }
+
+static bool initialized = false;
+static struct IntrinsicsFuncs g_intrinsics_func;
+
+IntrinsicsFuncs* get_intrinsics() {
+    if (!initialized) {
+        init_intrinsics();
+        initialized = true;
+    }
+    return &g_intrinsics_func;
+}
+
+void init_intrinsics() {
+    g_intrinsics_func.get_active_producers = get_active_producers;
+    g_intrinsics_func.db_store_i64 = db_store_i64;
+    g_intrinsics_func.db_update_i64 = db_update_i64;
+    g_intrinsics_func.db_remove_i64 = db_remove_i64;
+    g_intrinsics_func.db_get_i64 = db_get_i64;
+    g_intrinsics_func.db_next_i64 = db_next_i64;
+    g_intrinsics_func.db_previous_i64 = db_previous_i64;
+    g_intrinsics_func.db_find_i64 = db_find_i64;
+    g_intrinsics_func.db_lowerbound_i64 = db_lowerbound_i64;
+    g_intrinsics_func.db_upperbound_i64 = db_upperbound_i64;
+    g_intrinsics_func.db_end_i64 = db_end_i64;
+    g_intrinsics_func.db_idx64_store = db_idx64_store;
+    g_intrinsics_func.db_idx64_update = db_idx64_update;
+    g_intrinsics_func.db_idx64_remove = db_idx64_remove;
+    g_intrinsics_func.db_idx64_next = db_idx64_next;
+    g_intrinsics_func.db_idx64_previous = db_idx64_previous;
+    g_intrinsics_func.db_idx64_find_primary = db_idx64_find_primary;
+    g_intrinsics_func.db_idx64_find_secondary = db_idx64_find_secondary;
+    g_intrinsics_func.db_idx64_lowerbound = db_idx64_lowerbound;
+    g_intrinsics_func.db_idx64_upperbound = db_idx64_upperbound;
+    g_intrinsics_func.db_idx64_end = db_idx64_end;
+    g_intrinsics_func.db_idx128_store = db_idx128_store;
+    g_intrinsics_func.db_idx128_update = db_idx128_update;
+    g_intrinsics_func.db_idx128_remove = db_idx128_remove;
+    g_intrinsics_func.db_idx128_next = db_idx128_next;
+    g_intrinsics_func.db_idx128_previous = db_idx128_previous;
+    g_intrinsics_func.db_idx128_find_primary = db_idx128_find_primary;
+    g_intrinsics_func.db_idx128_find_secondary = db_idx128_find_secondary;
+    g_intrinsics_func.db_idx128_lowerbound = db_idx128_lowerbound;
+    g_intrinsics_func.db_idx128_upperbound = db_idx128_upperbound;
+    g_intrinsics_func.db_idx128_end = db_idx128_end;
+    g_intrinsics_func.db_idx256_store = db_idx256_store;
+    g_intrinsics_func.db_idx256_update = db_idx256_update;
+    g_intrinsics_func.db_idx256_remove = db_idx256_remove;
+    g_intrinsics_func.db_idx256_next = db_idx256_next;
+    g_intrinsics_func.db_idx256_previous = db_idx256_previous;
+    g_intrinsics_func.db_idx256_find_primary = db_idx256_find_primary;
+    g_intrinsics_func.db_idx256_find_secondary = db_idx256_find_secondary;
+    g_intrinsics_func.db_idx256_lowerbound = db_idx256_lowerbound;
+    g_intrinsics_func.db_idx256_upperbound = db_idx256_upperbound;
+    g_intrinsics_func.db_idx256_end = db_idx256_end;
+    g_intrinsics_func.db_idx_double_store = db_idx_double_store;
+    g_intrinsics_func.db_idx_double_update = db_idx_double_update;
+    g_intrinsics_func.db_idx_double_remove = db_idx_double_remove;
+    g_intrinsics_func.db_idx_double_next = db_idx_double_next;
+    g_intrinsics_func.db_idx_double_previous = db_idx_double_previous;
+    g_intrinsics_func.db_idx_double_find_primary = db_idx_double_find_primary;
+    g_intrinsics_func.db_idx_double_find_secondary = db_idx_double_find_secondary;
+    g_intrinsics_func.db_idx_double_lowerbound = db_idx_double_lowerbound;
+    g_intrinsics_func.db_idx_double_upperbound = db_idx_double_upperbound;
+    g_intrinsics_func.db_idx_double_end = db_idx_double_end;
+    g_intrinsics_func.db_idx_long_double_store = db_idx_long_double_store;
+    g_intrinsics_func.db_idx_long_double_update = db_idx_long_double_update;
+    g_intrinsics_func.db_idx_long_double_remove = db_idx_long_double_remove;
+    g_intrinsics_func.db_idx_long_double_next = db_idx_long_double_next;
+    g_intrinsics_func.db_idx_long_double_previous = db_idx_long_double_previous;
+    g_intrinsics_func.db_idx_long_double_find_primary = db_idx_long_double_find_primary;
+    g_intrinsics_func.db_idx_long_double_find_secondary = db_idx_long_double_find_secondary;
+    g_intrinsics_func.db_idx_long_double_lowerbound = db_idx_long_double_lowerbound;
+    g_intrinsics_func.db_idx_long_double_upperbound = db_idx_long_double_upperbound;
+    g_intrinsics_func.db_idx_long_double_end = db_idx_long_double_end;
+    g_intrinsics_func.check_transaction_authorization = check_transaction_authorization;
+    g_intrinsics_func.check_permission_authorization = check_permission_authorization;
+    g_intrinsics_func.get_permission_last_used = get_permission_last_used;
+    g_intrinsics_func.get_account_creation_time = get_account_creation_time;
+    g_intrinsics_func.assert_sha256 = assert_sha256;
+    g_intrinsics_func.assert_sha1 = assert_sha1;
+    g_intrinsics_func.assert_sha512 = assert_sha512;
+    g_intrinsics_func.assert_ripemd160 = assert_ripemd160;
+    g_intrinsics_func.sha256 = sha256;
+    g_intrinsics_func.sha1 = sha1;
+    g_intrinsics_func.sha512 = sha512;
+    g_intrinsics_func.ripemd160 = ripemd160;
+    g_intrinsics_func.recover_key = recover_key;
+    g_intrinsics_func.assert_recover_key = assert_recover_key;
+    g_intrinsics_func.read_action_data = read_action_data;
+    g_intrinsics_func.action_data_size = action_data_size;
+    g_intrinsics_func.require_recipient = require_recipient;
+    g_intrinsics_func.require_auth = require_auth;
+    g_intrinsics_func.has_auth = has_auth;
+    g_intrinsics_func.require_auth2 = require_auth2;
+    g_intrinsics_func.is_account = is_account;
+    g_intrinsics_func.send_inline = send_inline;
+    g_intrinsics_func.send_context_free_inline = send_context_free_inline;
+    g_intrinsics_func.publication_time = publication_time;
+    g_intrinsics_func.current_receiver = current_receiver;
+    g_intrinsics_func.prints = prints;
+    g_intrinsics_func.prints_l = prints_l;
+    g_intrinsics_func.printi = printi;
+    g_intrinsics_func.printui = printui;
+    g_intrinsics_func.printi128 = printi128;
+    g_intrinsics_func.printui128 = printui128;
+    g_intrinsics_func.printsf = printsf;
+    g_intrinsics_func.printdf = printdf;
+    g_intrinsics_func.printqf = printqf;
+    g_intrinsics_func.printn = printn;
+    g_intrinsics_func.printhex = printhex;
+    g_intrinsics_func.eosio_assert = eosio_assert;
+    g_intrinsics_func.eosio_assert_message = eosio_assert_message;
+    g_intrinsics_func.eosio_assert_code = eosio_assert_code;
+    g_intrinsics_func.current_time = current_time;
+    g_intrinsics_func.is_feature_activated = is_feature_activated;
+    g_intrinsics_func.get_sender = get_sender;
+    g_intrinsics_func.get_resource_limits = get_resource_limits;
+    g_intrinsics_func.set_resource_limits = set_resource_limits;
+    g_intrinsics_func.set_proposed_producers = set_proposed_producers;
+    g_intrinsics_func.set_proposed_producers_ex = set_proposed_producers_ex;
+    g_intrinsics_func.is_privileged = is_privileged;
+    g_intrinsics_func.set_privileged = set_privileged;
+    g_intrinsics_func.set_blockchain_parameters_packed = set_blockchain_parameters_packed;
+    g_intrinsics_func.get_blockchain_parameters_packed = get_blockchain_parameters_packed;
+    g_intrinsics_func.preactivate_feature = preactivate_feature;
+    g_intrinsics_func.send_deferred = send_deferred;
+    g_intrinsics_func.cancel_deferred = cancel_deferred;
+    g_intrinsics_func.read_transaction = read_transaction;
+    g_intrinsics_func.transaction_size = transaction_size;
+    g_intrinsics_func.tapos_block_num = tapos_block_num;
+    g_intrinsics_func.tapos_block_prefix = tapos_block_prefix;
+    g_intrinsics_func.expiration = expiration;
+    g_intrinsics_func.get_action = get_action;
+    g_intrinsics_func.get_context_free_data = get_context_free_data;
+    g_intrinsics_func.set_action_return_value = set_action_return_value;
+
+}

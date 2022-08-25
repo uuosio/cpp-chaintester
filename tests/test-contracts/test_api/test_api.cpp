@@ -168,7 +168,7 @@ extern "C" {
       eosio_assert( false, "Unknown Test ahhh!" );
    }
 
-   void test_api_apply( uint64_t receiver, uint64_t code, uint64_t action ) {
+   __attribute__ ((visibility ("default"))) void native_apply( uint64_t receiver, uint64_t code, uint64_t action ) {
       apply(receiver, code, action );
    }
 }

@@ -25,16 +25,6 @@ std::shared_ptr<ApplyClient> GetApplyClient() {
     return gApplyClient;
 }
 
-fn_apply gApply = nullptr;
-
-void SetApplyFn(fn_apply fn) {
-    gApply = fn;
-}
-
-fn_apply GetApplyFn() {
-    return gApply;
-}
-
 class ApplyRequestHandler : virtual public ApplyRequestIf {
  public:
   ApplyRequestHandler() {

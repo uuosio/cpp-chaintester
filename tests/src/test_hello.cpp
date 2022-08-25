@@ -3,11 +3,10 @@
 #include "intrinsics.h"
 #include "test.h"
 
-extern "C" void native_apply( uint64_t receiver, uint64_t code, uint64_t action );
-
 TEST_CASE( "test hello", "[hello]" ) {
+    load_native_contract(HELLO_SO);
+
     ChainTester tester(true);
-    SetApplyFn(native_apply);
     tester.enable_debug_contract("hello", true);
 
     std::vector<char> buffer;

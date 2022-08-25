@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.21)
 
-project(hello)
+project(intrinsics_static)
 
 set(EOSIO_WASM_OLD_BEHAVIOR "Off")
 find_package(eosio.cdt)
@@ -13,14 +13,9 @@ set(CMAKE_ASM_FLAGS "")
 set(CMAKE_C_COMPILER "${CDT_PATH}/bin/clang-7")
 set(CMAKE_CXX_COMPILER "${CDT_PATH}/bin/clang-7")
 
-SET_PROPERTY(GLOBAL PROPERTY TARGET_SUPPORTS_SHARED_LIBS TRUE)
-
-add_library( hello_static SHARED
-    ${CMAKE_CURRENT_SOURCE_DIR}/../src/hello.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/../src/main.cpp
+add_library(intrinsics_static 
+    intrinsics.cpp
 )
-
-set_target_properties(hello_static PROPERTIES CXX_VISIBILITY_PRESET hidden)
 
 if (${PLATFORM} MATCHES APPLE)
     set(PLATFORM_OPTIONS  --target=x86_64-unknown-darwin-macho -mmacosx-version-min=10.13 -fno-stack-protector)
@@ -30,7 +25,7 @@ else()
     message( FATAL_ERROR "Unsupported platform: ${PLATFORM}")
 endif()
 
-target_compile_options(hello_static PRIVATE 
+target_compile_options(intrinsics_static PRIVATE 
     -g
     ${OPT_LEVEL}
     ${PLATFORM_OPTIONS}
@@ -57,7 +52,7 @@ target_compile_options(hello_static PRIVATE
     # -MF
 )
 
-target_include_directories(hello_static PUBLIC 
+target_include_directories(intrinsics_static PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../include
     ${CDT_PATH}/include/libcxx 
     ${CDT_PATH}/include/libc 
@@ -66,11 +61,4 @@ target_include_directories(hello_static PUBLIC
     ${CDT_PATH}/include/eosiolib/native 
     ${CDT_PATH}/include/eosiolib/core 
     ${CDT_PATH}/include/eosiolib/contracts 
-)
-
-target_link_options(hello_static PRIVATE -L${CDT_PATH}/lib -lnative_c++ -lnative_c -lnative_rt)
-
-target_link_libraries (hello_static
-    ${CMAKE_CURRENT_BINARY_DIR}/../../chainlib/native/libchain_static.a
-    ${CMAKE_CURRENT_BINARY_DIR}/../../intrinsics/native/libintrinsics_static.a
 )

@@ -18,6 +18,8 @@
 
 #include "TSimpleServer.h"
 
+#include "loader.h"
+
 using namespace ::apache::thrift;
 using namespace ::apache::thrift::protocol;
 using namespace ::apache::thrift::transport;
@@ -226,7 +228,3 @@ public:
 std::string hex_str(const uint8_t *data, int len);
 
 std::shared_ptr<ApplyClient> GetApplyClient();
-
-typedef void (*fn_apply)(uint64_t receiver, uint64_t first_receiver, uint64_t action);
-void SetApplyFn(fn_apply fn);
-fn_apply GetApplyFn();

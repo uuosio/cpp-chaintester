@@ -1,6 +1,5 @@
 #include <catch2/catch_test_macros.hpp>
 #include "chaintester.h"
-#include "intrinsics.h"
 #include "test.h"
 
 extern "C" size_t n2s(uint64_t n, char *cstr, size_t length);
@@ -61,12 +60,11 @@ void CallFunction(ChainTester& tester, uint64_t action, const vector<char>& data
 #define CALL_TEST_FUNCTION_CHECK_ASSERT_EXCEPTION(_TESTER, CLS, MTH, DATA, EXCEPT_MSG) CallFunction(_TESTER, TEST_METHOD(CLS, MTH), DATA, "eosio_assert_message_exception", EXCEPT_MSG)
 
 
-extern "C" void test_api_apply( uint64_t receiver, uint64_t code, uint64_t action );
-
 TEST_CASE( "test api", "[api]" ) {
     bool debug = true;
     ChainTester t(true);
-    SetApplyFn(test_api_apply);
+    load_native_contract(TEST_API_SO);
+
     t.enable_debug_contract("testapi", debug);
     auto key = t.create_key();
 
@@ -110,9 +108,10 @@ TEST_CASE( "test api", "[api]" ) {
 }
 
 TEST_CASE( "test crypto", "[crypto]" ) {
+    load_native_contract(TEST_API_SO);
+
     bool debug = true;
     ChainTester t(true);
-    SetApplyFn(test_api_apply);
     t.enable_debug_contract("testapi", debug);
     auto key = t.create_key();
 
