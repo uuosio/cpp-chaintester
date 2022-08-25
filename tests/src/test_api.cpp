@@ -68,12 +68,7 @@ TEST_CASE( "test api", "[api]" ) {
     t.import_key(pub_key, priv_key);
     t.create_account("eosio", "testapi", pub_key, pub_key);
 
-    std::vector<char> buffer;
-    buffer.resize(512);
-    snprintf(buffer.data(), buffer.size(), "%s/%s", APP_PATH, "test-contracts/test_api/testapi.wasm");
-    string wasm_file(buffer.data());
-
-    t.deploy_contract("testapi", wasm_file, "");
+    t.deploy_contract("testapi", TEST_API_WASM, TEST_API_ABI);
     t.produce_block();
 
     auto args = R""""(
@@ -115,12 +110,7 @@ TEST_CASE( "test crypto", "[crypto]" ) {
     t.import_key(pub_key, priv_key);
     t.create_account("eosio", "testapi", pub_key, pub_key);
 
-    std::vector<char> buffer;
-    buffer.resize(512);
-    snprintf(buffer.data(), buffer.size(), "%s/%s", APP_PATH, "test-contracts/test_api/testapi.wasm");
-    string wasm_file(buffer.data());
-
-    t.deploy_contract("testapi", wasm_file, "");
+    t.deploy_contract("testapi", TEST_API_WASM, TEST_API_ABI);
     t.produce_block();
 
    CALL_TEST_FUNCTION( t, "test_crypto", "test_sha1", {} );
