@@ -13,7 +13,7 @@ add_library ( chaintester
     src/TConnectedClient.cpp
 )
 
-target_link_libraries ( chaintester thrift )
+target_link_libraries ( chaintester PUBLIC thrift ${CMAKE_DL_LIBS})
 
 target_include_directories(chaintester PUBLIC
     "./gen"
