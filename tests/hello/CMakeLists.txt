@@ -16,22 +16,6 @@ ExternalProject_Add(
    BUILD_ALWAYS 1
 )
 
-if (APPLE)
-   set(PLATFORM APPLE)
-elseif(LINUX)
-   set(PLATFORM LINUX)
-elseif(WIN32)
-   set(PLATFORM WIN32)
-endif()
-
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-   set(PLATFORM LINUX)
-elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
-   set(PLATFORM APPLE)
-endif()
-
-execute_process(COMMAND python3 ${CMAKE_SOURCE_DIR}/scripts/find_cdt_path.py OUTPUT_VARIABLE CDT_PATH)
-
 ExternalProject_Add(
    hello_native_project
    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/native

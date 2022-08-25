@@ -148,6 +148,8 @@ uint32_t expiration();
 int get_action( uint32_t type, uint32_t index, char* buff, size_t size );
 int get_context_free_data( uint32_t index, char* buff, size_t size );
 
+void set_action_return_value(void* data, size_t size);
+
 #ifdef __cplusplus
 }
 #endif

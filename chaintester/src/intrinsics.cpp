@@ -974,3 +974,7 @@ int get_context_free_data( uint32_t index, char* buff, size_t size ) {
     memcpy(buff, ret.c_str(), ret.size());
     return copy_size;
 }
+
+void set_action_return_value(void* data, size_t size) {
+
+}
