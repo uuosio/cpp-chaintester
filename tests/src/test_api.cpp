@@ -18,7 +18,7 @@ static constexpr unsigned long long WASM_TEST_ACTION(const char* cls, const char
   return static_cast<unsigned long long>(DJBH(cls)) << 32 | static_cast<unsigned long long>(DJBH(method));
 }
 
-constexpr uint64_t TEST_METHOD(const char* CLASS, const char *METHOD) {
+uint64_t TEST_METHOD(const char* CLASS, const char *METHOD) {
   printf("+++++%s:%s\n", CLASS, METHOD);
   return ( (uint64_t(DJBH(CLASS))<<32) | uint32_t(DJBH(METHOD)) );
 }
