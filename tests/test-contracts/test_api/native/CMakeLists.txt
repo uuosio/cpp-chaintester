@@ -12,13 +12,11 @@ target_compile_options(test_api_native PRIVATE
 
 target_include_directories(test_api_native PRIVATE 
     ${CMAKE_CURRENT_SOURCE_DIR}/../include
-    ${CDT_PATH}/include/libcxx 
-    ${CDT_PATH}/include/libc 
-    ${CDT_PATH}/include 
-    ${CDT_PATH}/include/eosiolib/capi 
-    ${CDT_PATH}/include/eosiolib/native 
-    ${CDT_PATH}/include/eosiolib/core 
-    ${CDT_PATH}/include/eosiolib/contracts 
+    ${CMAKE_SOURCE_DIR}/libs/cdt/include
+    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/capi
+    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/native
+    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/core
+    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/contracts
 )
 
 target_link_libraries (test_api_native
