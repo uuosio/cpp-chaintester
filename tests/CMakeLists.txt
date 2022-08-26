@@ -10,6 +10,17 @@ add_executable( tests
     src/utils.cpp
 )
 
+
+target_compile_options(tests PRIVATE 
+    -g
+    -O0
+    -fprofile-instr-generate -fcoverage-mapping
+    -DEOSIO_NATIVE
+    -Wno-unknown-attributes
+)
+
+target_link_options(tests PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+
 target_link_libraries ( tests
     hello_native
     test_api_native
