@@ -50,7 +50,7 @@ jobs:
           mkdir build
           cd build
           cmake ..
-          make -j4
+          make VERBOSE=1
       - name: test
         run: |
           cd build
