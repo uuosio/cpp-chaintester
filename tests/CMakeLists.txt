@@ -1,11 +1,4 @@
-add_subdirectory(hello)
 add_subdirectory(test-contracts)
-add_subdirectory(chainlib)
-add_subdirectory(intrinsics)
-
-add_dependencies(hello_native_project intrinsics-native-project libc_native_project libcxx_native_project)
-add_dependencies(test-api-native-project intrinsics-native-project libc_native_project libcxx_native_project)
-add_dependencies(test-api-multi-index-native-project intrinsics-native-project libc_native_project libcxx_native_project)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
@@ -29,16 +22,7 @@ target_link_libraries ( tests
     ${CMAKE_DL_LIBS}
 )
 
-add_dependencies(tests chaintester Catch2 Catch2WithMain
-    thrift_external
-    chainlib-project
-    hello_project
-    hello_native_project
-    test-api-project
-    test-api-native-project
-    test-api-multi-index-project
-    test-api-multi-index-native-project
-)
+add_dependencies(tests chaintester Catch2 Catch2WithMain thrift_external)
 
 target_include_directories(tests PUBLIC
     "${CMAKE_SOURCE_DIR}/libs/thrift/lib/cpp/src"

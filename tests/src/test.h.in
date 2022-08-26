@@ -1,5 +1,8 @@
 #define APP_PATH "@CMAKE_CURRENT_BINARY_DIR@"
-#define TEST_API_SO "@CMAKE_CURRENT_BINARY_DIR@/test-contracts/test_api_native/libtest_api_static.so"
-#define HELLO_SO "@CMAKE_CURRENT_BINARY_DIR@/hello/native/libhello_static.so"
+
+#define TEST_API_SO "@CMAKE_BINARY_DIR@/tests/test-contracts/test_api/native/libtest_api_native${CMAKE_SHARED_LIBRARY_SUFFIX}"
+#define HELLO_SO "@CMAKE_BINARY_DIR@/tests/test-contracts/hello/native/libhello_native${CMAKE_SHARED_LIBRARY_SUFFIX}"
+
 #define TEST_API_WASM "@CMAKE_CURRENT_BINARY_DIR@/test-contracts/test_api/testapi.wasm"
 #define TEST_API_ABI "@CMAKE_CURRENT_BINARY_DIR@/test-contracts/test_api/testapi.abi"
+
