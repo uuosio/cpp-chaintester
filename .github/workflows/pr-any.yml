@@ -45,6 +45,9 @@ jobs:
       - name: Install boost
         run: |
           sudo apt-get install libboost-all-dev
+      - name: Install llvm
+        run: |
+          sudo apt install llvm
       - name: Install EOS test framework
         run: |
           python3 -m pip install ipyeos
@@ -55,12 +58,13 @@ jobs:
         run: |
           mkdir build
           cd build
-          CXX=clang++ CC=clang cmake ..
+          CXX=clang++ CC=clang cmake -DCMAKE_BUILD_TYPE=Debug ..
           make -j4
       - name: test
         run: |
           cd build
           LLVM_PROFILE_FILE="tests.profraw" ./tests/tests
+          find . -name "*.gcno"
           curl -S -f https://codecov.io/bash -o codecov
           chmod +x codecov
           ./codecov -x "llvm-cov gcov" -Z
