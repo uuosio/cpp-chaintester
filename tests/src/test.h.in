@@ -9,3 +9,6 @@
 
 #define HELLO_WASM "@CMAKE_BINARY_DIR@/tests/test-contracts/hello/hello/hello.wasm"
 #define HELLO_ABI "@CMAKE_BINARY_DIR@/tests/test-contracts/hello/hello/hello.abi"
+
+extern "C" void test_api_native_apply( uint64_t receiver, uint64_t code, uint64_t action );
+extern "C" void hello_native_apply( uint64_t receiver, uint64_t code, uint64_t action );

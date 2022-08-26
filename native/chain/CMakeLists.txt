@@ -19,7 +19,7 @@ target_compile_options(chain_static PRIVATE
     ${PLATFORM_OPTIONS}
 )
 
-target_include_directories(chain_static PUBLIC 
+target_include_directories(chain_static PRIVATE 
     ${CMAKE_SOURCE_DIR}/libs/boost/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CDT_PATH}/include/libcxx 

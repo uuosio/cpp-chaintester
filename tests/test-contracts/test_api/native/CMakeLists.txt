@@ -1,4 +1,4 @@
-add_library( test_api_native SHARED ${CMAKE_CURRENT_SOURCE_DIR}/../test_api.cpp)
+add_library( test_api_native ${CMAKE_CURRENT_SOURCE_DIR}/../test_api.cpp)
 
 target_compile_options(test_api_native PRIVATE
     -g
@@ -10,7 +10,7 @@ target_compile_options(test_api_native PRIVATE
 
 # target_link_options(test_api_native PRIVATE -fprofile-instr-generate -fcoverage-mapping)
 
-target_include_directories(test_api_native PUBLIC 
+target_include_directories(test_api_native PRIVATE 
     ${CMAKE_CURRENT_SOURCE_DIR}/../include
     ${CDT_PATH}/include/libcxx 
     ${CDT_PATH}/include/libc 

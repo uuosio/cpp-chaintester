@@ -1,4 +1,4 @@
-add_library( hello_native SHARED
+add_library( hello_native
     ../src/hello.cpp
     ../src/main.cpp
 )
@@ -13,7 +13,7 @@ target_compile_options(hello_native PRIVATE
     -Wno-unknown-attributes
 )
 
-target_include_directories(hello_native PUBLIC 
+target_include_directories(hello_native PRIVATE
     ${CMAKE_SOURCE_DIR}/libs/boost/include
     ${CMAKE_CURRENT_SOURCE_DIR}/../include
     ${CDT_PATH}/include/libcxx

@@ -4,7 +4,8 @@
 #include "test.h"
 
 TEST_CASE( "test hello", "[hello]" ) {
-    load_native_contract(HELLO_SO);
+    // load_native_contract(HELLO_SO);
+    SetApplyFn(hello_native_apply);
 
     ChainTester tester(true);
     tester.enable_debug_contract("hello", true);

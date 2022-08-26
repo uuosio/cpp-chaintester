@@ -11,6 +11,8 @@ add_executable( tests
 )
 
 target_link_libraries ( tests
+    hello_native
+    test_api_native
     chaintester
     Catch2
     Catch2WithMain
