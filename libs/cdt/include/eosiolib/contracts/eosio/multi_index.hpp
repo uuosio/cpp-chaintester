@@ -312,6 +312,11 @@ namespace _multi_index_detail {
    WRAP_SECONDARY_SIMPLE_TYPE(idx128, uint128_t)
    // MAKE_TRAITS_FOR_ARITHMETIC_SECONDARY_KEY(uint128_t)
 
+   template<>
+   struct secondary_key_traits<uint128_t> {\
+      static constexpr uint128_t true_lowest() { return 0; }\
+   };
+
    WRAP_SECONDARY_SIMPLE_TYPE(idx_double, double)
    template<>
    struct secondary_key_traits<double> {
