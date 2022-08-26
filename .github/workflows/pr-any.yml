@@ -60,4 +60,7 @@ jobs:
       - name: test
         run: |
           cd build
-          ./tests/tests
+          LLVM_PROFILE_FILE="tests.profraw" ./tests/tests
+          curl -S -f https://codecov.io/bash -o codecov
+          chmod +x codecov
+          ./codecov -x "llvm-cov gcov" -Z
