@@ -915,6 +915,18 @@ DataStream& operator<<( DataStream& ds, const T& v ) {
    return ds;
 }
 
+template<typename DataStream>
+DataStream& operator<<( DataStream& ds, const uint128_t& v ) {
+   ds.write( (const char*)&v, sizeof(uint128_t) );
+   return ds;
+}
+
+template<typename DataStream>
+DataStream& operator>>( DataStream& ds, uint128_t& v ) {
+   ds.read( (char*)&v, sizeof(uint128_t) );
+   return ds;
+}
+
 /**
  *  Deserialize a primitive type
  *

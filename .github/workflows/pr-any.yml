@@ -25,8 +25,11 @@ jobs:
       - name: Set up Clang
         uses: egor-tensin/setup-clang@v1
         with:
-          version: latest
+          version: 7
           platform: x64
+      - name: show clang version
+        run: |
+          clang --version
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -42,8 +45,6 @@ jobs:
       - name: Install boost
         run: |
           sudo apt-get install libboost-all-dev
-          sudo apt install aptitude
-          aptitude search boost
       - name: Install EOS test framework
         run: |
           python3 -m pip install ipyeos
@@ -54,7 +55,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ..
+          CXX=clang++ CC=clang cmake ..
           make VERBOSE=1
       - name: test
         run: |
