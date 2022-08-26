@@ -36,14 +36,7 @@ TEST_CASE( "Factorials are computed", "[factorial]" ) {
     auto account_info = tester.get_account("helloworld33");
     cout<<account_info->GetString("head_block_time")<<endl;
 
-    std::vector<char> buffer;
-    buffer.resize(512);
-    snprintf(buffer.data(), buffer.size(), "%s/%s", APP_PATH, "hello/hello/hello.wasm");
-    string wasm_file(buffer.data());
-
-    snprintf(buffer.data(), buffer.size(), "%s/%s", APP_PATH, "hello/hello/hello.abi");
-    string abi_file(buffer.data());
-    tester.deploy_contract("hello", wasm_file, abi_file);
+    tester.deploy_contract("hello", HELLO_WASM, HELLO_ABI);
 
     auto args = R""""(
     {

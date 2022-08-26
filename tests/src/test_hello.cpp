@@ -9,14 +9,7 @@ TEST_CASE( "test hello", "[hello]" ) {
     ChainTester tester(true);
     tester.enable_debug_contract("hello", true);
 
-    std::vector<char> buffer;
-    buffer.resize(512);
-    snprintf(buffer.data(), buffer.size(), "%s/%s", APP_PATH, "hello/hello/hello.wasm");
-    string wasm_file(buffer.data());
-
-    snprintf(buffer.data(), buffer.size(), "%s/%s", APP_PATH, "hello/hello/hello.abi");
-    string abi_file(buffer.data());
-    tester.deploy_contract("hello", wasm_file, abi_file);
+    tester.deploy_contract("hello", HELLO_WASM, HELLO_ABI);
 
     auto args = R""""(
     {
