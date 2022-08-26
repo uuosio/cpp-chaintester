@@ -8,9 +8,15 @@
 #include <string>
 
 #ifdef EOSIO_NATIVE
-   #include <string.h>
-    typedef __int128 int128_t;
-   typedef unsigned __int128 uint128_t;
+   #ifdef _MSC_VER
+      #include "../../../intx/intx.hpp"
+      using uint128_t = intx::uint128;
+      using int128_t = intx::uint128;
+   #else
+      #include <string.h>
+      typedef __int128 int128_t;
+      typedef unsigned __int128 uint128_t;
+   #endif
 #endif
 
 namespace eosio {

@@ -236,8 +236,8 @@ void test_action::test_ram_billing_in_notify( uint64_t receiver, uint64_t code, 
    uint32_t total = eosio::read_action_data( &tmp, sizeof(uint128_t) );
    eosio_assert( total == sizeof(uint128_t), "total == sizeof(uint128_t)" );
 
-   uint64_t to_notify = tmp >> 64;
-   uint64_t payer = tmp & 0xFFFFFFFFFFFFFFFFULL;
+   uint64_t to_notify = uint64_t(tmp >> 64);
+   uint64_t payer = uint64_t(tmp) & 0xFFFFFFFFFFFFFFFFULL;
 
    if( code == receiver ) {
       eosio::require_recipient( name{to_notify} );
