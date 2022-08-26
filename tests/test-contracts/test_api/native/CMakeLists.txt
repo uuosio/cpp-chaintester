@@ -3,12 +3,12 @@ add_library( test_api_native SHARED ${CMAKE_CURRENT_SOURCE_DIR}/../test_api.cpp)
 target_compile_options(test_api_native PRIVATE
     -g
     -O0
-    -fprofile-instr-generate -fcoverage-mapping
+    # -fprofile-instr-generate -fcoverage-mapping
     -DEOSIO_NATIVE
     -Wno-unknown-attributes
 )
 
-target_link_options(test_api_native PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+# target_link_options(test_api_native PRIVATE -fprofile-instr-generate -fcoverage-mapping)
 
 target_include_directories(test_api_native PUBLIC 
     ${CMAKE_CURRENT_SOURCE_DIR}/../include
