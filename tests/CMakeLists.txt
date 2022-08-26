@@ -14,7 +14,6 @@ add_executable( tests
 target_compile_options(tests PRIVATE 
     -g
     -O0
-    -fprofile-instr-generate -fcoverage-mapping
     -DEOSIO_NATIVE
     -Wno-unknown-attributes
 )
