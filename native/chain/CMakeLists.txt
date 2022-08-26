@@ -6,6 +6,9 @@ add_library( chain_static
 
 set_target_properties(chain_static PROPERTIES CXX_VISIBILITY_PRESET hidden)
 
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    set(PLATFORM_OPTIONS "-fPIC")
+endif()
 
 target_compile_options(chain_static PRIVATE 
     -g
@@ -13,6 +16,7 @@ target_compile_options(chain_static PRIVATE
     # -fprofile-instr-generate -fcoverage-mapping
     -DEOSIO_NATIVE
     -Wno-unknown-attributes
+    ${PLATFORM_OPTIONS}
 )
 
 target_include_directories(chain_static PUBLIC 
