@@ -13,8 +13,9 @@ typedef uint64_t capi_name;
 typedef uint8_t capi_checksum160[20];
 typedef uint8_t capi_checksum256[32];
 typedef uint8_t capi_checksum512[64];
-typedef uint64_t uint128_t[2];
-typedef uint64_t int128_t[2];
+
+typedef __int128 int128_t;
+typedef unsigned __int128 uint128_t;
 
 uint32_t get_active_producers( capi_name* producers, uint32_t datalen );
 int32_t db_store_i64(uint64_t scope, capi_name table, capi_name payer, uint64_t id,  const void* data, uint32_t len);

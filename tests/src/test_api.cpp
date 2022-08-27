@@ -3,6 +3,11 @@
 #include "test.h"
 #include "utils.h"
 
+#include <eosio/eosio.hpp>
+#include "config.hpp"
+
+using namespace eosio;
+
 extern "C" size_t n2s(uint64_t n, char *cstr, size_t length);
 
 static constexpr unsigned int DJBH(const char* cp)
@@ -56,6 +61,10 @@ void CallFunction(ChainTester& tester, uint64_t action, const vector<char>& data
 
 
 TEST_CASE( "test api", "[api]" ) {
+    auto pl = vector<permission_level>{{"testapi"_n, config::active_name}};
+    vector<char> payload(8192);
+    datastream<char*> payload_ds(payload.data(), payload.size());
+
     bool debug = true;
     ChainTester t(true);
     // load_native_contract(TEST_API_SO);
