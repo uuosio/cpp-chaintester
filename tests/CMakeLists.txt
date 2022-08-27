@@ -25,8 +25,8 @@ target_link_libraries ( tests
     hello_native
     test_api_native
     chaintester
-    ${CMAKE_BINARY_DIR}/libs/Catch2/src/libCatch2d.a
     ${CMAKE_BINARY_DIR}/libs/Catch2/src/libCatch2Maind.a
+    ${CMAKE_BINARY_DIR}/libs/Catch2/src/libCatch2d.a
     ${CMAKE_BINARY_DIR}/libs/thrift/lib/libthriftd${CMAKE_STATIC_LIBRARY_SUFFIX}
 )
 
