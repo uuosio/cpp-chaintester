@@ -1,15 +1,15 @@
-add_library( chain_static
-    src/crypto.cpp
-    src/eosiolib.cpp
+# library for linking shared native contract
+add_library( intrinsics_native
+    src/intrinsics.cpp
 )
 
-set_target_properties(chain_static PROPERTIES CXX_VISIBILITY_PRESET hidden)
+set_target_properties(intrinsics_native PROPERTIES CXX_VISIBILITY_PRESET hidden)
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     set(PLATFORM_OPTIONS "-fPIC")
 endif()
 
-target_compile_options(chain_static PRIVATE 
+target_compile_options(intrinsics_native PRIVATE 
     -g
     -O0
     -fprofile-instr-generate -fcoverage-mapping
@@ -18,7 +18,7 @@ target_compile_options(chain_static PRIVATE
     ${PLATFORM_OPTIONS}
 )
 
-target_include_directories(chain_static PRIVATE 
+target_include_directories(intrinsics_native PRIVATE 
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/libs/cdt/include
     ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/capi
@@ -28,4 +28,4 @@ target_include_directories(chain_static PRIVATE
 
 )
 
-target_link_options(chain_static PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+target_link_options(intrinsics_native PRIVATE -fprofile-instr-generate -fcoverage-mapping)
