@@ -35,84 +35,7 @@ using namespace ::rapidjson;
 using namespace ::std;
 
 using ActionArguments = std::variant<string, vector<char>>;
-
-enum KeyType {
-    Unknown,
-    String,
-    Int,
-};
-
-
-class JsonKey {
-public:
-    KeyType key_type;
-private:
-    void *value;
-private:
-    JsonKey (const JsonKey& other);
-    // JsonKey (JsonKey&& other);
-    JsonKey& operator=(const JsonKey&);
-public:
-    JsonKey (JsonKey&& other) {
-        this->key_type = other.key_type;
-        this->value = other.value;
-        other.key_type = KeyType::Unknown;
-        other.value = nullptr;
-    }
-
-    JsonKey() {
-        key_type = KeyType::Unknown;
-    }
-
-    JsonKey(int n) {
-        key_type = KeyType::Int;
-        value = new int(n);
-    }
-
-    JsonKey(const char* s) {
-        key_type = KeyType::String;
-        value = new string(s);
-    }
-
-    KeyType GetType() {
-        return key_type;
-    }
-
-    const string& get_string() {
-        return *static_cast<string*>(value);
-    }
-
-    int get_int() {
-        return *static_cast<int*>(value);
-    }
-
-    ~JsonKey() {
-        if (key_type == KeyType::String) {
-            delete (string*)value;
-        } else if (key_type == KeyType::Int) {
-            delete (int*)value;
-        }
-    }
-
-    JsonKey& operator=(const string& key) {
-        this->key_type = KeyType::String;
-        this->value = new string(key);
-        return *this;
-    }
-
-    JsonKey& operator=(const char* key) {
-        this->key_type = KeyType::String;
-        this->value = new string(key);
-        return *this;
-    }
-
-    JsonKey& operator=(int key) {
-        this->key_type = KeyType::Int;
-        this->value = new int(key);
-        return *this;
-    }
-};
-
+using JsonKey = std::variant<string, int>;
 
 class JsonObject: public Document {
 private:
@@ -133,14 +56,14 @@ public:
         const int size = sizeof...(args);
         JsonKey _args[size] = {args...};
 
-        auto key = &_args[0];
+        auto& key = _args[0];
         Value* v = this;
         for (int i=0; i<size; i++) {
-            auto key = &_args[i];
-            if (key->GetType() == KeyType::String) {
-                v = &(*v)[key->get_string().c_str()];
-            } else if (key->GetType() == KeyType::Int) {
-                v = &(*v)[key->get_int()];
+            auto& key = _args[i];
+            if (const string* _key = std::get_if<string>(&key)) {
+                v = &(*v)[_key->c_str()];
+            } else if (const int* _key = std::get_if<int>(&key)) {
+                v = &(*v)[*_key];
             }
         }
         return *v;
@@ -152,23 +75,21 @@ public:
         JsonKey _args[size] = {args...};
         Value* v = this;
         for (int i=0; i<size; i++) {
-            auto key = &_args[i];
-            if (key->GetType() == KeyType::String) {
-                string _key = key->get_string();
-                if (v->HasMember(_key.c_str())) {
-                    v = &(*v)[_key.c_str()];
+            auto& key = _args[i];
+            if (const string* _key = std::get_if<string>(&key)) {
+                if (v->HasMember(_key->c_str())) {
+                    v = &(*v)[_key->c_str()];
                 } else {
                     return false;
                 }
-            } else if (key->GetType() == KeyType::Int) {
-                int _key = key->get_int();
+            } else if (const int* _key = std::get_if<int>(&key)) {
                 if (!v->IsArray()) {
                     return false;
                 }
-                if (_key >= v->Size()) {
+                if (*_key >= v->Size()) {
                     return false;
                 }
-                v = &(*v)[_key];
+                v = &(*v)[*_key];
             }
         }
         return true;
