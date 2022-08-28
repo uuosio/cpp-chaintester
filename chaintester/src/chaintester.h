@@ -1,6 +1,9 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
+#include <variant>
+
 #include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/transport/TServerSocket.h>
 #include <thrift/transport/TBufferTransports.h>
@@ -31,11 +34,14 @@ using namespace  ::chaintester;
 using namespace ::rapidjson;
 using namespace ::std;
 
+using ActionArguments = std::variant<string, vector<char>>;
+
 enum KeyType {
     Unknown,
     String,
     Int,
 };
+
 
 class JsonKey {
 public:
@@ -72,11 +78,11 @@ public:
         return key_type;
     }
 
-    const string& GetString() {
+    const string& get_string() {
         return *static_cast<string*>(value);
     }
 
-    int GetInt() {
+    int get_int() {
         return *static_cast<int*>(value);
     }
 
@@ -132,9 +138,9 @@ public:
         for (int i=0; i<size; i++) {
             auto key = &_args[i];
             if (key->GetType() == KeyType::String) {
-                v = &(*v)[key->GetString().c_str()];
+                v = &(*v)[key->get_string().c_str()];
             } else if (key->GetType() == KeyType::Int) {
-                v = &(*v)[key->GetInt()];
+                v = &(*v)[key->get_int()];
             }
         }
         return *v;
@@ -148,14 +154,14 @@ public:
         for (int i=0; i<size; i++) {
             auto key = &_args[i];
             if (key->GetType() == KeyType::String) {
-                string _key = key->GetString();
+                string _key = key->get_string();
                 if (v->HasMember(_key.c_str())) {
                     v = &(*v)[_key.c_str()];
                 } else {
                     return false;
                 }
             } else if (key->GetType() == KeyType::Int) {
-                int _key = key->GetInt();
+                int _key = key->get_int();
                 if (!v->IsArray()) {
                     return false;
                 }
@@ -223,7 +229,7 @@ public:
     std::shared_ptr<JsonObject> get_account(const string& account);
     void produce_block(int64_t next_block_delay_seconds = 0);
 
-    std::shared_ptr<JsonObject> push_action(const string& account, const string& action, const string& arguments, const string& permissions);
+    std::shared_ptr<JsonObject> push_action(const string& account, const string& action, const ActionArguments& arguments, const string& permissions);
     std::shared_ptr<JsonObject> deploy_contract(const string& account, const string& wasmFile, const string& abiFile);
 };
 

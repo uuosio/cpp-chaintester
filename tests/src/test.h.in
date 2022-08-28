@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 #define APP_PATH "@CMAKE_CURRENT_BINARY_DIR@"
 
 #define TEST_API_SO "@CMAKE_BINARY_DIR@/tests/test-contracts/test_api/native/libtest_api_native@CMAKE_SHARED_LIBRARY_SUFFIX@"
@@ -10,5 +12,7 @@
 #define HELLO_WASM "@CMAKE_BINARY_DIR@/tests/test-contracts/hello/hello/hello.wasm"
 #define HELLO_ABI "@CMAKE_BINARY_DIR@/tests/test-contracts/hello/hello/hello.abi"
 
-extern "C" void test_api_native_apply( uint64_t receiver, uint64_t code, uint64_t action );
-extern "C" void hello_native_apply( uint64_t receiver, uint64_t code, uint64_t action );
+#ifdef __cplusplus
+    extern "C" void test_api_native_apply( uint64_t receiver, uint64_t code, uint64_t action );
+    extern "C" void hello_native_apply( uint64_t receiver, uint64_t code, uint64_t action );
+#endif

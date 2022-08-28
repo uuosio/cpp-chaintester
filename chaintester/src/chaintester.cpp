@@ -176,9 +176,17 @@ void ChainTester::produce_block(int64_t next_block_delay_seconds) {
     client->produce_block(id, next_block_delay_seconds);
 }
 
-std::shared_ptr<JsonObject> ChainTester::push_action(const string& account, const string& action, const string& arguments, const string& permissions) {
+std::shared_ptr<JsonObject> ChainTester::push_action(const string& account, const string& action, const ActionArguments& arguments, const string& permissions) {
     string ret;
-    client->push_action(ret, id, account, action, arguments, permissions);
+
+    string _arguments;
+    if(const string* s  = std::get_if<string>(&arguments)) {
+        _arguments = *s;
+    } else if (const vector<char>* v  = std::get_if<vector<char>>(&arguments)) {
+        _arguments = hex_str((uint8_t*)v->data(), v->size());
+    }
+
+    client->push_action(ret, id, account, action, _arguments, permissions);
     return std::make_shared<JsonObject>(ret);
 }
 
