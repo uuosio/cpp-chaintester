@@ -186,7 +186,16 @@ std::shared_ptr<JsonObject> ChainTester::push_action(const string& account, cons
         _arguments = hex_str((uint8_t*)v->data(), v->size());
     }
 
-    client->push_action(ret, id, account, action, _arguments, permissions);
+    string _permissions;
+    if (permissions.size() != 0) {
+        _permissions = permissions;
+    } else {
+        char buf[128];
+        int n = snprintf(buf, sizeof(buf), R""""({"%s": "active"})"""", account.c_str());
+        _permissions = string(buf, n);
+    }
+
+    client->push_action(ret, id, account, action, _arguments, _permissions);
     return std::make_shared<JsonObject>(ret);
 }
 

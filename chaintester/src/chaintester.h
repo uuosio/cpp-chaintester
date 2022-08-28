@@ -150,7 +150,7 @@ public:
     std::shared_ptr<JsonObject> get_account(const string& account);
     void produce_block(int64_t next_block_delay_seconds = 0);
 
-    std::shared_ptr<JsonObject> push_action(const string& account, const string& action, const ActionArguments& arguments, const string& permissions);
+    std::shared_ptr<JsonObject> push_action(const string& account, const string& action, const ActionArguments& arguments="", const string& permissions="");
     std::shared_ptr<JsonObject> deploy_contract(const string& account, const string& wasmFile, const string& abiFile);
 };
 
