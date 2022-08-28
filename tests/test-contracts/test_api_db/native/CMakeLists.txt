@@ -1,11 +1,11 @@
-add_library( test_api_multi_index_native
+add_library( test_api_db_native
     main.cpp
-    ../test_api_multi_index.cpp
+    ../test_api_db.cpp
 )
 
-set_target_properties(test_api_multi_index_native PROPERTIES CXX_VISIBILITY_PRESET hidden)
+set_target_properties(test_api_db_native PROPERTIES CXX_VISIBILITY_PRESET hidden)
 
-target_compile_options(test_api_multi_index_native PRIVATE 
+target_compile_options(test_api_db_native PRIVATE 
     -g
     -O0
     -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping
@@ -14,7 +14,7 @@ target_compile_options(test_api_multi_index_native PRIVATE
     -Wno-deprecated-declarations
 )
 
-target_include_directories(test_api_multi_index_native PRIVATE
+target_include_directories(test_api_db_native PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${CMAKE_SOURCE_DIR}/libs/cdt/include
     ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/capi
@@ -23,8 +23,8 @@ target_include_directories(test_api_multi_index_native PRIVATE
     ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/contracts
 )
 
-target_link_options(test_api_multi_index_native PRIVATE -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping)
+target_link_options(test_api_db_native PRIVATE -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping)
 
-target_link_libraries (test_api_multi_index_native
+target_link_libraries (test_api_db_native
     chain_static
 )

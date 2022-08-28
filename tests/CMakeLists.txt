@@ -6,6 +6,8 @@ message(STATUS "++++++++++CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
 add_executable( tests 
     src/test.cpp
     src/test_hello.cpp
+    src/test_api_db.cpp
+    src/test_multi_index.cpp
     src/intrinsics_test.cpp
     src/test_api.cpp
     src/utils.cpp
@@ -25,6 +27,8 @@ target_link_options(tests PRIVATE -fprofile-arcs -ftest-coverage -fprofile-instr
 target_link_libraries ( tests
     hello_native
     test_api_native
+    test_api_db_native
+    test_api_multi_index_native
     chaintester
     ${CMAKE_BINARY_DIR}/libs/Catch2/src/libCatch2Maind.a
     ${CMAKE_BINARY_DIR}/libs/Catch2/src/libCatch2d.a
@@ -34,6 +38,8 @@ target_link_libraries ( tests
 add_dependencies(tests chaintester Catch2 Catch2WithMain thrift_external)
 
 target_include_directories(tests PUBLIC
+    "${CMAKE_CURRENT_SOURCE_DIR}/src"
+    "${CMAKE_CURRENT_BINARY_DIR}"
     ${CMAKE_SOURCE_DIR}/libs/cdt/include
     ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/capi
     ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/native
@@ -43,7 +49,6 @@ target_include_directories(tests PUBLIC
     "${CMAKE_SOURCE_DIR}/libs/Catch2/src"
     "${CMAKE_SOURCE_DIR}/chaintester/src"
     "${CMAKE_BINARY_DIR}/generated-includes"
-    "${CMAKE_CURRENT_BINARY_DIR}"
 )
 
 configure_file(src/test.h.in ${CMAKE_CURRENT_BINARY_DIR}/test.h @ONLY )

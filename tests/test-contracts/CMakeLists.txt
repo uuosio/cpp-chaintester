@@ -1,6 +1,8 @@
 add_subdirectory(hello)
 
 add_subdirectory(test_api/native)
+add_subdirectory(test_api_db/native)
+add_subdirectory(test_api_multi_index/native)
 
 include(ExternalProject)
 # if no cdt root is given use default path
