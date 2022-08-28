@@ -52,11 +52,13 @@ static void CallFunction(ChainTester& tester, uint64_t action, const vector<char
     }
     )"""";
     
-    auto ret = tester.push_action("testapi", n2s(action), hex_str((uint8_t*)data.data(), data.size()), permissions);
-    if (required_exception_type.size() > 0) {
-        REQUIRE(ret->HasMember("except"));
-
-        auto& except = (*ret.get())["except"];
+    try {
+        auto ret = tester.push_action("testapi", n2s(action), hex_str((uint8_t*)data.data(), data.size()), permissions);
+        REQUIRE(!ret->HasMember("except"));
+    } catch(chain_exception& ex) {
+        auto& o = ex.value();
+        REQUIRE(o.HasMember("except"));
+        auto& except = o["except"];
         // WARN(JsonToString(except));
         REQUIRE(except["name"].GetString() == required_exception_type);
         if ("wasm_execution_error" == required_exception_type) {
@@ -66,9 +68,6 @@ static void CallFunction(ChainTester& tester, uint64_t action, const vector<char
             auto s =  except["stack"][0]["data"]["s"].GetString();
             REQUIRE(s == exception_message);
         }
-    } else {
-        // WARN(ret->String());
-        REQUIRE(!ret->HasMember("except"));
     }
 }
 

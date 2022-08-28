@@ -35,7 +35,7 @@ TEST_CASE( "test chaintester", "[chaintester]" ) {
     auto account_info = tester.get_account("helloworld33");
     cout<<account_info->get_string("head_block_time")<<endl;
 
-    tester.deploy_contract("hello", HELLO_WASM, HELLO_ABI);
+    tester.deploy_contract("helloworld33", HELLO_WASM, HELLO_ABI);
 
     auto args = R""""(
     {
@@ -52,5 +52,4 @@ TEST_CASE( "test chaintester", "[chaintester]" ) {
         tester.push_action("helloworld33", "hi", args, permissions);
         tester.produce_block();
     }
-    REQUIRE( true == true);
 }

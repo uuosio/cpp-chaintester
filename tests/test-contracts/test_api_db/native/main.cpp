@@ -15,31 +15,37 @@ extern "C" {
         switch (action) {
             case "pg"_n.value: {
                 test.primary_i64_general();
+                break;
             }
 //    [[eosio::action("pl")]]
 //    void primary_i64_lowerbound();
             case "pl"_n.value: {
                 test.primary_i64_lowerbound();
+                break;
             }
 //    [[eosio::action("pu")]]
 //    void primary_i64_upperbound();
             case "pu"_n.value: {
                 test.primary_i64_upperbound();
+                break;
             }
 //    [[eosio::action("s1g")]]
 //    void idx64_general();
             case "s1g"_n.value: {
                 test.idx64_general();
+                break;
             }
 //    [[eosio::action("s1l")]]
 //    void idx64_lowerbound();
             case "s1l"_n.value: {
                 test.idx64_lowerbound();
+                break;
             }
 //    [[eosio::action("s1u")]]
 //    void idx64_upperbound();
             case "s1u"_n.value: {
                 test.idx64_upperbound();
+                break;
             }
 //    [[eosio::action("tia")]]
 //    void test_invalid_access( eosio::name code, uint64_t val, uint32_t index, bool store );
@@ -50,11 +56,13 @@ extern "C" {
 //    void idx_double_nan_create_fail();
             case "sdnancreate"_n.value: {
                 test.idx_double_nan_create_fail();
+                break;
             }
 //    [[eosio::action("sdnanmodify")]]
 //    void idx_double_nan_modify_fail();
             case "sdnanmodify"_n.value: {
                 test.idx_double_nan_modify_fail();
+                break;
             }
 //    [[eosio::action("sdnanlookup")]]
 //    void idx_double_nan_lookup_fail( uint32_t lookup_type );
@@ -65,6 +73,7 @@ extern "C" {
 //    void misaligned_secondary_key256_tests();
             case "sk32align"_n.value: {
                 test.misaligned_secondary_key256_tests();
+                break;
             }
         }
    }

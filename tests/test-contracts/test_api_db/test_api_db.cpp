@@ -318,6 +318,7 @@ void test_api_db::idx64_lowerbound()
       eosio_assert( lb_prim == 0 && lb_sec == "kevin"_n.value, err.c_str() );
       eosio_assert( lb < 0, "" );
    }
+#ifndef EOSIO_NATIVE
    // Test write order
    { // aligned
       size_t prim_off = 0;
@@ -379,6 +380,7 @@ void test_api_db::idx64_lowerbound()
       memcpy(&lb_prim, lb_prim_ptr, sizeof(lb_prim));
       eosio_assert( lb_prim == ssn && lb_sec != "alice"_n.value, err.c_str() );
    }
+#endif
 }
 
 void test_api_db::idx64_upperbound()
@@ -417,6 +419,8 @@ void test_api_db::idx64_upperbound()
       eosio_assert( ub_prim == 0 && ub_sec == "kevin"_n.value, err.c_str() );
       eosio_assert( ub < 0, err.c_str() );
    }
+
+#ifndef EOSIO_NATIVE
    { // aligned
       size_t prim_off = 0;
       size_t sec_off = 0;
@@ -477,6 +481,7 @@ void test_api_db::idx64_upperbound()
       memcpy(&ub_prim, ub_prim_ptr, sizeof(ub_prim));
       eosio_assert( ub_prim == allyson_ssn && ub_sec != "allyson"_n.value, err.c_str() );
    }
+#endif
 }
 
 void test_api_db::test_invalid_access( name _code, uint64_t val, uint32_t index, bool store )
