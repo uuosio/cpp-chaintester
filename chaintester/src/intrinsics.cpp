@@ -66,14 +66,18 @@ int32_t db_get_i64(int32_t iterator, const void* data, uint32_t len) {
 int32_t db_next_i64(int32_t iterator, uint64_t* primary) {
     NextPreviousReturn ret;
     GetApplyClient()->db_next_i64(ret, iterator);
-    *primary = from_raw_uint64(ret.primary);
+    if (ret.iterator >= 0) {
+        *primary = from_raw_uint64(ret.primary);
+    }
     return ret.iterator;
 }
 
 int32_t db_previous_i64(int32_t iterator, uint64_t* primary) {
     NextPreviousReturn ret;
     GetApplyClient()->db_previous_i64(ret, iterator);
-    *primary = from_raw_uint64(ret.primary);
+    if (ret.iterator >= 0) {
+        *primary = from_raw_uint64(ret.primary);
+    }
     return ret.iterator;
 }
 
@@ -133,14 +137,18 @@ void db_idx64_remove(int32_t iterator) {
 int32_t db_idx64_next(int32_t iterator, uint64_t* primary) {
     NextPreviousReturn ret;
     GetApplyClient()->db_idx64_next(ret, iterator);
-    *primary = from_raw_uint64(ret.primary);
+    if (ret.iterator >= 0) {
+        *primary = from_raw_uint64(ret.primary);
+    }
     return ret.iterator;
 }
 
 int32_t db_idx64_previous(int32_t iterator, uint64_t* primary) {
     NextPreviousReturn ret;
     GetApplyClient()->db_idx64_previous(ret, iterator);
-    *primary = from_raw_uint64(ret.primary);
+    if (ret.iterator >= 0) {
+        *primary = from_raw_uint64(ret.primary);
+    }
     return ret.iterator;
 }
 
@@ -239,14 +247,18 @@ void db_idx128_remove(int32_t iterator) {
 int32_t db_idx128_next(int32_t iterator, uint64_t* primary) {
     NextPreviousReturn ret;
     GetApplyClient()->db_idx128_next(ret, iterator);
-    *primary = from_raw_uint64(ret.primary);
+    if (ret.iterator >= 0) {
+        *primary = from_raw_uint64(ret.primary);
+    }
     return ret.iterator;
 }
 
 int32_t db_idx128_previous(int32_t iterator, uint64_t* primary) {
     NextPreviousReturn ret;
     GetApplyClient()->db_idx128_previous(ret, iterator);
-    *primary = from_raw_uint64(ret.primary);
+    if (ret.iterator >= 0) {
+        *primary = from_raw_uint64(ret.primary);
+    }
     return ret.iterator;
 }
 
@@ -346,14 +358,18 @@ void db_idx256_remove(int32_t iterator) {
 int32_t db_idx256_next(int32_t iterator, uint64_t* primary) {
     NextPreviousReturn ret;
     GetApplyClient()->db_idx256_next(ret, iterator);
-    *primary = from_raw_uint64(ret.primary);
+    if (ret.iterator >= 0) {
+        *primary = from_raw_uint64(ret.primary);
+    }
     return ret.iterator;
 }
 
 int32_t db_idx256_previous(int32_t iterator, uint64_t* primary) {
     NextPreviousReturn ret;
     GetApplyClient()->db_idx256_previous(ret, iterator);
-    *primary = from_raw_uint64(ret.primary);
+    if (ret.iterator >= 0) {
+        *primary = from_raw_uint64(ret.primary);
+    }
     return ret.iterator;
 }
 
@@ -452,14 +468,18 @@ void db_idx_double_remove(int32_t iterator) {
 int32_t db_idx_double_next(int32_t iterator, uint64_t* primary) {
     NextPreviousReturn ret;
     GetApplyClient()->db_idx_double_next(ret, iterator);
-    *primary = from_raw_uint64(ret.primary);
+    if (ret.iterator >= 0) {
+        *primary = from_raw_uint64(ret.primary);
+    }
     return ret.iterator;    
 }
 
 int32_t db_idx_double_previous(int32_t iterator, uint64_t* primary) {
     NextPreviousReturn ret;
     GetApplyClient()->db_idx_double_previous(ret, iterator);
-    *primary = from_raw_uint64(ret.primary);
+    if (ret.iterator >= 0) {
+        *primary = from_raw_uint64(ret.primary);
+    }
     return ret.iterator;
 }
 
@@ -558,14 +578,18 @@ void db_idx_long_double_remove(int32_t iterator) {
 int32_t db_idx_long_double_next(int32_t iterator, uint64_t* primary) {
     NextPreviousReturn ret;
     GetApplyClient()->db_idx_long_double_next(ret, iterator);
-    *primary = from_raw_uint64(ret.primary);
+    if (ret.iterator >= 0) {
+        *primary = from_raw_uint64(ret.primary);
+    }
     return ret.iterator;    
 }
 
 int32_t db_idx_long_double_previous(int32_t iterator, uint64_t* primary) {
     NextPreviousReturn ret;
     GetApplyClient()->db_idx_long_double_previous(ret, iterator);
-    *primary = from_raw_uint64(ret.primary);
+    if (ret.iterator >= 0) {
+        *primary = from_raw_uint64(ret.primary);
+    }
     return ret.iterator;
 }
 
@@ -841,15 +865,24 @@ void printhex( const void* data, uint32_t datalen ) {
 }
 
 void  eosio_assert( uint32_t test, const char* msg ) {
-    GetApplyClient()->eosio_assert(test?1:0, string(msg));
+    if (test) {
+        return;
+    }
+    GetApplyClient()->eosio_assert(0, string(msg));
 }
 
 void  eosio_assert_message( uint32_t test, const char* msg, uint32_t msg_len ) {
-    GetApplyClient()->eosio_assert_message(test?1:0, string(msg, msg_len));
+    if (test) {
+        return;
+    }
+    GetApplyClient()->eosio_assert_message(0, string(msg, msg_len));
 }
 
 void  eosio_assert_code( uint32_t test, uint64_t code ) {
-    GetApplyClient()->eosio_assert_code(test?1:0, to_raw_uint64(code));
+    if (test) {
+        return;
+    }
+    GetApplyClient()->eosio_assert_code(0, to_raw_uint64(code));
 }
 
 uint64_t  current_time() {
