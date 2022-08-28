@@ -1,13 +1,13 @@
 #include "loader.h"
 
-fn_apply gApply = nullptr;
+fn_apply g_apply = nullptr;
 
-void SetApplyFn(fn_apply fn) {
-    gApply = fn;
+void set_apply(fn_apply fn) {
+    g_apply = fn;
 }
 
-fn_apply GetApplyFn() {
-    return gApply;
+fn_apply get_apply() {
+    return g_apply;
 }
 
 
@@ -33,6 +33,6 @@ bool load_native_contract(const char *native_contract_path) {
         exit(-1);
         return false;
     }
-    SetApplyFn(native_apply);
+    set_apply(native_apply);
     return true;;
 }

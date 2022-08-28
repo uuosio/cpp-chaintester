@@ -32,7 +32,7 @@ class ApplyRequestHandler : virtual public ApplyRequestIf {
   }
 
   int32_t apply_request(const Uint64& receiver, const Uint64& first_receiver, const Uint64& action) {
-    fn_apply apply = GetApplyFn();
+    fn_apply apply = get_apply();
     try {
         if (apply != nullptr) {
             uint64_t _receiver;

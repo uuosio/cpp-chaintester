@@ -69,7 +69,7 @@ TEST_CASE( "test api", "[api]" ) {
     ChainTester t(true);
     // load_native_contract(TEST_API_SO);
 
-    SetApplyFn(test_api_native_apply);
+    set_apply(test_api_native_apply);
 
     t.enable_debug_contract("testapi", debug);
     auto key = t.create_key();
@@ -110,7 +110,7 @@ TEST_CASE( "test api", "[api]" ) {
 
 TEST_CASE( "test crypto", "[crypto]" ) {
     // load_native_contract(TEST_API_SO);
-    SetApplyFn(test_api_native_apply);
+    set_apply(test_api_native_apply);
     bool debug = true;
     ChainTester t(true);
     t.enable_debug_contract("testapi", debug);
