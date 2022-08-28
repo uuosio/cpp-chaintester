@@ -57,10 +57,10 @@ size_t copy_data(void* dest, size_t dest_len, string& src) {
     return copy_size;
 }
 
-int32_t db_get_i64(int32_t iterator, void* data, uint32_t len) {
+int32_t db_get_i64(int32_t iterator, const void* data, uint32_t len) {
     string ret;
     GetApplyClient()->db_get_i64(ret, iterator);
-    return copy_data(data, len, ret);
+    return copy_data((void *)data, len, ret);
 }
 
 int32_t db_next_i64(int32_t iterator, uint64_t* primary) {
