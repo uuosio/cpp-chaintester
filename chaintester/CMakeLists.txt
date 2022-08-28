@@ -25,11 +25,16 @@ target_include_directories(chaintester PUBLIC
 
 add_dependencies(chaintester thrift_external)
 
+# target_compile_options(chaintester PRIVATE 
+#     -g
+#     -O0
+#     -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping
+# )
 
-target_compile_options(chaintester PRIVATE 
-    -g
-    -O0
-    -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping
+# target_link_options(chaintester PRIVATE -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping)
+
+set(SPECIAL_SRC_FILES
+    src/chaintester.cpp
+    src/intrinsics.cpp
 )
-
-target_link_options(chaintester PRIVATE -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping)
+set_property(SOURCE ${SPECIAL_SRC_FILES} PROPERTY COMPILE_FLAGS "-fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping")
