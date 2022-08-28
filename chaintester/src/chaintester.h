@@ -123,73 +123,75 @@ public:
     }
 
     template<typename... Ts>
-    Value GetValue(Ts... args) {
+    Value& get_value(Ts... args) {
         const int size = sizeof...(args);
         JsonKey _args[size] = {args...};
 
         auto key = &_args[0];
-        Value v;
-        if (key->GetType() == KeyType::String) {
-            v = (*this)[key->GetString().c_str()];
-        } else if (key->GetType() == KeyType::Int) {
-            v = (*this)[key->GetInt()];
-        }
-        for (int i=1; i<size; i++) {
+        Value* v = this;
+        for (int i=0; i<size; i++) {
             auto key = &_args[i];
             if (key->GetType() == KeyType::String) {
-                v = v[key->GetString().c_str()];
+                v = &(*v)[key->GetString().c_str()];
             } else if (key->GetType() == KeyType::Int) {
-                v = v[key->GetInt()];
+                v = &(*v)[key->GetInt()];
             }
         }
-        return v;
+        return *v;
     }
 
     template<typename... Ts>
-    bool HasValue(Ts... args) {
+    bool has_value(Ts... args) {
         const int size = sizeof...(args);
         JsonKey _args[size] = {args...};
-        Value& v = *this;
+        Value* v = this;
         for (int i=0; i<size; i++) {
             auto key = &_args[i];
             if (key->GetType() == KeyType::String) {
                 string _key = key->GetString();
-                if (v.HasMember(_key.c_str())) {
-                    v = v[_key.c_str()];
+                if (v->HasMember(_key.c_str())) {
+                    v = &(*v)[_key.c_str()];
                 } else {
                     return false;
                 }
             } else if (key->GetType() == KeyType::Int) {
                 int _key = key->GetInt();
-                if (!v.IsArray()) {
+                if (!v->IsArray()) {
                     return false;
                 }
-                if (_key >= v.Size()) {
+                if (_key >= v->Size()) {
                     return false;
                 }
-                v = v[_key];
+                v = &(*v)[_key];
             }
         }
         return true;
     }
 
     template<typename... Ts>
-    string GetString(Ts... args) {
-        Value v = GetValue(args...);
-        return v.GetString();
+    string get_string(Ts... args) {
+        Value& v = get_value(args...);
+        if (v.IsString()) {
+            return v.GetString();
+        } else {
+            StringBuffer buffer;
+            Writer<StringBuffer> writer(buffer);
+            v.Accept(writer);
+            return std::string(buffer.GetString(), buffer.GetLength());
+        }
     }
 
     template<typename... Ts>
-    uint64_t GetUint64(Ts... args) {
-        auto v = GetValue(args...);
+    uint64_t get_uint64(Ts... args) {
+        auto& v = get_value(args...);
         return v.GetUint64();
     }
 
-    string String() {
+    string to_string() {
         StringBuffer buffer;
         Writer<StringBuffer> writer(buffer);
         this->Accept(writer);
-        return string(buffer.GetString(), buffer.GetLength());
+        return std::string(buffer.GetString(), buffer.GetLength());
     }
 };
 

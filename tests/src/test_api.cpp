@@ -74,8 +74,8 @@ TEST_CASE( "test api", "[api]" ) {
     t.enable_debug_contract("testapi", debug);
     auto key = t.create_key();
 
-    auto pub_key = key->GetString("public");
-    auto priv_key = key->GetString("private");
+    auto pub_key = key->get_string("public");
+    auto priv_key = key->get_string("private");
     t.import_key(pub_key, priv_key);
     t.create_account("eosio", "testapi", pub_key, pub_key);
 
@@ -116,8 +116,8 @@ TEST_CASE( "test crypto", "[crypto]" ) {
     t.enable_debug_contract("testapi", debug);
     auto key = t.create_key();
 
-    auto pub_key = key->GetString("public");
-    auto priv_key = key->GetString("private");
+    auto pub_key = key->get_string("public");
+    auto priv_key = key->get_string("private");
     t.import_key(pub_key, priv_key);
     t.create_account("eosio", "testapi", pub_key, pub_key);
 

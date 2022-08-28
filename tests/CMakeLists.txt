@@ -9,6 +9,7 @@ add_executable( tests
     src/intrinsics_test.cpp
     src/test_api.cpp
     src/utils.cpp
+    src/test_jsonobject.cpp
 )
 
 target_compile_options(tests PRIVATE 
