@@ -39,15 +39,20 @@ using JsonKey = std::variant<string, int>;
 
 class JsonObject: public Document {
 private:
+    string raw;
+private:
     JsonObject (const JsonObject& other);
     JsonObject (const JsonObject&& other);
-    JsonObject& operator=(const JsonObject&);
+    JsonObject& operator=(const JsonObject& o);
+
 public:
     JsonObject(const string& s) {
+        raw = s;
         this->Parse(s.c_str());
     }
 
     JsonObject(const char* s) {
+        raw = string(s);
         this->Parse(s);
     }
 
@@ -114,11 +119,12 @@ public:
         return v.GetUint64();
     }
 
-    string to_string() {
-        StringBuffer buffer;
-        Writer<StringBuffer> writer(buffer);
-        this->Accept(writer);
-        return std::string(buffer.GetString(), buffer.GetLength());
+    const string& to_string() const {
+        return raw;
+        // StringBuffer buffer;
+        // Writer<StringBuffer> writer(buffer);
+        // this->Accept(writer);
+        // return std::string(buffer.GetString(), buffer.GetLength());
     }
 };
 
@@ -128,6 +134,31 @@ static inline string JsonToString(Value& value) {
     value.Accept(writer);
     return string(buffer.GetString(), buffer.GetLength());
 }
+
+class chain_exception: public std::exception {
+private:
+    JsonObject o;
+private:
+    chain_exception& operator = (const chain_exception& ex) noexcept;
+public:
+    chain_exception(const string& s) noexcept : std::exception(), o(s) {
+    }
+
+    chain_exception (const chain_exception& ex) noexcept: o(ex.value().to_string()) {
+    }
+
+    const JsonObject& value() const {
+        return o;
+    }
+
+    ~chain_exception() {
+
+    }
+
+    const char* what() const noexcept {
+        return o.to_string().c_str();
+    }
+};
 
 class ChainTester {
 private:

@@ -196,7 +196,11 @@ std::shared_ptr<JsonObject> ChainTester::push_action(const string& account, cons
     }
 
     client->push_action(ret, id, account, action, _arguments, _permissions);
-    return std::make_shared<JsonObject>(ret);
+    auto _ret = std::make_shared<JsonObject>(ret);
+    if (_ret->has_value("except")) {
+        throw chain_exception(ret);
+    }
+    return _ret;
 }
 
 std::string hex_str(const uint8_t *data, int len)
