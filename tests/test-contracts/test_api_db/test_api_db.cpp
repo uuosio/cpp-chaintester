@@ -584,7 +584,7 @@ void test_api_db::idx_double_nan_lookup_fail( uint32_t lookup_type ) {
 
 void test_api_db::misaligned_secondary_key256_tests() {
    uint64_t receiver = get_self().value;
-   auto key = eosio::checksum256::make_from_word_sequence<uint64_t>( 0ULL, 0ULL, 0ULL, 42ULL );
+   auto key = eosio::checksum256::make_from_word_sequence<uint64_t>( uint64_t(0), uint64_t(0), uint64_t(0), uint64_t(42));
    char* ptr = (char*)(&key);
    ptr += 1;
    // test that store doesn't crash on unaligned data

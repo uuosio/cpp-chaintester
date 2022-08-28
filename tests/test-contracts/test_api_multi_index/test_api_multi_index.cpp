@@ -542,7 +542,7 @@ void test_api_multi_index::idx256_general()
       indexed_by<"bysecondary"_n, const_mem_fun<record, const checksum256&, &record::get_secondary>>
    > table( get_self(), get_self().value );
 
-   auto fourtytwo       = checksum256::make_from_word_sequence<uint64_t>( 0ULL, 0ULL, 0ULL, 42ULL );
+   auto fourtytwo       = checksum256::make_from_word_sequence<uint64_t>( uint64_t(0), uint64_t(0), uint64_t(0), uint64_t(42) );
    //auto onetwothreefour = checksum256::make_from_word_sequence<uint64_t>(1ULL, 2ULL, 3ULL, 4ULL);
    auto onetwothreefour = checksum256{std::array<uint32_t, 8>{ {0,1, 0,2, 0,3, 0,4} }};
 
@@ -581,11 +581,11 @@ void test_api_multi_index::idx256_general()
 
    auto secidx = table.get_index<"bysecondary"_n>();
 
-   auto lower1 = secidx.lower_bound( checksum256::make_from_word_sequence<uint64_t>(0ULL, 0ULL, 0ULL, 40ULL) );
+   auto lower1 = secidx.lower_bound( checksum256::make_from_word_sequence<uint64_t>(uint64_t(0), uint64_t(0), uint64_t(0), uint64_t(40)) );
    print("First entry with a secondary key of at least 40 has ID=", lower1->id, ".\n");
    check( lower1->id == 1, "idx256_general - lower_bound" );
 
-   auto lower2 = secidx.lower_bound( checksum256::make_from_word_sequence<uint64_t>(0ULL, 0ULL, 0ULL, 50ULL) );
+   auto lower2 = secidx.lower_bound( checksum256::make_from_word_sequence<uint64_t>(uint64_t(0), uint64_t(0), uint64_t(0), uint64_t(50)) );
    print("First entry with a secondary key of at least 50 has ID=", lower2->id, ".\n");
    check( lower2->id == 2, "idx256_general - lower_bound" );
 
