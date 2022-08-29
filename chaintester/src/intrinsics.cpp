@@ -163,7 +163,10 @@ int32_t db_idx64_find_primary(capi_name code, uint64_t scope, capi_name table, u
 
     );
     if (ret.iterator >= 0) {
-        memcpy(secondary, ret.secondary.c_str(), ret.secondary.size());
+        if (ret.secondary.size() != 8) {
+            throw std::runtime_error("db_idx64_find_primary: bad secondary return size");
+        }
+        memcpy(secondary, ret.secondary.c_str(), 8);
     }
     return ret.iterator;
 }
@@ -195,6 +198,9 @@ int32_t db_idx64_lowerbound(capi_name code, uint64_t scope, capi_name table, uin
         to_raw_uint64(*primary)
     );
     if (ret.iterator >= 0) {
+        if (ret.secondary.size() != 8) {
+            throw std::runtime_error("db_idx64_lowerbound: bad secondary return size");
+        }
         memcpy(secondary, ret.secondary.c_str(), 8);
         *primary = from_raw_uint64(ret.primary);
     }
@@ -212,6 +218,9 @@ int32_t db_idx64_upperbound(capi_name code, uint64_t scope, capi_name table, uin
         to_raw_uint64(*primary)
     );
     if (ret.iterator >= 0) {
+        if (ret.secondary.size() != 8) {
+            throw std::runtime_error("db_idx64_upperbound: bad secondary return size");
+        }
         memcpy(secondary, ret.secondary.c_str(), 8);
         *primary = from_raw_uint64(ret.primary);
     }
@@ -273,7 +282,10 @@ int32_t db_idx128_find_primary(capi_name code, uint64_t scope, capi_name table, 
 
     );
     if (ret.iterator >= 0) {
-        memcpy(secondary, ret.secondary.c_str(), ret.secondary.size());
+        if (ret.secondary.size() != 16) {
+            throw std::runtime_error("db_idx128_find_primary: bad secondary return size");
+        }
+        memcpy(secondary, ret.secondary.c_str(), 16);
     }
     return ret.iterator;
 }
@@ -306,6 +318,9 @@ int32_t db_idx128_lowerbound(capi_name code, uint64_t scope, capi_name table, ui
         to_raw_uint64(*primary)
     );
     if (ret.iterator >= 0) {
+        if (ret.secondary.size() != 16) {
+            throw std::runtime_error("db_idx128_lowerbound: bad secondary return size");
+        }
         memcpy(secondary, ret.secondary.c_str(), 16);
         *primary = from_raw_uint64(ret.primary);
     }
@@ -323,6 +338,9 @@ int32_t db_idx128_upperbound(capi_name code, uint64_t scope, capi_name table, ui
         to_raw_uint64(*primary)
     );
     if (ret.iterator >= 0) {
+        if (ret.secondary.size() != 16) {
+            throw std::runtime_error("db_idx128_upperbound: bad secondary return size");
+        }
         memcpy(secondary, ret.secondary.c_str(), 16);
         *primary = from_raw_uint64(ret.primary);
     }
@@ -338,17 +356,23 @@ int32_t db_idx128_end(capi_name code, uint64_t scope, capi_name table) {
 }
 
 int32_t db_idx256_store(uint64_t scope, capi_name table, capi_name payer, uint64_t id, const uint128_t* data, uint32_t data_len ) {
+    if (data_len != 2) {
+        throw std::runtime_error("db_idx256_store: bad data length");
+    }
     return GetApplyClient()->db_idx256_store(
         to_raw_uint64(scope),
         to_raw_uint64(table),
         to_raw_uint64(payer),
         to_raw_uint64(id),
-        string((char *)data, data_len)
+        string((char *)data, 32)
     );    
 }
 
 void db_idx256_update(int32_t iterator, capi_name payer, const uint128_t* data, uint32_t data_len) {
-    GetApplyClient()->db_idx256_update(iterator, to_raw_uint64(payer), string((char *)data, data_len));    
+    if (data_len != 2) {
+        throw std::runtime_error("db_idx256_store: bad data length");
+    }
+    GetApplyClient()->db_idx256_update(iterator, to_raw_uint64(payer), string((char *)data, 32));    
 }
 
 void db_idx256_remove(int32_t iterator) {
@@ -375,28 +399,36 @@ int32_t db_idx256_previous(int32_t iterator, uint64_t* primary) {
 
 int32_t db_idx256_find_primary(capi_name code, uint64_t scope, capi_name table, uint128_t* data, uint32_t data_len, uint64_t primary) {
     FindPrimaryReturn ret;
+    if (data_len != 2) {
+        throw std::runtime_error("db_idx256_find_primary: bad data length");
+    }
     GetApplyClient()->db_idx256_find_primary(
         ret,
         to_raw_uint64(code),
         to_raw_uint64(scope),
         to_raw_uint64(table),
         to_raw_uint64(primary)
-
     );
     if (ret.iterator >= 0) {
-        memcpy(data, ret.secondary.c_str(), ret.secondary.size());
+        if (ret.secondary.size() != 32) {
+            throw std::runtime_error("db_idx256_find_primary: bad secondary return size");
+        }
+        memcpy(data, ret.secondary.c_str(), 32);
     }
     return ret.iterator;
 }
 
 int32_t db_idx256_find_secondary(capi_name code, uint64_t scope, capi_name table, const uint128_t* data, uint32_t data_len, uint64_t* primary) {
     FindSecondaryReturn ret;
+    if (data_len != 2) {
+        throw std::runtime_error("db_idx256_find_secondary: bad data length");
+    }
     GetApplyClient()->db_idx256_find_secondary(
         ret,
         to_raw_uint64(code),
         to_raw_uint64(scope),
         to_raw_uint64(table),
-        string((char *)data, 16)
+        string((char *)data, 32)
     );
 
     if (ret.iterator >= 0) {
@@ -407,6 +439,9 @@ int32_t db_idx256_find_secondary(capi_name code, uint64_t scope, capi_name table
 
 int32_t db_idx256_lowerbound(capi_name code, uint64_t scope, capi_name table, uint128_t* data, uint32_t data_len, uint64_t* primary) {
     LowerBoundUpperBoundReturn ret;
+    if (data_len != 2) {
+        throw std::runtime_error("db_idx256_lowerbound: bad data length");
+    }
     GetApplyClient()->db_idx256_lowerbound(
         ret,
         to_raw_uint64(code),
@@ -416,6 +451,9 @@ int32_t db_idx256_lowerbound(capi_name code, uint64_t scope, capi_name table, ui
         to_raw_uint64(*primary)
     );
     if (ret.iterator >= 0) {
+        if (ret.secondary.size() != 32) {
+            throw std::runtime_error("db_idx256_lowerbound: bad secondary return size");
+        }
         memcpy(data, ret.secondary.c_str(), 32);
         *primary = from_raw_uint64(ret.primary);
     }
@@ -424,7 +462,10 @@ int32_t db_idx256_lowerbound(capi_name code, uint64_t scope, capi_name table, ui
 
 int32_t db_idx256_upperbound(capi_name code, uint64_t scope, capi_name table, uint128_t* data, uint32_t data_len, uint64_t* primary) {
     LowerBoundUpperBoundReturn ret;
-    GetApplyClient()->db_idx256_lowerbound(
+    if (data_len != 2) {
+        throw std::runtime_error("db_idx256_upperbound: bad data length");
+    }
+    GetApplyClient()->db_idx256_upperbound(
         ret,
         to_raw_uint64(code),
         to_raw_uint64(scope),
@@ -433,6 +474,9 @@ int32_t db_idx256_upperbound(capi_name code, uint64_t scope, capi_name table, ui
         to_raw_uint64(*primary)
     );
     if (ret.iterator >= 0) {
+        if (ret.secondary.size() != 32) {
+            throw std::runtime_error("db_idx256_upperbound: bad secondary return size");
+        }
         memcpy(data, ret.secondary.c_str(), 32);
         *primary = from_raw_uint64(ret.primary);
     }
