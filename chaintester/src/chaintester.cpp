@@ -32,21 +32,21 @@ class ApplyRequestHandler : virtual public ApplyRequestIf {
   }
 
   int32_t apply_request(const Uint64& receiver, const Uint64& first_receiver, const Uint64& action) {
+    uint64_t _receiver;
+    uint64_t _first_receiver;
+    uint64_t _action;
+    memcpy(&_receiver, receiver.rawValue.c_str(), 8);
+    memcpy(&_first_receiver, first_receiver.rawValue.c_str(), 8);
+    memcpy(&_action, action.rawValue.c_str(), 8);
+
     fn_apply apply = get_apply();
     try {
         if (apply != nullptr) {
-            uint64_t _receiver;
-            uint64_t _first_receiver;
-            uint64_t _action;
-            memcpy(&_receiver, receiver.rawValue.c_str(), 8);
-            memcpy(&_first_receiver, first_receiver.rawValue.c_str(), 8);
-            memcpy(&_action, action.rawValue.c_str(), 8);
-
             apply(_receiver, _first_receiver, _action);
         }
         GetApplyClient()->end_apply();
     } catch (apache::thrift::TException ex) {
-        printf("+++++++exception on apply:%s\n", ex.what());
+        printf("+++++++exception on apply(%s, %s, %s):%s\n", n2s(_receiver).c_str(), n2s(_first_receiver).c_str(), n2s(_action).c_str(), ex.what());
     }
     return 1;
   }
@@ -196,6 +196,31 @@ std::shared_ptr<JsonObject> ChainTester::push_action(const string& account, cons
     }
 
     client->push_action(ret, id, account, action, _arguments, _permissions);
+    auto _ret = std::make_shared<JsonObject>(ret);
+    if (_ret->has_value("except")) {
+        throw chain_exception(ret);
+    }
+    return _ret;
+}
+
+std::shared_ptr<JsonObject> ChainTester::push_actions(const std::vector<TxAction>& actions) {
+    vector<Action> aa;
+    for (auto& a : actions) {
+        string arguments;
+        if(const string* s  = std::get_if<string>(&a.arguments)) {
+            arguments = *s;
+        } else if (const vector<char>* v  = std::get_if<vector<char>>(&a.arguments)) {
+            arguments = hex_str((uint8_t*)v->data(), v->size());
+        }
+        Action _a;
+        _a.account = a.account;
+        _a.action = a.action;
+        _a.permissions = a.permissions;
+        _a.arguments = arguments;
+        aa.emplace_back(_a);
+    }
+    string ret;
+    client->push_actions(ret, id, aa);
     auto _ret = std::make_shared<JsonObject>(ret);
     if (_ret->has_value("except")) {
         throw chain_exception(ret);

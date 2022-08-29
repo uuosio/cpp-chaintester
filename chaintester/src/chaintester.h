@@ -22,6 +22,7 @@
 #include "TSimpleServer.h"
 
 #include "loader.h"
+#include "utils.h"
 
 using namespace ::apache::thrift;
 using namespace ::apache::thrift::protocol;
@@ -30,7 +31,7 @@ using namespace ::apache::thrift::transport;
 
 using namespace ::server;
 
-using namespace  ::chaintester;
+using namespace ::chaintester;
 using namespace ::rapidjson;
 using namespace ::std;
 
@@ -160,6 +161,13 @@ public:
     }
 };
 
+struct TxAction {
+  std::string account;
+  std::string action;
+  ActionArguments arguments;
+  std::string permissions;
+};
+
 class ChainTester {
 private:
     std::shared_ptr<IPCChainTesterClient> client;
@@ -182,6 +190,7 @@ public:
     void produce_block(int64_t next_block_delay_seconds = 0);
 
     std::shared_ptr<JsonObject> push_action(const string& account, const string& action, const ActionArguments& arguments="", const string& permissions="");
+    std::shared_ptr<JsonObject> push_actions(const std::vector<TxAction> & actions);
     std::shared_ptr<JsonObject> deploy_contract(const string& account, const string& wasmFile, const string& abiFile);
 };
 

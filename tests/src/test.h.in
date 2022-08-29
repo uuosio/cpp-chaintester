@@ -41,7 +41,6 @@ static constexpr unsigned long long WASM_TEST_ACTION(const char* cls, const char
 }
 
 static uint64_t TEST_METHOD(const char* CLASS, const char *METHOD) {
-  printf("+++++%s:%s\n", CLASS, METHOD);
   return ( (uint64_t(DJBH(CLASS))<<32) | uint32_t(DJBH(METHOD)) );
 }
 
@@ -66,7 +65,7 @@ static void CallFunction(ChainTester& tester, uint64_t action, const vector<char
             REQUIRE(s == exception_message);
         } else if ("eosio_assert_message_exception" == required_exception_type) {
             auto s =  except["stack"][0]["data"]["s"].GetString();
-            REQUIRE(s == exception_message);
+            REQUIRE(string(s).find(exception_message) != std::string::npos);
         }
     }
 }

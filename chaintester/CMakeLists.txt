@@ -1,3 +1,15 @@
+add_library(utils
+    src/utils.cpp
+)
+
+target_include_directories(utils PUBLIC
+    ${CMAKE_SOURCE_DIR}/libs/cdt/include
+    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/capi
+    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/native
+    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/core
+    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/contracts
+)
+
 add_library ( chaintester 
     src/gen/Apply.cpp
     src/gen/ApplyRequest.cpp
@@ -13,7 +25,7 @@ add_library ( chaintester
     src/TConnectedClient.cpp
 )
 
-target_link_libraries ( chaintester PUBLIC thrift ${CMAKE_DL_LIBS})
+target_link_libraries ( chaintester PUBLIC utils thrift ${CMAKE_DL_LIBS})
 
 target_include_directories(chaintester PUBLIC
     "./gen"

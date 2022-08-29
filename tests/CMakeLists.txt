@@ -10,7 +10,6 @@ add_executable( tests
     src/test_multi_index.cpp
     src/intrinsics_test.cpp
     src/test_api.cpp
-    src/utils.cpp
     src/test_jsonobject.cpp
 )
 
