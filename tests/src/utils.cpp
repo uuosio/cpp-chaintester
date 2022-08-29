@@ -25,7 +25,7 @@ int64_t str2ms(const string& iso_time) {
     std::istringstream ss(iso_time);
     if (ss >> std::get_time(&_tm, "%Y-%m-%dT%H:%M:%S"))
     {
-        epoch = int64_t(std::mktime(&_tm)) * 1000;
+        epoch = int64_t(timegm(&_tm)) * 1000;
     }
     auto dot = iso_time.find( '.' );
     if( dot != std::string::npos ) {

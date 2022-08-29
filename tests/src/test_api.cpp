@@ -163,6 +163,8 @@ TEST_CASE( "test account creation time", "[account]" ) {
     for (int i=0; i<10; i++) {
         t.produce_block();
     }
+    t.deploy_contract("testapi", TEST_API_WASM, TEST_API_ABI);
+    t.produce_block();
 
     auto ret = t.get_account("testapi");
     WARN(ret->get_string("created"));
@@ -171,7 +173,7 @@ TEST_CASE( "test account creation time", "[account]" ) {
     test_permission_last_used_msg args = {"testapi"_n, "active"_n, str2ms(s)};
     CALL_TEST_FUNCTION( t, "test_permission", "test_account_creation_time",
                        eosio::pack<test_permission_last_used_msg>(test_permission_last_used_msg{
-                           "alice"_n, config::active_name,
+                           "testapi"_n, config::active_name,
                            str2ms(s) * 1000
                        }));
 }
