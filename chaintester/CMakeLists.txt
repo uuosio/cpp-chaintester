@@ -21,7 +21,14 @@ add_library ( chaintester
     src/TConnectedClient.cpp
 )
 
-target_link_libraries ( chaintester PUBLIC utils softfloat thrift ${CMAKE_DL_LIBS})
+target_link_libraries ( chaintester PUBLIC 
+    utils
+    softfloat
+    thrift
+    ${CMAKE_DL_LIBS}
+    ${CMAKE_CURRENT_BINARY_DIR}/../libs/Catch2/src/libCatch2Maind.a
+    ${CMAKE_CURRENT_BINARY_DIR}/../libs/Catch2/src/libCatch2d.a
+)
 
 target_include_directories(chaintester PUBLIC
     "./gen"
