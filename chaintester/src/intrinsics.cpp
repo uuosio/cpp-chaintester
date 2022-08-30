@@ -1220,3 +1220,12 @@ void init_intrinsics() {
     g_intrinsics_func.set_action_return_value = set_action_return_value;
 
 }
+
+class InitIntrinsics {
+public:
+    InitIntrinsics() {
+        init_intrinsics();
+    }
+};
+
+static InitIntrinsics _init;
