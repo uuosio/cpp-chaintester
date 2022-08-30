@@ -45,4 +45,4 @@ set(SPECIAL_SRC_FILES
     src/chaintester.cpp
     src/intrinsics.cpp
 )
-set_property(SOURCE ${SPECIAL_SRC_FILES} PROPERTY COMPILE_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+set_property(SOURCE ${SPECIAL_SRC_FILES} PROPERTY COMPILE_FLAGS "-g -O0 ${COVERAGE_OPTIONS}")

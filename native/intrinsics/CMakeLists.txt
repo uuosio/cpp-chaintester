@@ -12,7 +12,7 @@ endif()
 target_compile_options(intrinsics_native PRIVATE 
     -g
     -O0
-    -fprofile-arcs -ftest-coverage
+    ${COVERAGE_OPTIONS}
     -DEOSIO_NATIVE
     -Wno-unknown-attributes
     ${PLATFORM_OPTIONS}
@@ -23,4 +23,4 @@ target_include_directories(intrinsics_native PRIVATE
     ${CDT_INCLUDE_PATH}
 )
 
-target_link_options(intrinsics_native PRIVATE -fprofile-arcs -ftest-coverage)
+target_link_options(intrinsics_native PRIVATE ${COVERAGE_OPTIONS})

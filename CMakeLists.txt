@@ -39,6 +39,12 @@ set(CDT_INCLUDE_PATH
     ${CMAKE_CURRENT_SOURCE_DIR}/libs/cdt/include/eosiolib/contracts
 )
 
+if (ENABLE_COVERAGE)
+    set(COVERAGE_OPTIONS "-fprofile-arcs -ftest-coverage")
+else()
+    set(COVERAGE_OPTIONS "")
+endif()
+
 add_subdirectory(libs)
 add_subdirectory(native)
 add_subdirectory(chaintester)

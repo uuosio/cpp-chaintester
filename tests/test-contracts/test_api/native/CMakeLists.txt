@@ -3,12 +3,12 @@ add_library( test_api_native ${CMAKE_CURRENT_SOURCE_DIR}/../test_api.cpp)
 target_compile_options(test_api_native PRIVATE
     -g
     -O0
-    -fprofile-arcs -ftest-coverage
+    ${COVERAGE_OPTIONS}
     -DEOSIO_NATIVE
     -Wno-unknown-attributes
 )
 
-target_link_options(test_api_native PRIVATE -fprofile-arcs -ftest-coverage)
+target_link_options(test_api_native PRIVATE ${COVERAGE_OPTIONS})
 
 target_include_directories(test_api_native PRIVATE 
     ${CMAKE_CURRENT_SOURCE_DIR}/../include

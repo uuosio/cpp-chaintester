@@ -8,7 +8,7 @@ set_target_properties(hello_native PROPERTIES CXX_VISIBILITY_PRESET hidden)
 target_compile_options(hello_native PRIVATE 
     -g
     -O0
-    -fprofile-arcs -ftest-coverage
+    ${COVERAGE_OPTIONS}
     -DEOSIO_NATIVE
     -Wno-unknown-attributes
 )
@@ -18,7 +18,7 @@ target_include_directories(hello_native PRIVATE
     ${CDT_INCLUDE_PATH}
 )
 
-target_link_options(hello_native PRIVATE -fprofile-arcs -ftest-coverage)
+target_link_options(hello_native PRIVATE ${COVERAGE_OPTIONS})
 
 target_link_libraries (hello_native
     chain_static
