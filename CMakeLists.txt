@@ -40,9 +40,9 @@ set(CDT_INCLUDE_PATH
 )
 
 if (ENABLE_COVERAGE)
-    set(COVERAGE_OPTIONS "-fprofile-arcs -ftest-coverage")
+    set(COVERAGE_OPTIONS -fprofile-arcs -ftest-coverage)
 else()
-    set(COVERAGE_OPTIONS "")
+    set(COVERAGE_OPTIONS )
 endif()
 
 add_subdirectory(libs)
