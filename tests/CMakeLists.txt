@@ -21,7 +21,7 @@ target_compile_options(tests PRIVATE
     -Wno-deprecated-declarations
 )
 
-target_link_options(tests PRIVATE -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping)
+target_link_options(tests PRIVATE -fprofile-arcs -ftest-coverage)
 
 target_link_libraries ( tests
     hello_native

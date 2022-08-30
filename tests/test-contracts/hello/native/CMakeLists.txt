@@ -8,7 +8,7 @@ set_target_properties(hello_native PROPERTIES CXX_VISIBILITY_PRESET hidden)
 target_compile_options(hello_native PRIVATE 
     -g
     -O0
-    -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping
+    -fprofile-arcs -ftest-coverage
     -DEOSIO_NATIVE
     -Wno-unknown-attributes
 )
@@ -22,7 +22,7 @@ target_include_directories(hello_native PRIVATE
     ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/contracts
 )
 
-target_link_options(hello_native PRIVATE -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping)
+target_link_options(hello_native PRIVATE -fprofile-arcs -ftest-coverage)
 
 target_link_libraries (hello_native
     chain_static

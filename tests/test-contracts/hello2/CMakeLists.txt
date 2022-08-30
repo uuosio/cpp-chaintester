@@ -9,7 +9,7 @@ set_target_properties(hello_static PROPERTIES CXX_VISIBILITY_PRESET hidden)
 target_compile_options(hello_static PRIVATE 
     -g
     -O0
-    -fprofile-instr-generate -fcoverage-mapping
+    -fprofile-arcs -ftest-coverage
     -DEOSIO_NATIVE
     -Wno-unknown-attributes
 )
@@ -25,7 +25,7 @@ target_include_directories(hello_static PUBLIC
     ${CDT_PATH}/include/eosiolib/contracts 
 )
 
-target_link_options(hello_static PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+target_link_options(hello_static PRIVATE -fprofile-arcs -ftest-coverage)
 
 target_link_libraries (hello_static
     chain_static

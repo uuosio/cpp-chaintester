@@ -12,7 +12,7 @@ endif()
 target_compile_options(chain_static PRIVATE 
     -g
     -O0
-    -fprofile-instr-generate -fcoverage-mapping
+    -fprofile-arcs -ftest-coverage
     -DEOSIO_NATIVE
     -Wno-unknown-attributes
     ${PLATFORM_OPTIONS}
@@ -28,4 +28,4 @@ target_include_directories(chain_static PRIVATE
 
 )
 
-target_link_options(chain_static PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+target_link_options(chain_static PRIVATE --fprofile-arcs -ftest-coverage)

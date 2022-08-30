@@ -8,7 +8,7 @@ set_target_properties(test_api_db_native PROPERTIES CXX_VISIBILITY_PRESET hidden
 target_compile_options(test_api_db_native PRIVATE 
     -g
     -O0
-    -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping
+    -fprofile-arcs -ftest-coverage
     -DEOSIO_NATIVE
     -Wno-unknown-attributes
     -Wno-deprecated-declarations
@@ -23,7 +23,7 @@ target_include_directories(test_api_db_native PRIVATE
     ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/contracts
 )
 
-target_link_options(test_api_db_native PRIVATE -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping)
+target_link_options(test_api_db_native PRIVATE -fprofile-arcs -ftest-coverage)
 
 target_link_libraries (test_api_db_native
     chain_static

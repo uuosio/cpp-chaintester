@@ -12,7 +12,7 @@ endif()
 target_compile_options(intrinsics_native PRIVATE 
     -g
     -O0
-    -fprofile-instr-generate -fcoverage-mapping
+    -fprofile-arcs -ftest-coverage
     -DEOSIO_NATIVE
     -Wno-unknown-attributes
     ${PLATFORM_OPTIONS}
@@ -28,4 +28,4 @@ target_include_directories(intrinsics_native PRIVATE
 
 )
 
-target_link_options(intrinsics_native PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+target_link_options(intrinsics_native PRIVATE -fprofile-arcs -ftest-coverage)
