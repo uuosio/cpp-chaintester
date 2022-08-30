@@ -702,8 +702,13 @@ void test_api_multi_index::idx_long_double_general()
 
    auto secidx = table.get_index<"bysecondary"_n>();
 
+#ifdef EOSIO_NATIVE
+   long double tolerance = std::numeric_limits<double>::epsilon() * 1e4l;
+#else
    long double tolerance = std::min( static_cast<long double>(std::numeric_limits<double>::epsilon()),
                                      std::numeric_limits<long double>::epsilon() * 1e7l );
+#endif
+
    print("tolerance = ", tolerance, "\n");
 
    long double f = 1.0l;
@@ -732,16 +737,11 @@ void test_api_multi_index::idx_long_double_general()
    }
    check( expected_key == 0, "idx_long_double_general - did not iterate through secondary index properly" );
 
-#ifndef EOSIO_NATIVE
-   {
-      auto itr = secidx.lower_bound( expected_product / 5.5l );
-      check( std::abs(1.0l / itr->sec - 5000000.0l) <= tolerance, "idx_long_double_general - lower_bound" );
 
-      itr = secidx.upper_bound( expected_product / 5.0l );
-      check( std::abs(1.0l / itr->sec - 4000000.0l) <= tolerance, "idx_long_double_general - upper_bound" );
-
-   }
-#endif
+   auto itr = secidx.lower_bound( expected_product / 5.5l );
+   check( std::abs(1.0l / itr->sec - 5000000.0l) <= tolerance, "idx_long_double_general - lower_bound" );
+   itr = secidx.upper_bound( expected_product / 5.0l );
+   check( std::abs(1.0l / itr->sec - 4000000.0l) <= tolerance, "idx_long_double_general - upper_bound" );
 }
 
 void test_api_multi_index::idx64_pk_iterator_exceed_end()

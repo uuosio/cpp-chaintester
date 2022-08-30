@@ -604,17 +604,21 @@ int32_t db_idx_double_end(capi_name code, uint64_t scope, capi_name table) {
 }
 
 int32_t db_idx_long_double_store(uint64_t scope, capi_name table, capi_name payer, uint64_t id, const long double* secondary) {
+    float128_t _secondary;
+    extF80M_to_f128M((extFloat80_t *)secondary, &_secondary);
     return GetApplyClient()->db_idx_long_double_store(
         to_raw_uint64(scope),
         to_raw_uint64(table),
         to_raw_uint64(payer),
         to_raw_uint64(id),
-        string((char *)secondary, 16)
+        string((char *)&_secondary, 16)
     );    
 }
 
 void db_idx_long_double_update(int32_t iterator, capi_name payer, const long double* secondary) {
-    GetApplyClient()->db_idx_long_double_update(iterator, to_raw_uint64(payer), string((char *)secondary, 16));    
+    float128_t _secondary;
+    extF80M_to_f128M((extFloat80_t *)secondary, &_secondary);
+    GetApplyClient()->db_idx_long_double_update(iterator, to_raw_uint64(payer), string((char *)&_secondary, 16));    
 }
 
 void db_idx_long_double_remove(int32_t iterator) {
@@ -650,7 +654,12 @@ int32_t db_idx_long_double_find_primary(capi_name code, uint64_t scope, capi_nam
 
     );
     if (ret.iterator >= 0) {
-        memcpy(secondary, ret.secondary.c_str(), ret.secondary.size());
+        if (ret.secondary.size() != 16) {
+            throw std::runtime_error("db_idx_long_double_find_primary: bad secondary return size");
+        }
+        float128_t _secondary;
+        memcpy(&_secondary, ret.secondary.c_str(), ret.secondary.size());
+        f128M_to_extF80M(&_secondary, (extFloat80_t *)secondary);
     }
     return ret.iterator;
 }
@@ -674,16 +683,24 @@ int32_t db_idx_long_double_find_secondary(capi_name code, uint64_t scope, capi_n
 
 int32_t db_idx_long_double_lowerbound(capi_name code, uint64_t scope, capi_name table, long double* secondary, uint64_t* primary) {
     LowerBoundUpperBoundReturn ret;
+    float128_t _secondary;
+    extF80M_to_f128M((extFloat80_t *)secondary, &_secondary);
+
     GetApplyClient()->db_idx_long_double_lowerbound(
         ret,
         to_raw_uint64(code),
         to_raw_uint64(scope),
         to_raw_uint64(table),
-        string((char *)secondary, 16),
+        string((char *)&_secondary, 16),
         to_raw_uint64(*primary)
     );
     if (ret.iterator >= 0) {
-        memcpy(secondary, ret.secondary.c_str(), 16);
+        if (ret.secondary.size() != 16) {
+            throw std::runtime_error("db_idx_long_double_lowerbound: bad secondary return size");
+        }
+        float128_t _secondary;
+        memcpy(&_secondary, ret.secondary.c_str(), ret.secondary.size());
+        f128M_to_extF80M(&_secondary, (extFloat80_t *)secondary);
         *primary = from_raw_uint64(ret.primary);
     }
     return ret.iterator;
@@ -691,16 +708,23 @@ int32_t db_idx_long_double_lowerbound(capi_name code, uint64_t scope, capi_name 
 
 int32_t db_idx_long_double_upperbound(capi_name code, uint64_t scope, capi_name table, long double* secondary, uint64_t* primary) {
     LowerBoundUpperBoundReturn ret;
+    float128_t _secondary;
+    extF80M_to_f128M((extFloat80_t *)secondary, &_secondary);
     GetApplyClient()->db_idx_long_double_upperbound(
         ret,
         to_raw_uint64(code),
         to_raw_uint64(scope),
         to_raw_uint64(table),
-        string((char *)secondary, 16),
+        string((char *)&_secondary, 16),
         to_raw_uint64(*primary)
     );
     if (ret.iterator >= 0) {
-        memcpy(secondary, ret.secondary.c_str(), 16);
+        if (ret.secondary.size() != 16) {
+            throw std::runtime_error("db_idx_long_double_upperbound: bad secondary return size");
+        }
+        float128_t _secondary;
+        memcpy(&_secondary, ret.secondary.c_str(), ret.secondary.size());
+        f128M_to_extF80M(&_secondary, (extFloat80_t *)secondary);
         *primary = from_raw_uint64(ret.primary);
     }
     return ret.iterator;
