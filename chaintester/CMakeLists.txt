@@ -40,7 +40,7 @@ add_dependencies(chaintester thrift_external)
 target_compile_options(chaintester PRIVATE 
     # -g
     -O3
-    -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping
+    # -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping
 )
 
 # target_link_options(chaintester PRIVATE -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping)
