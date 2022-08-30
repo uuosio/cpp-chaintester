@@ -209,3 +209,119 @@ TEST_CASE( "test action", "[action]" ) {
         )"};
     t.push_actions({a});
 }
+
+TEST_CASE( "print tests", "[print]" ) {
+    ChainTester t(true);
+    init_test(t);
+
+	// test prints
+    auto ret = CALL_TEST_FUNCTION(t, "test_print", "test_prints", {});
+    REQUIRE("abcefg" == ret->get_string("action_traces", 0, "console"));
+
+    // test prints_l
+    auto tx2_trace = CALL_TEST_FUNCTION(t, "test_print", "test_prints_l", {});
+    auto tx2_act_cnsl = tx2_trace->get_string("action_traces", 0, "console");
+    REQUIRE(tx2_act_cnsl == "abatest");
+
+    // test printi
+    auto tx3_trace = CALL_TEST_FUNCTION(t, "test_print", "test_printi", {});
+    auto tx3_act_cnsl = tx3_trace->get_string("action_traces", 0, "console");
+    REQUIRE(tx3_act_cnsl.substr(0,1) == "0");
+    REQUIRE(tx3_act_cnsl.substr(1,6) == "556644");
+    REQUIRE(tx3_act_cnsl.substr(7, std::string::npos) == "-1");
+
+    // test printui
+    auto tx4_trace = CALL_TEST_FUNCTION(t, "test_print", "test_printui", {});
+    auto tx4_act_cnsl = tx4_trace->get_string("action_traces", 0, "console");
+    REQUIRE(tx4_act_cnsl.substr(0,1) == "0");
+    REQUIRE(tx4_act_cnsl.substr(1,6) == "556644");
+    REQUIRE(tx4_act_cnsl.substr(7, std::string::npos) == U64Str(-1)); // "18446744073709551615"
+
+    // test printn
+    auto tx5_trace = CALL_TEST_FUNCTION(t, "test_print", "test_printn", {});
+    auto tx5_act_cnsl = tx5_trace->get_string("action_traces", 0, "console");
+
+    REQUIRE(tx5_act_cnsl.substr(0,1) == "1");
+    REQUIRE(tx5_act_cnsl.substr(1,1) == "5");
+    REQUIRE(tx5_act_cnsl.substr(2,1) == "a");
+    REQUIRE(tx5_act_cnsl.substr(3,1) == "z");
+
+    REQUIRE(tx5_act_cnsl.substr(4,3) == "abc");
+    REQUIRE(tx5_act_cnsl.substr(7,3) == "123");
+
+    REQUIRE(tx5_act_cnsl.substr(10,7) == "abc.123");
+    REQUIRE(tx5_act_cnsl.substr(17,7) == "123.abc");
+
+    REQUIRE(tx5_act_cnsl.substr(24,13) == "12345abcdefgj");
+    REQUIRE(tx5_act_cnsl.substr(37,13) == "ijklmnopqrstj");
+    REQUIRE(tx5_act_cnsl.substr(50,13) == "vwxyz.12345aj");
+
+    REQUIRE(tx5_act_cnsl.substr(63, 13) == "111111111111j");
+    REQUIRE(tx5_act_cnsl.substr(76, 13) == "555555555555j");
+    REQUIRE(tx5_act_cnsl.substr(89, 13) == "aaaaaaaaaaaaj");
+    REQUIRE(tx5_act_cnsl.substr(102,13) == "zzzzzzzzzzzzj");
+
+    // test printi128
+    auto tx6_trace = CALL_TEST_FUNCTION(t, "test_print", "test_printi128", {} );
+    auto tx6_act_cnsl = tx6_trace->get_string("action_traces", 0, "console");
+    size_t start = 0;
+    size_t end = tx6_act_cnsl.find('\n', start);
+    REQUIRE( tx6_act_cnsl.substr(start, end-start) == U128Str(1) );
+    start = end + 1; end = tx6_act_cnsl.find('\n', start);
+    REQUIRE( tx6_act_cnsl.substr(start, end-start) == U128Str(0) );
+    start = end + 1; end = tx6_act_cnsl.find('\n', start);
+    REQUIRE( tx6_act_cnsl.substr(start, end-start) == "-" + U128Str(static_cast<unsigned __int128>(std::numeric_limits<__int128>::lowest())) );
+    start = end + 1; end = tx6_act_cnsl.find('\n', start);
+    REQUIRE( tx6_act_cnsl.substr(start, end-start) == "-" + U128Str(87654323456) );
+
+    // test printui128
+    auto tx7_trace = CALL_TEST_FUNCTION(t, "test_print", "test_printui128", {});
+    auto tx7_act_cnsl = tx7_trace->get_string("action_traces", 0, "console");
+    start = 0; end = tx7_act_cnsl.find('\n', start);
+    REQUIRE(tx7_act_cnsl.substr(start, end-start) == U128Str(std::numeric_limits<unsigned __int128>::max()));
+    start = end + 1; end = tx7_act_cnsl.find('\n', start);
+    REQUIRE(tx7_act_cnsl.substr(start, end-start) == U128Str(0));
+    start = end + 1; end = tx7_act_cnsl.find('\n', start);
+    REQUIRE(tx7_act_cnsl.substr(start, end-start) == U128Str(87654323456));
+
+    // test printsf
+    auto tx8_trace = CALL_TEST_FUNCTION(t, "test_print", "test_printsf", {} );
+    auto tx8_act_cnsl = tx8_trace->get_string("action_traces", 0, "console");
+    start = 0; end = tx8_act_cnsl.find('\n', start);
+    REQUIRE( tx8_act_cnsl.substr(start, end-start) == "5.000000e-01" );
+    start = end + 1; end = tx8_act_cnsl.find('\n', start);
+    REQUIRE( tx8_act_cnsl.substr(start, end-start) == "-3.750000e+00" );
+    start = end + 1; end = tx8_act_cnsl.find('\n', start);
+    REQUIRE( tx8_act_cnsl.substr(start, end-start) == "6.666667e-07" );
+
+    // test printdf
+    auto tx9_trace = CALL_TEST_FUNCTION(t, "test_print", "test_printdf", {});
+    auto tx9_act_cnsl = tx9_trace->get_string("action_traces", 0, "console");
+    start = 0; end = tx9_act_cnsl.find('\n', start);
+    REQUIRE(tx9_act_cnsl.substr(start, end-start) == "5.000000000000000e-01");
+    start = end + 1; end = tx9_act_cnsl.find('\n', start);
+    REQUIRE(tx9_act_cnsl.substr(start, end-start) == "-3.750000000000000e+00");
+    start = end + 1; end = tx9_act_cnsl.find('\n', start);
+    REQUIRE(tx9_act_cnsl.substr(start, end-start) == "6.666666666666666e-07");
+
+    // test printqf
+    #ifdef __x86_64__
+        std::string expect1 = "5.000000000000000000e-01";
+        std::string expect2 = "-3.750000000000000000e+00";
+        std::string expect3 = "6.666666666666666667e-07";
+    #else
+        std::string expect1 = "5.000000000000000e-01";
+        std::string expect2 = "-3.750000000000000e+00";
+        std::string expect3 = "6.666666666666667e-07";
+    #endif
+    
+    auto tx10_trace = CALL_TEST_FUNCTION(t, "test_print", "test_printqf", {});
+    auto tx10_act_cnsl = tx10_trace->get_string("action_traces", 0, "console");
+    start = 0; end = tx10_act_cnsl.find('\n', start);
+    REQUIRE( tx10_act_cnsl.substr(start, end-start) == expect1 );
+    start = end + 1; end = tx10_act_cnsl.find('\n', start);
+    REQUIRE( tx10_act_cnsl.substr(start, end-start) == expect2 );
+    start = end + 1; end = tx10_act_cnsl.find('\n', start);
+    REQUIRE( tx10_act_cnsl.substr(start, end-start) == expect3 );
+}
+

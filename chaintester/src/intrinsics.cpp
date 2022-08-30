@@ -1,8 +1,10 @@
-#include "chaintester.h"
-
-#include "intrinsics.h"
 #include <string.h>
+#include <softfloat.hpp>
 
+#include "chaintester.h"
+#include "intrinsics.h"
+
+extern "C" void extF80M_to_f128M( const extFloat80_t *, float128_t * );
 
 Uint64 to_raw_uint64(uint64_t value) {
     Uint64 _value;
@@ -894,7 +896,9 @@ void printdf(double value) {
 }
 
 void printqf(const long double* value) {
-    string _value((char *)&value, 8);
+    float128_t f;
+    extF80M_to_f128M((extFloat80_t *)value, &f);
+    string _value((char *)&f, 16);
     GetApplyClient()->printqf(_value);
 }
 

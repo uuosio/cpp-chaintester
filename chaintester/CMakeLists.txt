@@ -25,7 +25,7 @@ add_library ( chaintester
     src/TConnectedClient.cpp
 )
 
-target_link_libraries ( chaintester PUBLIC utils thrift ${CMAKE_DL_LIBS})
+target_link_libraries ( chaintester PUBLIC utils softfloat thrift ${CMAKE_DL_LIBS})
 
 target_include_directories(chaintester PUBLIC
     "./gen"
@@ -37,11 +37,11 @@ target_include_directories(chaintester PUBLIC
 
 add_dependencies(chaintester thrift_external)
 
-# target_compile_options(chaintester PRIVATE 
-#     -g
-#     -O0
-#     -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping
-# )
+target_compile_options(chaintester PRIVATE 
+    # -g
+    -O3
+    -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping
+)
 
 # target_link_options(chaintester PRIVATE -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping)
 
@@ -49,4 +49,4 @@ set(SPECIAL_SRC_FILES
     src/chaintester.cpp
     src/intrinsics.cpp
 )
-set_property(SOURCE ${SPECIAL_SRC_FILES} PROPERTY COMPILE_FLAGS "-fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping")
+set_property(SOURCE ${SPECIAL_SRC_FILES} PROPERTY COMPILE_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping")

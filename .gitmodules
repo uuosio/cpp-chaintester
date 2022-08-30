@@ -7,3 +7,6 @@
 [submodule "libs/rapidjson"]
 	path = libs/rapidjson
 	url = https://github.com/Tencent/rapidjson
+[submodule "libs/softfloat"]
+	path = libs/softfloat
+	url = https://github.com/eosio/berkeley-softfloat-3

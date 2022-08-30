@@ -3,6 +3,8 @@
 #include "chaintester.h"
 #include "utils.h"
 
+using namespace std;
+
 #define APP_PATH "@CMAKE_CURRENT_BINARY_DIR@"
 
 #define TEST_API_SO "@CMAKE_BINARY_DIR@/tests/test-contracts/test_api/native/libtest_api_native@CMAKE_SHARED_LIBRARY_SUFFIX@"
@@ -44,7 +46,7 @@ static uint64_t TEST_METHOD(const char* CLASS, const char *METHOD) {
   return ( (uint64_t(DJBH(CLASS))<<32) | uint32_t(DJBH(METHOD)) );
 }
 
-static void CallFunction(ChainTester& tester, uint64_t action, const vector<char>& data, const string& required_exception_type="", const string& exception_message="") {
+static std::shared_ptr<JsonObject> CallFunction(ChainTester& tester, uint64_t action, const vector<char>& data, const string& required_exception_type="", const string& exception_message="") {
     auto permissions = R""""(
     {
         "testapi": "active"
@@ -54,6 +56,7 @@ static void CallFunction(ChainTester& tester, uint64_t action, const vector<char
     try {
         auto ret = tester.push_action("testapi", n2s(action), hex_str((uint8_t*)data.data(), data.size()), permissions);
         REQUIRE(!ret->HasMember("except"));
+        return ret;
     } catch(chain_exception& ex) {
         auto& o = ex.value();
         REQUIRE(o.HasMember("except"));
@@ -67,9 +70,14 @@ static void CallFunction(ChainTester& tester, uint64_t action, const vector<char
             auto s =  except["stack"][0]["data"]["s"].GetString();
             REQUIRE(string(s).find(exception_message) != std::string::npos);
         }
+        return std::make_shared<JsonObject>(o.to_string());
     }
 }
 
 #define CALL_TEST_FUNCTION(_TESTER, CLS, MTH, DATA) CallFunction(_TESTER, TEST_METHOD(CLS, MTH), DATA)
 #define CALL_TEST_FUNCTION_AND_CHECK_EXCEPTION(_TESTER, CLS, MTH, DATA, EXCEPT_TYPE, EXCEPT_MSG) CallFunction(_TESTER, TEST_METHOD(CLS, MTH), DATA, EXCEPT_TYPE, EXCEPT_MSG)
 #define CALL_TEST_FUNCTION_CHECK_ASSERT_EXCEPTION(_TESTER, CLS, MTH, DATA, EXCEPT_MSG) CallFunction(_TESTER, TEST_METHOD(CLS, MTH), DATA, "eosio_assert_message_exception", EXCEPT_MSG)
+
+string I64Str(int64_t i);
+string U64Str(uint64_t i);
+string U128Str(unsigned __int128 n);

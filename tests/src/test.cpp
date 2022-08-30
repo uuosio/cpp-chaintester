@@ -5,6 +5,47 @@
 
 #include "test.h"
 
+#include <sstream>
+
+string I64Str(int64_t i) {
+	std::stringstream ss;
+	ss << i;
+	return ss.str();
+}
+
+string U64Str(uint64_t i) {
+    std::stringstream ss;
+    ss << i;
+    return ss.str();
+}
+
+typedef unsigned __int128 uint128_t;
+
+//reference from https://stackoverflow.com/questions/11656241/how-to-print-uint128-t-number-using-gcc
+string U128Str(uint128_t n) {
+    static char buf[40];
+    unsigned int i, j, m = 39;
+    memset(buf, 0, 40);
+    for (i = 128; i-- > 0;) {
+        int carry = !!(n & ((uint128_t)1 << i));
+        for (j = 39; j-- > m + 1 || carry;) {
+            int d = 2 * buf[j] + carry;
+            carry = d > 9;
+            buf[j] = carry ? d - 10 : d;
+        }
+        m = j;
+    }
+    for (i = 0; i < 38; i++) {
+        if (buf[i]) {
+            break;
+        }
+    }
+    for (j = i; j < 39; j++) {
+        buf[j] += '0';
+    }
+    return string(buf + i);
+}
+
 static void apply(uint64_t receiver, uint64_t first_receiver, uint64_t action) {
     GetApplyClient()->prints("hello, c++\n");
 }
