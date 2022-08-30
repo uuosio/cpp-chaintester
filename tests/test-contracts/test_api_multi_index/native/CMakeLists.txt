@@ -16,11 +16,7 @@ target_compile_options(test_api_multi_index_native PRIVATE
 
 target_include_directories(test_api_multi_index_native PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/..
-    ${CMAKE_SOURCE_DIR}/libs/cdt/include
-    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/capi
-    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/native
-    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/core
-    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/contracts
+    ${CDT_INCLUDE_PATH}
 )
 
 target_link_options(test_api_multi_index_native PRIVATE -fprofile-arcs -ftest-coverage)

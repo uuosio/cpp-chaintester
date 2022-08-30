@@ -18,8 +18,8 @@ include(ExternalProject)
 
 ExternalProject_Add(
     thrift_external
-    SOURCE_DIR ${CMAKE_SOURCE_DIR}/libs/thrift
-    BINARY_DIR ${CMAKE_BINARY_DIR}/libs/thrift
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/thrift
+    BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/libs/thrift
     CMAKE_ARGS -DBUILD_TESTING=FALSE -DBUILD_COMPILER=FALSE -DBUILD_JAVA=FALSE -DBUILD_JAVASCRIPT=FALSE -DBUILD_NODEJS=FALSE -DBUILD_NODEJS=FALSE -DBUILD_PYTHON=FALSE
     UPDATE_COMMAND ""
     PATCH_COMMAND ""
@@ -29,9 +29,20 @@ ExternalProject_Add(
 )
 
 add_library(thrift STATIC IMPORTED)
-set_target_properties(thrift PROPERTIES IMPORTED_LOCATION  ${CMAKE_BINARY_DIR}/libs/thrift/lib/libthriftd${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_target_properties(thrift PROPERTIES IMPORTED_LOCATION  ${CMAKE_CURRENT_BINARY_DIR}/libs/thrift/lib/libthriftd${CMAKE_STATIC_LIBRARY_SUFFIX})
+
+set(CDT_INCLUDE_PATH
+    ${CMAKE_CURRENT_SOURCE_DIR}/libs/cdt/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/libs/cdt/include/eosiolib/capi
+    ${CMAKE_CURRENT_SOURCE_DIR}/libs/cdt/include/eosiolib/native
+    ${CMAKE_CURRENT_SOURCE_DIR}/libs/cdt/include/eosiolib/core
+    ${CMAKE_CURRENT_SOURCE_DIR}/libs/cdt/include/eosiolib/contracts
+)
 
 add_subdirectory(libs)
 add_subdirectory(native)
 add_subdirectory(chaintester)
-add_subdirectory(tests)
+if(BUILD_TESTS)
+    add_subdirectory(tests)
+endif()
+

@@ -39,12 +39,7 @@ add_dependencies(tests chaintester Catch2 Catch2WithMain thrift_external)
 target_include_directories(tests PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
     "${CMAKE_CURRENT_BINARY_DIR}"
-    ${CMAKE_SOURCE_DIR}/libs/cdt/include
-    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/capi
-    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/native
-    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/core
-    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/contracts
-
+    ${CDT_INCLUDE_PATH}
     "${CMAKE_SOURCE_DIR}/libs/Catch2/src"
     "${CMAKE_SOURCE_DIR}/chaintester/src"
     "${CMAKE_BINARY_DIR}/generated-includes"

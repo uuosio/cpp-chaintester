@@ -3,11 +3,7 @@ add_library(utils
 )
 
 target_include_directories(utils PUBLIC
-    ${CMAKE_SOURCE_DIR}/libs/cdt/include
-    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/capi
-    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/native
-    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/core
-    ${CMAKE_SOURCE_DIR}/libs/cdt/include/eosiolib/contracts
+    ${CDT_INCLUDE_PATH}
 )
 
 add_library ( chaintester 
@@ -31,7 +27,7 @@ target_include_directories(chaintester PUBLIC
     "./gen"
     "${CMAKE_SOURCE_DIR}/libs/thrift/lib/cpp/src"
     "${CMAKE_SOURCE_DIR}/build/libs/thrift"
-    "${CMAKE_SOURCE_DIR}/libs/rapidjson/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../libs/rapidjson/include"
     "/usr/local/include"
 )
 
