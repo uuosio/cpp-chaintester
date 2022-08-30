@@ -25,8 +25,8 @@ target_link_libraries ( chaintester PUBLIC utils softfloat thrift ${CMAKE_DL_LIB
 
 target_include_directories(chaintester PUBLIC
     "./gen"
-    "${CMAKE_SOURCE_DIR}/libs/thrift/lib/cpp/src"
-    "${CMAKE_SOURCE_DIR}/build/libs/thrift"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../libs/thrift/lib/cpp/src"
+    "${CMAKE_CURRENT_BINARY_DIR}/../libs/thrift"
     "${CMAKE_CURRENT_SOURCE_DIR}/../libs/rapidjson/include"
     "/usr/local/include"
 )
