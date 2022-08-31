@@ -20,7 +20,7 @@ TEST_CASE( "test multi_index", "[multi_index]" ) {
     t.deploy_contract("testapi", HELLO_WASM, HELLO_ABI);
 
     auto check_failure = [&t]( const string& a, const char* expected_error_msg ) {
-        CallFunction(t, s2n(a), {}, "eosio_assert_message_exception", expected_error_msg);
+        CallFunction(t, "testapi", s2n(a), {}, "eosio_assert_message_exception", expected_error_msg);
     };
 
     t.push_action( "testapi", "s1g");        // idx64_general
