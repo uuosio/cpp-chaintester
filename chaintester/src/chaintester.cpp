@@ -47,6 +47,7 @@ class ApplyRequestHandler : virtual public ApplyRequestIf {
         GetApplyClient()->end_apply();
     } catch (apache::thrift::TException ex) {
         printf("+++++++exception on apply(%s, %s, %s):%s\n", n2s(_receiver).c_str(), n2s(_first_receiver).c_str(), n2s(_action).c_str(), ex.what());
+        GetApplyClient()->end_apply();
     }
     return 1;
   }
