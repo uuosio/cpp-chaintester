@@ -259,5 +259,23 @@ std::shared_ptr<JsonObject> ChainTester::deploy_contract(const string& account, 
     }
 
     client->deploy_contract(ret, id, account, hex_wasm_data, str_abi_data);
+    auto _ret = std::make_shared<JsonObject>(ret);
+    if (_ret->has_value("except")) {
+        throw chain_exception(ret);
+    }
+    return _ret;
+}
+
+std::shared_ptr<JsonObject> ChainTester::get_table_rows(bool json,
+                                const string& code, const string& scope, const string& table,
+                                const string& lower_bound, const string& upper_bound,
+                                int64_t limit,
+                                const string& key_type,
+                                const string& index_position,
+                                bool reverse,
+                                bool show_payer) {
+    string ret;
+    client->get_table_rows(ret, id, json, code, scope, table, lower_bound, upper_bound, limit, key_type, index_position, reverse, show_payer);
     return std::make_shared<JsonObject>(ret);
 }
+

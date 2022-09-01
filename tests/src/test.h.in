@@ -21,6 +21,9 @@ using namespace std;
 #define TEST_API_DB_WASM "@CMAKE_SOURCE_DIR@/tests/test-contracts/test_api_db/test_api_db.wasm"
 #define TEST_API_DB_ABI "@CMAKE_SOURCE_DIR@/tests/test-contracts/test_api_db/test_api_db.abi"
 
+#define TEST_MULTI_INDEX_EXAMPLE_WASM "@CMAKE_BINARY_DIR@/tests/test-contracts/multi_index_example/multi_index_example/multi_index_example.wasm"
+#define TEST_MULTI_INDEX_EXAMPLE_ABI "@CMAKE_BINARY_DIR@/tests/test-contracts/multi_index_example/multi_index_example/multi_index_example.abi"
+
 #ifdef __cplusplus
     extern "C" void test_api_native_apply( uint64_t receiver, uint64_t code, uint64_t action );
     extern "C" void hello_native_apply( uint64_t receiver, uint64_t code, uint64_t action );

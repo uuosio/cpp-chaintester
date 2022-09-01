@@ -52,10 +52,10 @@ static void apply(uint64_t receiver, uint64_t first_receiver, uint64_t action) {
 
 TEST_CASE( "test chaintester", "[chaintester]" ) {
     ChainTester tester(true);
-    set_apply(apply);
+    // set_apply(apply);
 
     // tester.enable_debug_contract("hello", true);
-    tester.enable_debug_contract("helloworld33", true);
+    // tester.enable_debug_contract("helloworld33", true);
 
     auto key = tester.create_key();
     std::cout<<key->to_string()<<std::endl;
@@ -66,21 +66,22 @@ TEST_CASE( "test chaintester", "[chaintester]" ) {
 
     auto info = tester.get_info();
 
-    std::cout<<info->get_uint64("head_block_num")<<std::endl;
-    std::cout<<info->get_string("chain_id")<<std::endl;
-    cout<<info->to_string()<<endl;
+    WARN(info->get_uint64("head_block_num"));
+    WARN(info->get_string("chain_id"));
+    WARN(info->to_string());
 
-    tester.create_account("hello", "helloworld33", pub_key, pub_key, 10*1024*1024, 100000, 1000000);
+    auto ret = tester.create_account("hello", "helloworld33", pub_key, pub_key, 10*1024*1024, 100000, 1000000);
     tester.produce_block();
 
     auto account_info = tester.get_account("helloworld33");
-    cout<<account_info->get_string("head_block_time")<<endl;
-
-    tester.deploy_contract("helloworld33", HELLO_WASM, HELLO_ABI);
+    WARN(account_info->get_string("head_block_time"));
+    
+    ret = tester.deploy_contract("helloworld33", TEST_MULTI_INDEX_EXAMPLE_WASM, TEST_MULTI_INDEX_EXAMPLE_ABI);
+    WARN(ret->to_string());
 
     auto args = R""""(
     {
-        "nm": "alice"
+        "user": "alice"
     }
     )"""";
 
@@ -89,8 +90,17 @@ TEST_CASE( "test chaintester", "[chaintester]" ) {
         "helloworld33": "active"
     }
     )"""";
-    for (int i=0; i<5; i++) {
-        tester.push_action("helloworld33", "hi", args, permissions);
-        tester.produce_block();
-    }
+    
+    ret = tester.push_action("helloworld33", "set", args, permissions);
+    WARN(ret->to_string());
+
+    /*
+        key_type: "i64"|"i128"|"i256"|"float64"|"float128"|"sha256"|"ripemd160"
+        index_position: "2"|"3"|"4"|"5"|"6"|"7"|"8"|"9"|"10"
+    */
+    ret = tester.get_table_rows(true, "helloworld33", "helloworld33", "testtaba", "alice", "alice", 10);
+    WARN(ret->to_string());
+
+    ret = tester.get_table_rows(true, "helloworld33", "helloworld33", "testtaba", "second", "second", 10, "i64", "2");
+    WARN(ret->to_string());
 }

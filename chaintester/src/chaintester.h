@@ -192,6 +192,19 @@ public:
     std::shared_ptr<JsonObject> push_action(const string& account, const string& action, const ActionArguments& arguments="", const string& permissions="");
     std::shared_ptr<JsonObject> push_actions(const std::vector<TxAction> & actions);
     std::shared_ptr<JsonObject> deploy_contract(const string& account, const string& wasmFile, const string& abiFile);
+
+    /*
+        key_type: "i64"|"i128"|"i256"|"float64"|"float128"|"sha256"|"ripemd160"
+        index_position: "2"|"3"|"4"|"5"|"6"|"7"|"8"|"9"|"10"
+    */
+    std::shared_ptr<JsonObject> get_table_rows(bool json,
+                                    const string& code, const string& scope, const string& table,
+                                    const string& lower_bound, const string& upper_bound,
+                                    int64_t limit,
+                                    const string& key_type = "",
+                                    const string& index_position = "",
+                                    bool reverse = false,
+                                    bool show_payer = true);
 };
 
 std::string hex_str(const uint8_t *data, int len);
