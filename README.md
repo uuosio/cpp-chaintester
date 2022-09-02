@@ -5,7 +5,7 @@ C++ test framework for EOS
 
 # What is cpp-chaintester
 
-1. It is a C++ test framework for EOS.
+1. It is a C++ smart contracts test framework for EOS.
 2. It makes writing C++ Smart Contracts test code more convenient.
 3. It supports source-level C++ Smart Contracts debugging.
 4. It supports generating code coverage for C++ Smart Contracts.
