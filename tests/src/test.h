@@ -1,33 +1,15 @@
+#pragma once
+
 #include <stdint.h>
 #include <catch2/catch_test_macros.hpp>
 #include "chaintester.h"
 #include "utils.h"
+#include "generated.h"
 
 using namespace std;
 
-#define APP_PATH "@CMAKE_CURRENT_BINARY_DIR@"
-
-#define TEST_API_SO "@CMAKE_BINARY_DIR@/tests/test-contracts/test_api/native/libtest_api_native@CMAKE_SHARED_LIBRARY_SUFFIX@"
-#define HELLO_SO "@CMAKE_BINARY_DIR@/tests/test-contracts/hello/native/libhello_native@CMAKE_SHARED_LIBRARY_SUFFIX@"
-
-#define TEST_API_WASM "@CMAKE_BINARY_DIR@/tests/test-contracts/test_api/testapi.wasm"
-#define TEST_API_ABI "@CMAKE_BINARY_DIR@/tests/test-contracts/test_api/testapi.abi"
-
-
-#define HELLO_WASM "@CMAKE_BINARY_DIR@/tests/test-contracts/hello/hello/hello.wasm"
-#define HELLO_ABI "@CMAKE_BINARY_DIR@/tests/test-contracts/hello/hello/hello.abi"
-
-
-#define TEST_API_DB_WASM "@CMAKE_SOURCE_DIR@/tests/test-contracts/test_api_db/test_api_db.wasm"
-#define TEST_API_DB_ABI "@CMAKE_SOURCE_DIR@/tests/test-contracts/test_api_db/test_api_db.abi"
-
-#define TEST_MULTI_INDEX_EXAMPLE_WASM "@CMAKE_BINARY_DIR@/tests/test-contracts/multi_index_example/multi_index_example/multi_index_example.wasm"
-#define TEST_MULTI_INDEX_EXAMPLE_ABI "@CMAKE_BINARY_DIR@/tests/test-contracts/multi_index_example/multi_index_example/multi_index_example.abi"
-
-#ifdef __cplusplus
-    extern "C" void test_api_native_apply( uint64_t receiver, uint64_t code, uint64_t action );
-    extern "C" void hello_native_apply( uint64_t receiver, uint64_t code, uint64_t action );
-#endif
+extern "C" void test_api_native_apply( uint64_t receiver, uint64_t code, uint64_t action );
+extern "C" void hello_native_apply( uint64_t receiver, uint64_t code, uint64_t action );
 
 
 extern "C" size_t n2s(uint64_t n, char *cstr, size_t length);
@@ -64,13 +46,16 @@ static std::shared_ptr<JsonObject> CallFunction(ChainTester& tester, const strin
         auto& o = ex.value();
         REQUIRE(o.HasMember("except"));
         auto& except = o["except"];
-        // WARN(JsonToString(except));
+        // WARN(o.to_string());
         REQUIRE(except["name"].GetString() == required_exception_type);
         if ("wasm_execution_error" == required_exception_type) {
             auto s =  except["stack"][0]["format"].GetString();
-            REQUIRE(s == exception_message);
+            REQUIRE(string(s).find(exception_message) != std::string::npos);
         } else if ("eosio_assert_message_exception" == required_exception_type) {
             auto s =  except["stack"][0]["data"]["s"].GetString();
+            REQUIRE(string(s).find(exception_message) != std::string::npos);
+        } else {
+            auto s =  except["stack"][0]["format"].GetString();
             REQUIRE(string(s).find(exception_message) != std::string::npos);
         }
         return std::make_shared<JsonObject>(o.to_string());

@@ -44,4 +44,4 @@ target_include_directories(tests PUBLIC
     "${CMAKE_BINARY_DIR}/generated-includes"
 )
 
-configure_file(src/test.h.in ${CMAKE_CURRENT_BINARY_DIR}/test.h @ONLY )
+configure_file(src/generated.h.in ${CMAKE_CURRENT_BINARY_DIR}/generated.h @ONLY )

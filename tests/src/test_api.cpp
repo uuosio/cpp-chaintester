@@ -19,6 +19,23 @@ void init_test(ChainTester& t) {
     t.produce_block();
 }
 
+void init_test2(ChainTester& t) {
+    set_apply(test_api_native_apply);
+
+    t.enable_debug_contract("testapi", true);
+
+    auto key = t.create_key();
+    auto pub_key = key->get_string("public");
+    auto priv_key = key->get_string("private");
+    t.import_key(pub_key, priv_key);
+    t.create_account("eosio", "testapi", pub_key, pub_key);
+    t.create_account("eosio", "testapi2", pub_key, pub_key);
+
+    t.deploy_contract("testapi", TEST_API_WASM, TEST_API_ABI);
+    t.deploy_contract("testapi2", TEST_API_WASM, TEST_API_ABI);
+    t.produce_block();
+}
+
 TEST_CASE( "test api", "[api]" ) {
     bool debug = true;
     ChainTester t(true);
@@ -323,5 +340,51 @@ TEST_CASE( "print tests", "[print]" ) {
     REQUIRE( tx10_act_cnsl.substr(start, end-start) == expect2 );
     start = end + 1; end = tx10_act_cnsl.find('\n', start);
     REQUIRE( tx10_act_cnsl.substr(start, end-start) == expect3 );
+}
+
+TEST_CASE( "ram_billing_in_notify_tests", "[print]" ) {
+    ChainTester t(true);
+    init_test2(t);
+    // std::array<uint64_t, 2> args = {"testapi"_n.value, "testapi2"_n.value};
+    auto args = std::make_tuple("testapi"_n, "testapi2"_n);
+    // CALL_TEST_FUNCTION_AND_CHECK_EXCEPTION(t, "test_action", "test_ram_billing_in_notify", eosio::pack(args), "subjective_block_production_exception", "Cannot charge RAM to other accounts during notify."); 
+    CALL_TEST_FUNCTION_AND_CHECK_EXCEPTION(t, "test_action", "test_ram_billing_in_notify", eosio::pack(args), "unauthorized_ram_usage_increase", "unprivileged contract cannot increase ${resource} usage of another account within a notify context: ${account}"); 
+
+   CALL_TEST_FUNCTION(t, "test_action", "test_ram_billing_in_notify", eosio::pack(std::make_tuple(uint64_t(0), "testapi2"_n)));
+   CALL_TEST_FUNCTION(t, "test_action", "test_ram_billing_in_notify", eosio::pack(std::make_tuple("testapi2"_n, "testapi2"_n)));
+
+// {"code": 3050010,
+//   "name": "unauthorized_ram_usage_increase", "message": "Action attempts to increase RAM usage of account without authorization", 
+//   "stack": [
+//     {
+//         "context": {
+//             "level": "error", 
+//             "file": "apply_context.cpp",
+//             "line": 76,
+//             "method": "check_unprivileged_resource_usage",
+//             "hostname": "",
+//             "thread_name": "thread-0",
+//             "timestamp": "2022-09-03T07:53:29.043"
+//     },
+//     "format": "unprivileged contract cannot increase ${resource} usage of another account within a notify context: ${account}",
+//     "data": {"resource": "RAM", "account": "testapi"}
+//   },
+  
+//   {
+//     "context": {
+//         "level": "warn",
+//         "file": "apply_context.cpp",
+//         "line": 172,
+//         "method": "exec_one",
+//         "hostname": "",
+//         "thread_name": "thread-0", 
+//         "timestamp": "2022-09-03T07:53:29.043"
+//     },
+//     "format": "pending console output: ${console}", 
+//     "data": {"console": ""}}  
+//   ]
+
+//   }
+
 }
 
