@@ -4,6 +4,7 @@ message(STATUS "++++++++++CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
 add_executable( tests 
+    src/main.cpp
     src/test.cpp
     src/test_hello.cpp
     src/test_api_db.cpp
@@ -29,9 +30,10 @@ target_link_libraries ( tests
     test_api_db_native
     test_api_multi_index_native
     chaintester
+    ${CMAKE_BINARY_DIR}/libs/Catch2/src/libCatch2d.a
 )
 
-add_dependencies(tests chaintester Catch2 Catch2WithMain thrift_external)
+add_dependencies(tests chaintester)
 
 target_include_directories(tests PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
