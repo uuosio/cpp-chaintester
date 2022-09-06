@@ -30,7 +30,7 @@ target_link_libraries ( tests
     test_api_db_native
     test_api_multi_index_native
     chaintester
-    ${CMAKE_BINARY_DIR}/libs/Catch2/src/libCatch2d.a
+    ${CMAKE_BINARY_DIR}/libs/Catch2/src/libCatch2${CMAKE_STATIC_LIBRARY_SUFFIX}
 )
 
 add_dependencies(tests chaintester)

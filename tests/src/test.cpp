@@ -47,7 +47,7 @@ string U128Str(uint128_t n) {
 }
 
 static void apply(uint64_t receiver, uint64_t first_receiver, uint64_t action) {
-    GetApplyClient()->prints("hello, c++\n");
+    //GetApplyClient()->prints("hello, c++\n");
 }
 
 TEST_CASE( "test chaintester", "[chaintester]" ) {

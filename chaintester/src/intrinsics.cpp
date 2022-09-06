@@ -1,8 +1,14 @@
 #include <string.h>
 #include <softfloat.hpp>
 
+#include "gen/IPCChainTester.h"
+#include "gen/Apply.h"
+#include "gen/ApplyRequest.h"
+
 #include "chaintester.h"
 #include "intrinsics.h"
+
+using namespace ::chaintester;
 
 extern "C" void extF80M_to_f128M( const extFloat80_t *, float128_t * );
 

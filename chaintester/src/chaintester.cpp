@@ -10,7 +10,28 @@
 #include <thread>
 #include <memory>
 
+#include <thrift/protocol/TBinaryProtocol.h>
+#include <thrift/transport/TServerSocket.h>
+#include <thrift/transport/TBufferTransports.h>
+
+#include <thrift/transport/TSocket.h>
+#include <thrift/transport/TTransportUtils.h>
+
+#include "gen/IPCChainTester.h"
+#include "gen/Apply.h"
+#include "gen/ApplyRequest.h"
+
+#include "TSimpleServer.h"
+
 #include "chaintester.h"
+
+using namespace ::apache::thrift;
+using namespace ::apache::thrift::protocol;
+using namespace ::apache::thrift::transport;
+// using namespace ::apache::thrift::server;
+
+using namespace ::server;
+using namespace ::chaintester;
 
 static std::shared_ptr<ApplyClient> gApplyClient;
 

@@ -348,10 +348,10 @@ TEST_CASE( "ram_billing_in_notify_tests", "[print]" ) {
     // std::array<uint64_t, 2> args = {"testapi"_n.value, "testapi2"_n.value};
     auto args = std::make_tuple("testapi"_n, "testapi2"_n);
     // CALL_TEST_FUNCTION_AND_CHECK_EXCEPTION(t, "test_action", "test_ram_billing_in_notify", eosio::pack(args), "subjective_block_production_exception", "Cannot charge RAM to other accounts during notify."); 
-    CALL_TEST_FUNCTION_AND_CHECK_EXCEPTION(t, "test_action", "test_ram_billing_in_notify", eosio::pack(args), "unauthorized_ram_usage_increase", "unprivileged contract cannot increase ${resource} usage of another account within a notify context: ${account}"); 
+    CALL_TEST_FUNCTION_AND_CHECK_EXCEPTION(t, "test_action", "test_ram_billing_in_notify", eosio::pack(args), "unauthorized_ram_usage_increase", "unprivileged contract cannot increase RAM usage of another account within a notify context: ${account}"); 
 
-   CALL_TEST_FUNCTION(t, "test_action", "test_ram_billing_in_notify", eosio::pack(std::make_tuple(uint64_t(0), "testapi2"_n)));
-   CALL_TEST_FUNCTION(t, "test_action", "test_ram_billing_in_notify", eosio::pack(std::make_tuple("testapi2"_n, "testapi2"_n)));
+    CALL_TEST_FUNCTION(t, "test_action", "test_ram_billing_in_notify", eosio::pack(std::make_tuple(uint64_t(0), "testapi2"_n)));
+    CALL_TEST_FUNCTION(t, "test_action", "test_ram_billing_in_notify", eosio::pack(std::make_tuple("testapi2"_n, "testapi2"_n)));
 
 // {"code": 3050010,
 //   "name": "unauthorized_ram_usage_increase", "message": "Action attempts to increase RAM usage of account without authorization", 

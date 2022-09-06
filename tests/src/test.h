@@ -56,6 +56,7 @@ static std::shared_ptr<JsonObject> CallFunction(ChainTester& tester, const strin
             REQUIRE(string(s).find(exception_message) != std::string::npos);
         } else {
             auto s =  except["stack"][0]["format"].GetString();
+            WARN(s);
             REQUIRE(string(s).find(exception_message) != std::string::npos);
         }
         return std::make_shared<JsonObject>(o.to_string());

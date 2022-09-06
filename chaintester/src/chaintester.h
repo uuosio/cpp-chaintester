@@ -4,36 +4,23 @@
 #include <vector>
 #include <variant>
 
-#include <thrift/protocol/TBinaryProtocol.h>
-#include <thrift/transport/TServerSocket.h>
-#include <thrift/transport/TBufferTransports.h>
-
-#include <thrift/transport/TSocket.h>
-#include <thrift/transport/TTransportUtils.h>
-
-#include "gen/IPCChainTester.h"
-#include "gen/Apply.h"
-#include "gen/ApplyRequest.h"
-
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 
-#include "TSimpleServer.h"
 
 #include "loader.h"
 #include "utils.h"
 
-using namespace ::apache::thrift;
-using namespace ::apache::thrift::protocol;
-using namespace ::apache::thrift::transport;
-// using namespace ::apache::thrift::server;
-
-using namespace ::server;
-
-using namespace ::chaintester;
 using namespace ::rapidjson;
 using namespace ::std;
+
+namespace chaintester {
+    class IPCChainTesterClient;
+    class ApplyClient;
+}
+
+using namespace chaintester;
 
 using ActionArguments = std::variant<string, vector<char>>;
 using JsonKey = std::variant<string, int>;
