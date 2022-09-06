@@ -51,8 +51,8 @@ namespace eosio {
    struct blockchain_parameters {
 
       /**
-      * The maxiumum net usage in instructions for a block
-      * @brief the maxiumum net usage in instructions for a block
+      * The maximum net usage in instructions for a block
+      * @brief the maximum net usage in instructions for a block
       */
       uint64_t max_block_net_usage;
 
@@ -92,8 +92,8 @@ namespace eosio {
       uint32_t context_free_discount_net_usage_den;
 
       /**
-      * The maxiumum billable cpu usage (in microseconds) for a block
-      * @brief The maxiumum billable cpu usage (in microseconds) for a block
+      * The maximum billable cpu usage (in microseconds) for a block
+      * @brief The maximum billable cpu usage (in microseconds) for a block
       */
       uint32_t max_block_cpu_usage;
 

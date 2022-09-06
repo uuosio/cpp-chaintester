@@ -46,7 +46,7 @@ void write(std::basic_ostream<Char, Traits>& out, const T& value) {
 #else
     ::boost::pfr::detail::for_each_field_dispatcher(
         value,
-        [&out, &fields_count_val](const auto& val) {
+        [&out](const auto& val) {
             detail::print_impl<0, fields_count_val>::print(out, val);
         },
         std::make_index_sequence<fields_count_val>{}
@@ -88,7 +88,7 @@ void read(std::basic_istream<Char, Traits>& in, T& value) {
 #else
     ::boost::pfr::detail::for_each_field_dispatcher(
         value,
-        [&in, &fields_count_val](const auto& val) {
+        [&in](const auto& val) {
             detail::read_impl<0, fields_count_val>::read(in, val);
         },
         std::make_index_sequence<fields_count_val>{}

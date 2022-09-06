@@ -5,8 +5,7 @@
 #pragma once
 #include <utility>
 #include <string>
-
-
+#include "native_defines.hpp"
 
 namespace eosio {
    namespace internal_use_do_not_use {
@@ -164,18 +163,12 @@ namespace eosio {
     */
    template<typename T, std::enable_if_t<!std::is_integral<std::decay_t<T>>::value, int> = 0>
    inline void print( T&& t ) {
-      if constexpr (std::is_same<std::decay_t<T>, std::string>::value) {
+      if constexpr (std::is_same<std::decay_t<T>, std::string>::value)
          internal_use_do_not_use::prints_l( t.c_str(), t.size() );
-      }
-      else if constexpr (std::is_same<std::decay_t<T>, char*>::value) {
+      else if constexpr (std::is_same<std::decay_t<T>, char*>::value)
          internal_use_do_not_use::prints(t);
-      }
-      else if constexpr (std::is_same<std::decay_t<T>, uint128_t>::value) {
-         internal_use_do_not_use::printui128(&t);
-      }
-      else {
+      else
          t.print();
-      }
    }
 
    /**

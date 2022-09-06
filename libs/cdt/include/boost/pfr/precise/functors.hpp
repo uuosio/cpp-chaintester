@@ -255,7 +255,7 @@ template <class T> struct hash {
         std::size_t result = 0;
         ::boost::pfr::detail::for_each_field_dispatcher(
             x,
-            [&result, &fields_count_val](const auto& lhs) {
+            [&result](const auto& lhs) {
                 result = detail::hash_impl<0, fields_count_val>::compute(lhs);
             },
             std::make_index_sequence<fields_count_val>{}

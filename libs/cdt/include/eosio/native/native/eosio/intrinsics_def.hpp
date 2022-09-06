@@ -3,6 +3,7 @@
 #include <eosio/action.h>
 #include <eosio/chain.h>
 #include <eosio/crypto.h>
+#include <eosio/crypto_ext.h>
 #include <eosio/db.h>
 #include <eosio/permission.h>
 #include <eosio/print.h>
@@ -10,6 +11,7 @@
 #include <eosio/system.h>
 #include <eosio/transaction.h>
 #include <eosio/types.h>
+#include <eosio/security_group.h>
 
 #include <type_traits>
 
@@ -157,7 +159,21 @@ intrinsic_macro(send_context_free_inline) \
 intrinsic_macro(send_deferred) \
 intrinsic_macro(cancel_deferred) \
 intrinsic_macro(get_context_free_data) \
-intrinsic_macro(get_sender) 
+intrinsic_macro(get_sender) \
+intrinsic_macro(set_action_return_value) \
+intrinsic_macro(add_security_group_participants) \
+intrinsic_macro(remove_security_group_participants) \
+intrinsic_macro(in_active_security_group) \
+intrinsic_macro(get_active_security_group) \
+intrinsic_macro(blake2_f) \
+intrinsic_macro(sha3) \
+intrinsic_macro(k1_recover) \
+intrinsic_macro(alt_bn128_add) \
+intrinsic_macro(alt_bn128_mul) \
+intrinsic_macro(alt_bn128_pair) \
+intrinsic_macro(mod_exp)
+
+
 
 #define CREATE_ENUM(name) \
    name,
