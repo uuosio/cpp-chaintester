@@ -635,6 +635,56 @@ class ApplyHandler : virtual public ApplyIf {
     printf("db_idx_long_double_end\n");
   }
 
+  void set_action_return_value(const std::string& data) {
+    // Your implementation goes here
+    printf("set_action_return_value\n");
+  }
+
+  void get_code_hash(std::string& _return, const Uint64& account, const int64_t struct_version) {
+    // Your implementation goes here
+    printf("get_code_hash\n");
+  }
+
+  int64_t get_block_num() {
+    // Your implementation goes here
+    printf("get_block_num\n");
+  }
+
+  void sha3(std::string& _return, const std::string& data, const int32_t keccak) {
+    // Your implementation goes here
+    printf("sha3\n");
+  }
+
+  void blake2_f(std::string& _return, const int64_t rounds, const std::string& state, const std::string& msg, const std::string& t0_offset, const std::string& t1_offset, const int32_t final) {
+    // Your implementation goes here
+    printf("blake2_f\n");
+  }
+
+  void k1_recover(std::string& _return, const std::string& sig, const std::string& dig) {
+    // Your implementation goes here
+    printf("k1_recover\n");
+  }
+
+  void alt_bn128_add(std::string& _return, const std::string& op1, const std::string& op2) {
+    // Your implementation goes here
+    printf("alt_bn128_add\n");
+  }
+
+  void alt_bn128_mul(std::string& _return, const std::string& g1, const std::string& scalar) {
+    // Your implementation goes here
+    printf("alt_bn128_mul\n");
+  }
+
+  int32_t alt_bn128_pair(const std::string& pairs) {
+    // Your implementation goes here
+    printf("alt_bn128_pair\n");
+  }
+
+  void mod_exp(std::string& _return, const std::string& base, const std::string& exp, const std::string& mod) {
+    // Your implementation goes here
+    printf("mod_exp\n");
+  }
+
 };
 
 int main(int argc, char **argv) {

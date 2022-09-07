@@ -1086,8 +1086,87 @@ int get_context_free_data( uint32_t index, char* buff, size_t size ) {
     return copy_size;
 }
 
-void set_action_return_value(void* data, size_t size) {
+void set_action_return_value(const char *data, uint32_t data_size) {
+    GetApplyClient()->set_action_return_value(string(data, data_size));
+}
 
+uint32_t get_code_hash(uint64_t account, uint32_t struct_version, char* packed_result, uint32_t packed_result_len) {
+    string ret;
+    GetApplyClient()->get_code_hash(ret, to_raw_uint64(account), struct_version);
+    size_t copy_size = std::min(ret.size(), (size_t)packed_result_len);
+    memcpy(packed_result, ret.c_str(), copy_size);
+    return copy_size;
+}
+
+uint32_t get_block_num() {
+    return (uint32_t)GetApplyClient()->get_block_num();
+}
+
+void sha3( const char* data, uint32_t data_len, char* hash, uint32_t hash_len, int32_t keccak ) {
+    string ret;
+    GetApplyClient()->sha3(ret, string(data, data_len), keccak);
+    size_t copy_size = std::min(ret.size(), (size_t)hash_len);
+    memcpy(hash, ret.c_str(), copy_size);
+}
+
+int32_t blake2_f( uint32_t rounds, const char* state, uint32_t state_len, const char* msg, uint32_t msg_len, 
+                const char* t0_offset, uint32_t t0_len, const char* t1_offset, uint32_t t1_len, int32_t final, char* result, uint32_t result_len) {
+    string ret;
+    GetApplyClient()->blake2_f(ret, rounds, string(state, state_len), string(msg, msg_len), string(t0_offset, t0_len), string(t1_offset, t1_len), final);
+    if (ret.size() == 0) {
+        return -1;
+    }
+    size_t copy_size = std::min(ret.size(), (size_t)result_len);
+    memcpy(result, ret.c_str(), copy_size);
+    return 0;
+}
+
+int32_t k1_recover( const char* sig, uint32_t sig_len, const char* dig, uint32_t dig_len, char* pub, uint32_t pub_len) {
+    string ret;
+    GetApplyClient()->k1_recover(ret, string(sig, sig_len), string(dig, dig_len));
+    if (ret.size() == 0) {
+        return -1;
+    }
+    size_t copy_size = std::min(ret.size(), (size_t)pub_len);
+    memcpy(pub, ret.c_str(), copy_size);
+    return 0;
+}
+
+int32_t alt_bn128_add( const char* op1, uint32_t op1_len, const char* op2, uint32_t op2_len, char* result, uint32_t result_len) {
+    string ret;
+    GetApplyClient()->alt_bn128_add(ret, string(op1, op1_len), string(op2, op2_len));
+    if (ret.size() == 0) {
+        return -1;
+    }
+    size_t copy_size = std::min(ret.size(), (size_t)result_len);
+    memcpy(result, ret.c_str(), copy_size);
+    return 0;
+}
+
+int32_t alt_bn128_mul( const char* g1, uint32_t g1_len, const char* scalar, uint32_t scalar_len, char* result, uint32_t result_len) {
+    string ret;
+    GetApplyClient()->alt_bn128_mul(ret, string(g1, g1_len), string(scalar, scalar_len));
+    if (ret.size() == 0) {
+        return -1;
+    }
+    size_t copy_size = std::min(ret.size(), (size_t)result_len);
+    memcpy(result, ret.c_str(), copy_size);
+    return 0;
+}
+
+int32_t alt_bn128_pair( const char* pairs, uint32_t pairs_len) {
+    return GetApplyClient()->alt_bn128_pair(string(pairs, pairs_len));
+}
+
+int32_t mod_exp( const char* base, uint32_t base_len, const char* exp, uint32_t exp_len, const char* mod, uint32_t mod_len, char* result, uint32_t result_len) {
+    string ret;
+    GetApplyClient()->mod_exp(ret, string(base, base_len), string(exp, exp_len), string(mod, mod_len));
+    if (ret.size() == 0) {
+        return -1;
+    }
+    size_t copy_size = std::min(ret.size(), (size_t)result_len);
+    memcpy(result, ret.c_str(), copy_size);
+    return 0;    
 }
 
 static bool initialized = false;
@@ -1225,6 +1304,17 @@ void init_intrinsics() {
     g_intrinsics_func.get_context_free_data = get_context_free_data;
     g_intrinsics_func.set_action_return_value = set_action_return_value;
 
+    g_intrinsics_func.set_action_return_value = set_action_return_value;
+    g_intrinsics_func.get_code_hash = get_code_hash;
+    g_intrinsics_func.get_block_num = get_block_num;
+
+    g_intrinsics_func.sha3 = sha3;
+    g_intrinsics_func.blake2_f = blake2_f;
+    g_intrinsics_func.k1_recover = k1_recover;
+    g_intrinsics_func.alt_bn128_add = alt_bn128_add;
+    g_intrinsics_func.alt_bn128_mul = alt_bn128_mul;
+    g_intrinsics_func.alt_bn128_pair = alt_bn128_pair;
+    g_intrinsics_func.mod_exp = mod_exp;
 }
 
 class InitIntrinsics {

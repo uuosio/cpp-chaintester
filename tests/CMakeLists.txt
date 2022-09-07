@@ -11,6 +11,7 @@ add_executable( tests
     src/test_multi_index.cpp
     src/intrinsics_test.cpp
     src/test_api.cpp
+    src/test_new_intrinsics.cpp
     src/test_jsonobject.cpp
 )
 
@@ -29,6 +30,7 @@ target_link_libraries ( tests
     test_api_native
     test_api_db_native
     test_api_multi_index_native
+    new_intrinsics_native
     chaintester
     ${CMAKE_BINARY_DIR}/libs/Catch2/src/libCatch2${CMAKE_STATIC_LIBRARY_SUFFIX}
 )

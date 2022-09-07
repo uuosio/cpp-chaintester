@@ -231,6 +231,10 @@ struct test_chain {
    static void test_activeprods();
 };
 
+struct test_new_intrinsics {
+   static void test();
+};
+
 struct test_fixedpoint {
    static void create_instances();
    static void test_addition();

@@ -2,6 +2,8 @@ add_library(utils
     src/utils.cpp
 )
 
+target_compile_options(utils PRIVATE -DEOSIO_NATIVE -Wno-unknown-attributes)
+
 target_include_directories(utils PUBLIC
     ${CDT_INCLUDE_PATH}
 )

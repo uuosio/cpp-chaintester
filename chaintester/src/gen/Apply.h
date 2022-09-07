@@ -145,6 +145,16 @@ class ApplyIf {
   virtual void db_idx_long_double_lowerbound(LowerBoundUpperBoundReturn& _return, const Uint64& code, const Uint64& scope, const Uint64& table, const std::string& secondary, const Uint64& primary) = 0;
   virtual void db_idx_long_double_upperbound(LowerBoundUpperBoundReturn& _return, const Uint64& code, const Uint64& scope, const Uint64& table, const std::string& secondary, const Uint64& primary) = 0;
   virtual int32_t db_idx_long_double_end(const Uint64& code, const Uint64& scope, const Uint64& table) = 0;
+  virtual void set_action_return_value(const std::string& data) = 0;
+  virtual void get_code_hash(std::string& _return, const Uint64& account, const int64_t struct_version) = 0;
+  virtual int64_t get_block_num() = 0;
+  virtual void sha3(std::string& _return, const std::string& data, const int32_t keccak) = 0;
+  virtual void blake2_f(std::string& _return, const int64_t rounds, const std::string& state, const std::string& msg, const std::string& t0_offset, const std::string& t1_offset, const int32_t final) = 0;
+  virtual void k1_recover(std::string& _return, const std::string& sig, const std::string& dig) = 0;
+  virtual void alt_bn128_add(std::string& _return, const std::string& op1, const std::string& op2) = 0;
+  virtual void alt_bn128_mul(std::string& _return, const std::string& g1, const std::string& scalar) = 0;
+  virtual int32_t alt_bn128_pair(const std::string& pairs) = 0;
+  virtual void mod_exp(std::string& _return, const std::string& base, const std::string& exp, const std::string& mod) = 0;
 };
 
 class ApplyIfFactory {
@@ -574,6 +584,38 @@ class ApplyNull : virtual public ApplyIf {
   int32_t db_idx_long_double_end(const Uint64& /* code */, const Uint64& /* scope */, const Uint64& /* table */) override {
     int32_t _return = 0;
     return _return;
+  }
+  void set_action_return_value(const std::string& /* data */) override {
+    return;
+  }
+  void get_code_hash(std::string& /* _return */, const Uint64& /* account */, const int64_t /* struct_version */) override {
+    return;
+  }
+  int64_t get_block_num() override {
+    int64_t _return = 0;
+    return _return;
+  }
+  void sha3(std::string& /* _return */, const std::string& /* data */, const int32_t /* keccak */) override {
+    return;
+  }
+  void blake2_f(std::string& /* _return */, const int64_t /* rounds */, const std::string& /* state */, const std::string& /* msg */, const std::string& /* t0_offset */, const std::string& /* t1_offset */, const int32_t /* final */) override {
+    return;
+  }
+  void k1_recover(std::string& /* _return */, const std::string& /* sig */, const std::string& /* dig */) override {
+    return;
+  }
+  void alt_bn128_add(std::string& /* _return */, const std::string& /* op1 */, const std::string& /* op2 */) override {
+    return;
+  }
+  void alt_bn128_mul(std::string& /* _return */, const std::string& /* g1 */, const std::string& /* scalar */) override {
+    return;
+  }
+  int32_t alt_bn128_pair(const std::string& /* pairs */) override {
+    int32_t _return = 0;
+    return _return;
+  }
+  void mod_exp(std::string& /* _return */, const std::string& /* base */, const std::string& /* exp */, const std::string& /* mod */) override {
+    return;
   }
 };
 
@@ -13669,6 +13711,1129 @@ class Apply_db_idx_long_double_end_presult {
 
 };
 
+typedef struct _Apply_set_action_return_value_args__isset {
+  _Apply_set_action_return_value_args__isset() : data(false) {}
+  bool data :1;
+} _Apply_set_action_return_value_args__isset;
+
+class Apply_set_action_return_value_args {
+ public:
+
+  Apply_set_action_return_value_args(const Apply_set_action_return_value_args&);
+  Apply_set_action_return_value_args& operator=(const Apply_set_action_return_value_args&);
+  Apply_set_action_return_value_args() noexcept
+                                     : data() {
+  }
+
+  virtual ~Apply_set_action_return_value_args() noexcept;
+  std::string data;
+
+  _Apply_set_action_return_value_args__isset __isset;
+
+  void __set_data(const std::string& val);
+
+  bool operator == (const Apply_set_action_return_value_args & rhs) const
+  {
+    if (!(data == rhs.data))
+      return false;
+    return true;
+  }
+  bool operator != (const Apply_set_action_return_value_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_set_action_return_value_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Apply_set_action_return_value_pargs {
+ public:
+
+
+  virtual ~Apply_set_action_return_value_pargs() noexcept;
+  const std::string* data;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Apply_set_action_return_value_result {
+ public:
+
+  Apply_set_action_return_value_result(const Apply_set_action_return_value_result&) noexcept;
+  Apply_set_action_return_value_result& operator=(const Apply_set_action_return_value_result&) noexcept;
+  Apply_set_action_return_value_result() noexcept {
+  }
+
+  virtual ~Apply_set_action_return_value_result() noexcept;
+
+  bool operator == (const Apply_set_action_return_value_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const Apply_set_action_return_value_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_set_action_return_value_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Apply_set_action_return_value_presult {
+ public:
+
+
+  virtual ~Apply_set_action_return_value_presult() noexcept;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _Apply_get_code_hash_args__isset {
+  _Apply_get_code_hash_args__isset() : account(false), struct_version(false) {}
+  bool account :1;
+  bool struct_version :1;
+} _Apply_get_code_hash_args__isset;
+
+class Apply_get_code_hash_args {
+ public:
+
+  Apply_get_code_hash_args(const Apply_get_code_hash_args&);
+  Apply_get_code_hash_args& operator=(const Apply_get_code_hash_args&);
+  Apply_get_code_hash_args() noexcept
+                           : struct_version(0) {
+  }
+
+  virtual ~Apply_get_code_hash_args() noexcept;
+  Uint64 account;
+  int64_t struct_version;
+
+  _Apply_get_code_hash_args__isset __isset;
+
+  void __set_account(const Uint64& val);
+
+  void __set_struct_version(const int64_t val);
+
+  bool operator == (const Apply_get_code_hash_args & rhs) const
+  {
+    if (!(account == rhs.account))
+      return false;
+    if (!(struct_version == rhs.struct_version))
+      return false;
+    return true;
+  }
+  bool operator != (const Apply_get_code_hash_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_get_code_hash_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Apply_get_code_hash_pargs {
+ public:
+
+
+  virtual ~Apply_get_code_hash_pargs() noexcept;
+  const Uint64* account;
+  const int64_t* struct_version;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Apply_get_code_hash_result__isset {
+  _Apply_get_code_hash_result__isset() : success(false) {}
+  bool success :1;
+} _Apply_get_code_hash_result__isset;
+
+class Apply_get_code_hash_result {
+ public:
+
+  Apply_get_code_hash_result(const Apply_get_code_hash_result&);
+  Apply_get_code_hash_result& operator=(const Apply_get_code_hash_result&);
+  Apply_get_code_hash_result() noexcept
+                             : success() {
+  }
+
+  virtual ~Apply_get_code_hash_result() noexcept;
+  std::string success;
+
+  _Apply_get_code_hash_result__isset __isset;
+
+  void __set_success(const std::string& val);
+
+  bool operator == (const Apply_get_code_hash_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Apply_get_code_hash_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_get_code_hash_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Apply_get_code_hash_presult__isset {
+  _Apply_get_code_hash_presult__isset() : success(false) {}
+  bool success :1;
+} _Apply_get_code_hash_presult__isset;
+
+class Apply_get_code_hash_presult {
+ public:
+
+
+  virtual ~Apply_get_code_hash_presult() noexcept;
+  std::string* success;
+
+  _Apply_get_code_hash_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+
+class Apply_get_block_num_args {
+ public:
+
+  Apply_get_block_num_args(const Apply_get_block_num_args&) noexcept;
+  Apply_get_block_num_args& operator=(const Apply_get_block_num_args&) noexcept;
+  Apply_get_block_num_args() noexcept {
+  }
+
+  virtual ~Apply_get_block_num_args() noexcept;
+
+  bool operator == (const Apply_get_block_num_args & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const Apply_get_block_num_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_get_block_num_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Apply_get_block_num_pargs {
+ public:
+
+
+  virtual ~Apply_get_block_num_pargs() noexcept;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Apply_get_block_num_result__isset {
+  _Apply_get_block_num_result__isset() : success(false) {}
+  bool success :1;
+} _Apply_get_block_num_result__isset;
+
+class Apply_get_block_num_result {
+ public:
+
+  Apply_get_block_num_result(const Apply_get_block_num_result&) noexcept;
+  Apply_get_block_num_result& operator=(const Apply_get_block_num_result&) noexcept;
+  Apply_get_block_num_result() noexcept
+                             : success(0) {
+  }
+
+  virtual ~Apply_get_block_num_result() noexcept;
+  int64_t success;
+
+  _Apply_get_block_num_result__isset __isset;
+
+  void __set_success(const int64_t val);
+
+  bool operator == (const Apply_get_block_num_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Apply_get_block_num_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_get_block_num_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Apply_get_block_num_presult__isset {
+  _Apply_get_block_num_presult__isset() : success(false) {}
+  bool success :1;
+} _Apply_get_block_num_presult__isset;
+
+class Apply_get_block_num_presult {
+ public:
+
+
+  virtual ~Apply_get_block_num_presult() noexcept;
+  int64_t* success;
+
+  _Apply_get_block_num_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _Apply_sha3_args__isset {
+  _Apply_sha3_args__isset() : data(false), keccak(false) {}
+  bool data :1;
+  bool keccak :1;
+} _Apply_sha3_args__isset;
+
+class Apply_sha3_args {
+ public:
+
+  Apply_sha3_args(const Apply_sha3_args&);
+  Apply_sha3_args& operator=(const Apply_sha3_args&);
+  Apply_sha3_args() noexcept
+                  : data(),
+                    keccak(0) {
+  }
+
+  virtual ~Apply_sha3_args() noexcept;
+  std::string data;
+  int32_t keccak;
+
+  _Apply_sha3_args__isset __isset;
+
+  void __set_data(const std::string& val);
+
+  void __set_keccak(const int32_t val);
+
+  bool operator == (const Apply_sha3_args & rhs) const
+  {
+    if (!(data == rhs.data))
+      return false;
+    if (!(keccak == rhs.keccak))
+      return false;
+    return true;
+  }
+  bool operator != (const Apply_sha3_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_sha3_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Apply_sha3_pargs {
+ public:
+
+
+  virtual ~Apply_sha3_pargs() noexcept;
+  const std::string* data;
+  const int32_t* keccak;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Apply_sha3_result__isset {
+  _Apply_sha3_result__isset() : success(false) {}
+  bool success :1;
+} _Apply_sha3_result__isset;
+
+class Apply_sha3_result {
+ public:
+
+  Apply_sha3_result(const Apply_sha3_result&);
+  Apply_sha3_result& operator=(const Apply_sha3_result&);
+  Apply_sha3_result() noexcept
+                    : success() {
+  }
+
+  virtual ~Apply_sha3_result() noexcept;
+  std::string success;
+
+  _Apply_sha3_result__isset __isset;
+
+  void __set_success(const std::string& val);
+
+  bool operator == (const Apply_sha3_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Apply_sha3_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_sha3_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Apply_sha3_presult__isset {
+  _Apply_sha3_presult__isset() : success(false) {}
+  bool success :1;
+} _Apply_sha3_presult__isset;
+
+class Apply_sha3_presult {
+ public:
+
+
+  virtual ~Apply_sha3_presult() noexcept;
+  std::string* success;
+
+  _Apply_sha3_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _Apply_blake2_f_args__isset {
+  _Apply_blake2_f_args__isset() : rounds(false), state(false), msg(false), t0_offset(false), t1_offset(false), final(false) {}
+  bool rounds :1;
+  bool state :1;
+  bool msg :1;
+  bool t0_offset :1;
+  bool t1_offset :1;
+  bool final :1;
+} _Apply_blake2_f_args__isset;
+
+class Apply_blake2_f_args {
+ public:
+
+  Apply_blake2_f_args(const Apply_blake2_f_args&);
+  Apply_blake2_f_args& operator=(const Apply_blake2_f_args&);
+  Apply_blake2_f_args() noexcept
+                      : rounds(0),
+                        state(),
+                        msg(),
+                        t0_offset(),
+                        t1_offset(),
+                        final(0) {
+  }
+
+  virtual ~Apply_blake2_f_args() noexcept;
+  int64_t rounds;
+  std::string state;
+  std::string msg;
+  std::string t0_offset;
+  std::string t1_offset;
+  int32_t final;
+
+  _Apply_blake2_f_args__isset __isset;
+
+  void __set_rounds(const int64_t val);
+
+  void __set_state(const std::string& val);
+
+  void __set_msg(const std::string& val);
+
+  void __set_t0_offset(const std::string& val);
+
+  void __set_t1_offset(const std::string& val);
+
+  void __set_final(const int32_t val);
+
+  bool operator == (const Apply_blake2_f_args & rhs) const
+  {
+    if (!(rounds == rhs.rounds))
+      return false;
+    if (!(state == rhs.state))
+      return false;
+    if (!(msg == rhs.msg))
+      return false;
+    if (!(t0_offset == rhs.t0_offset))
+      return false;
+    if (!(t1_offset == rhs.t1_offset))
+      return false;
+    if (!(final == rhs.final))
+      return false;
+    return true;
+  }
+  bool operator != (const Apply_blake2_f_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_blake2_f_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Apply_blake2_f_pargs {
+ public:
+
+
+  virtual ~Apply_blake2_f_pargs() noexcept;
+  const int64_t* rounds;
+  const std::string* state;
+  const std::string* msg;
+  const std::string* t0_offset;
+  const std::string* t1_offset;
+  const int32_t* final;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Apply_blake2_f_result__isset {
+  _Apply_blake2_f_result__isset() : success(false) {}
+  bool success :1;
+} _Apply_blake2_f_result__isset;
+
+class Apply_blake2_f_result {
+ public:
+
+  Apply_blake2_f_result(const Apply_blake2_f_result&);
+  Apply_blake2_f_result& operator=(const Apply_blake2_f_result&);
+  Apply_blake2_f_result() noexcept
+                        : success() {
+  }
+
+  virtual ~Apply_blake2_f_result() noexcept;
+  std::string success;
+
+  _Apply_blake2_f_result__isset __isset;
+
+  void __set_success(const std::string& val);
+
+  bool operator == (const Apply_blake2_f_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Apply_blake2_f_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_blake2_f_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Apply_blake2_f_presult__isset {
+  _Apply_blake2_f_presult__isset() : success(false) {}
+  bool success :1;
+} _Apply_blake2_f_presult__isset;
+
+class Apply_blake2_f_presult {
+ public:
+
+
+  virtual ~Apply_blake2_f_presult() noexcept;
+  std::string* success;
+
+  _Apply_blake2_f_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _Apply_k1_recover_args__isset {
+  _Apply_k1_recover_args__isset() : sig(false), dig(false) {}
+  bool sig :1;
+  bool dig :1;
+} _Apply_k1_recover_args__isset;
+
+class Apply_k1_recover_args {
+ public:
+
+  Apply_k1_recover_args(const Apply_k1_recover_args&);
+  Apply_k1_recover_args& operator=(const Apply_k1_recover_args&);
+  Apply_k1_recover_args() noexcept
+                        : sig(),
+                          dig() {
+  }
+
+  virtual ~Apply_k1_recover_args() noexcept;
+  std::string sig;
+  std::string dig;
+
+  _Apply_k1_recover_args__isset __isset;
+
+  void __set_sig(const std::string& val);
+
+  void __set_dig(const std::string& val);
+
+  bool operator == (const Apply_k1_recover_args & rhs) const
+  {
+    if (!(sig == rhs.sig))
+      return false;
+    if (!(dig == rhs.dig))
+      return false;
+    return true;
+  }
+  bool operator != (const Apply_k1_recover_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_k1_recover_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Apply_k1_recover_pargs {
+ public:
+
+
+  virtual ~Apply_k1_recover_pargs() noexcept;
+  const std::string* sig;
+  const std::string* dig;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Apply_k1_recover_result__isset {
+  _Apply_k1_recover_result__isset() : success(false) {}
+  bool success :1;
+} _Apply_k1_recover_result__isset;
+
+class Apply_k1_recover_result {
+ public:
+
+  Apply_k1_recover_result(const Apply_k1_recover_result&);
+  Apply_k1_recover_result& operator=(const Apply_k1_recover_result&);
+  Apply_k1_recover_result() noexcept
+                          : success() {
+  }
+
+  virtual ~Apply_k1_recover_result() noexcept;
+  std::string success;
+
+  _Apply_k1_recover_result__isset __isset;
+
+  void __set_success(const std::string& val);
+
+  bool operator == (const Apply_k1_recover_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Apply_k1_recover_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_k1_recover_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Apply_k1_recover_presult__isset {
+  _Apply_k1_recover_presult__isset() : success(false) {}
+  bool success :1;
+} _Apply_k1_recover_presult__isset;
+
+class Apply_k1_recover_presult {
+ public:
+
+
+  virtual ~Apply_k1_recover_presult() noexcept;
+  std::string* success;
+
+  _Apply_k1_recover_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _Apply_alt_bn128_add_args__isset {
+  _Apply_alt_bn128_add_args__isset() : op1(false), op2(false) {}
+  bool op1 :1;
+  bool op2 :1;
+} _Apply_alt_bn128_add_args__isset;
+
+class Apply_alt_bn128_add_args {
+ public:
+
+  Apply_alt_bn128_add_args(const Apply_alt_bn128_add_args&);
+  Apply_alt_bn128_add_args& operator=(const Apply_alt_bn128_add_args&);
+  Apply_alt_bn128_add_args() noexcept
+                           : op1(),
+                             op2() {
+  }
+
+  virtual ~Apply_alt_bn128_add_args() noexcept;
+  std::string op1;
+  std::string op2;
+
+  _Apply_alt_bn128_add_args__isset __isset;
+
+  void __set_op1(const std::string& val);
+
+  void __set_op2(const std::string& val);
+
+  bool operator == (const Apply_alt_bn128_add_args & rhs) const
+  {
+    if (!(op1 == rhs.op1))
+      return false;
+    if (!(op2 == rhs.op2))
+      return false;
+    return true;
+  }
+  bool operator != (const Apply_alt_bn128_add_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_alt_bn128_add_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Apply_alt_bn128_add_pargs {
+ public:
+
+
+  virtual ~Apply_alt_bn128_add_pargs() noexcept;
+  const std::string* op1;
+  const std::string* op2;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Apply_alt_bn128_add_result__isset {
+  _Apply_alt_bn128_add_result__isset() : success(false) {}
+  bool success :1;
+} _Apply_alt_bn128_add_result__isset;
+
+class Apply_alt_bn128_add_result {
+ public:
+
+  Apply_alt_bn128_add_result(const Apply_alt_bn128_add_result&);
+  Apply_alt_bn128_add_result& operator=(const Apply_alt_bn128_add_result&);
+  Apply_alt_bn128_add_result() noexcept
+                             : success() {
+  }
+
+  virtual ~Apply_alt_bn128_add_result() noexcept;
+  std::string success;
+
+  _Apply_alt_bn128_add_result__isset __isset;
+
+  void __set_success(const std::string& val);
+
+  bool operator == (const Apply_alt_bn128_add_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Apply_alt_bn128_add_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_alt_bn128_add_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Apply_alt_bn128_add_presult__isset {
+  _Apply_alt_bn128_add_presult__isset() : success(false) {}
+  bool success :1;
+} _Apply_alt_bn128_add_presult__isset;
+
+class Apply_alt_bn128_add_presult {
+ public:
+
+
+  virtual ~Apply_alt_bn128_add_presult() noexcept;
+  std::string* success;
+
+  _Apply_alt_bn128_add_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _Apply_alt_bn128_mul_args__isset {
+  _Apply_alt_bn128_mul_args__isset() : g1(false), scalar(false) {}
+  bool g1 :1;
+  bool scalar :1;
+} _Apply_alt_bn128_mul_args__isset;
+
+class Apply_alt_bn128_mul_args {
+ public:
+
+  Apply_alt_bn128_mul_args(const Apply_alt_bn128_mul_args&);
+  Apply_alt_bn128_mul_args& operator=(const Apply_alt_bn128_mul_args&);
+  Apply_alt_bn128_mul_args() noexcept
+                           : g1(),
+                             scalar() {
+  }
+
+  virtual ~Apply_alt_bn128_mul_args() noexcept;
+  std::string g1;
+  std::string scalar;
+
+  _Apply_alt_bn128_mul_args__isset __isset;
+
+  void __set_g1(const std::string& val);
+
+  void __set_scalar(const std::string& val);
+
+  bool operator == (const Apply_alt_bn128_mul_args & rhs) const
+  {
+    if (!(g1 == rhs.g1))
+      return false;
+    if (!(scalar == rhs.scalar))
+      return false;
+    return true;
+  }
+  bool operator != (const Apply_alt_bn128_mul_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_alt_bn128_mul_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Apply_alt_bn128_mul_pargs {
+ public:
+
+
+  virtual ~Apply_alt_bn128_mul_pargs() noexcept;
+  const std::string* g1;
+  const std::string* scalar;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Apply_alt_bn128_mul_result__isset {
+  _Apply_alt_bn128_mul_result__isset() : success(false) {}
+  bool success :1;
+} _Apply_alt_bn128_mul_result__isset;
+
+class Apply_alt_bn128_mul_result {
+ public:
+
+  Apply_alt_bn128_mul_result(const Apply_alt_bn128_mul_result&);
+  Apply_alt_bn128_mul_result& operator=(const Apply_alt_bn128_mul_result&);
+  Apply_alt_bn128_mul_result() noexcept
+                             : success() {
+  }
+
+  virtual ~Apply_alt_bn128_mul_result() noexcept;
+  std::string success;
+
+  _Apply_alt_bn128_mul_result__isset __isset;
+
+  void __set_success(const std::string& val);
+
+  bool operator == (const Apply_alt_bn128_mul_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Apply_alt_bn128_mul_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_alt_bn128_mul_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Apply_alt_bn128_mul_presult__isset {
+  _Apply_alt_bn128_mul_presult__isset() : success(false) {}
+  bool success :1;
+} _Apply_alt_bn128_mul_presult__isset;
+
+class Apply_alt_bn128_mul_presult {
+ public:
+
+
+  virtual ~Apply_alt_bn128_mul_presult() noexcept;
+  std::string* success;
+
+  _Apply_alt_bn128_mul_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _Apply_alt_bn128_pair_args__isset {
+  _Apply_alt_bn128_pair_args__isset() : pairs(false) {}
+  bool pairs :1;
+} _Apply_alt_bn128_pair_args__isset;
+
+class Apply_alt_bn128_pair_args {
+ public:
+
+  Apply_alt_bn128_pair_args(const Apply_alt_bn128_pair_args&);
+  Apply_alt_bn128_pair_args& operator=(const Apply_alt_bn128_pair_args&);
+  Apply_alt_bn128_pair_args() noexcept
+                            : pairs() {
+  }
+
+  virtual ~Apply_alt_bn128_pair_args() noexcept;
+  std::string pairs;
+
+  _Apply_alt_bn128_pair_args__isset __isset;
+
+  void __set_pairs(const std::string& val);
+
+  bool operator == (const Apply_alt_bn128_pair_args & rhs) const
+  {
+    if (!(pairs == rhs.pairs))
+      return false;
+    return true;
+  }
+  bool operator != (const Apply_alt_bn128_pair_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_alt_bn128_pair_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Apply_alt_bn128_pair_pargs {
+ public:
+
+
+  virtual ~Apply_alt_bn128_pair_pargs() noexcept;
+  const std::string* pairs;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Apply_alt_bn128_pair_result__isset {
+  _Apply_alt_bn128_pair_result__isset() : success(false) {}
+  bool success :1;
+} _Apply_alt_bn128_pair_result__isset;
+
+class Apply_alt_bn128_pair_result {
+ public:
+
+  Apply_alt_bn128_pair_result(const Apply_alt_bn128_pair_result&) noexcept;
+  Apply_alt_bn128_pair_result& operator=(const Apply_alt_bn128_pair_result&) noexcept;
+  Apply_alt_bn128_pair_result() noexcept
+                              : success(0) {
+  }
+
+  virtual ~Apply_alt_bn128_pair_result() noexcept;
+  int32_t success;
+
+  _Apply_alt_bn128_pair_result__isset __isset;
+
+  void __set_success(const int32_t val);
+
+  bool operator == (const Apply_alt_bn128_pair_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Apply_alt_bn128_pair_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_alt_bn128_pair_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Apply_alt_bn128_pair_presult__isset {
+  _Apply_alt_bn128_pair_presult__isset() : success(false) {}
+  bool success :1;
+} _Apply_alt_bn128_pair_presult__isset;
+
+class Apply_alt_bn128_pair_presult {
+ public:
+
+
+  virtual ~Apply_alt_bn128_pair_presult() noexcept;
+  int32_t* success;
+
+  _Apply_alt_bn128_pair_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _Apply_mod_exp_args__isset {
+  _Apply_mod_exp_args__isset() : base(false), exp(false), mod(false) {}
+  bool base :1;
+  bool exp :1;
+  bool mod :1;
+} _Apply_mod_exp_args__isset;
+
+class Apply_mod_exp_args {
+ public:
+
+  Apply_mod_exp_args(const Apply_mod_exp_args&);
+  Apply_mod_exp_args& operator=(const Apply_mod_exp_args&);
+  Apply_mod_exp_args() noexcept
+                     : base(),
+                       exp(),
+                       mod() {
+  }
+
+  virtual ~Apply_mod_exp_args() noexcept;
+  std::string base;
+  std::string exp;
+  std::string mod;
+
+  _Apply_mod_exp_args__isset __isset;
+
+  void __set_base(const std::string& val);
+
+  void __set_exp(const std::string& val);
+
+  void __set_mod(const std::string& val);
+
+  bool operator == (const Apply_mod_exp_args & rhs) const
+  {
+    if (!(base == rhs.base))
+      return false;
+    if (!(exp == rhs.exp))
+      return false;
+    if (!(mod == rhs.mod))
+      return false;
+    return true;
+  }
+  bool operator != (const Apply_mod_exp_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_mod_exp_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class Apply_mod_exp_pargs {
+ public:
+
+
+  virtual ~Apply_mod_exp_pargs() noexcept;
+  const std::string* base;
+  const std::string* exp;
+  const std::string* mod;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Apply_mod_exp_result__isset {
+  _Apply_mod_exp_result__isset() : success(false) {}
+  bool success :1;
+} _Apply_mod_exp_result__isset;
+
+class Apply_mod_exp_result {
+ public:
+
+  Apply_mod_exp_result(const Apply_mod_exp_result&);
+  Apply_mod_exp_result& operator=(const Apply_mod_exp_result&);
+  Apply_mod_exp_result() noexcept
+                       : success() {
+  }
+
+  virtual ~Apply_mod_exp_result() noexcept;
+  std::string success;
+
+  _Apply_mod_exp_result__isset __isset;
+
+  void __set_success(const std::string& val);
+
+  bool operator == (const Apply_mod_exp_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const Apply_mod_exp_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const Apply_mod_exp_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _Apply_mod_exp_presult__isset {
+  _Apply_mod_exp_presult__isset() : success(false) {}
+  bool success :1;
+} _Apply_mod_exp_presult__isset;
+
+class Apply_mod_exp_presult {
+ public:
+
+
+  virtual ~Apply_mod_exp_presult() noexcept;
+  std::string* success;
+
+  _Apply_mod_exp_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
 class ApplyClient : virtual public ApplyIf {
  public:
   ApplyClient(std::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -14063,6 +15228,36 @@ class ApplyClient : virtual public ApplyIf {
   int32_t db_idx_long_double_end(const Uint64& code, const Uint64& scope, const Uint64& table) override;
   void send_db_idx_long_double_end(const Uint64& code, const Uint64& scope, const Uint64& table);
   int32_t recv_db_idx_long_double_end();
+  void set_action_return_value(const std::string& data) override;
+  void send_set_action_return_value(const std::string& data);
+  void recv_set_action_return_value();
+  void get_code_hash(std::string& _return, const Uint64& account, const int64_t struct_version) override;
+  void send_get_code_hash(const Uint64& account, const int64_t struct_version);
+  void recv_get_code_hash(std::string& _return);
+  int64_t get_block_num() override;
+  void send_get_block_num();
+  int64_t recv_get_block_num();
+  void sha3(std::string& _return, const std::string& data, const int32_t keccak) override;
+  void send_sha3(const std::string& data, const int32_t keccak);
+  void recv_sha3(std::string& _return);
+  void blake2_f(std::string& _return, const int64_t rounds, const std::string& state, const std::string& msg, const std::string& t0_offset, const std::string& t1_offset, const int32_t final) override;
+  void send_blake2_f(const int64_t rounds, const std::string& state, const std::string& msg, const std::string& t0_offset, const std::string& t1_offset, const int32_t final);
+  void recv_blake2_f(std::string& _return);
+  void k1_recover(std::string& _return, const std::string& sig, const std::string& dig) override;
+  void send_k1_recover(const std::string& sig, const std::string& dig);
+  void recv_k1_recover(std::string& _return);
+  void alt_bn128_add(std::string& _return, const std::string& op1, const std::string& op2) override;
+  void send_alt_bn128_add(const std::string& op1, const std::string& op2);
+  void recv_alt_bn128_add(std::string& _return);
+  void alt_bn128_mul(std::string& _return, const std::string& g1, const std::string& scalar) override;
+  void send_alt_bn128_mul(const std::string& g1, const std::string& scalar);
+  void recv_alt_bn128_mul(std::string& _return);
+  int32_t alt_bn128_pair(const std::string& pairs) override;
+  void send_alt_bn128_pair(const std::string& pairs);
+  int32_t recv_alt_bn128_pair();
+  void mod_exp(std::string& _return, const std::string& base, const std::string& exp, const std::string& mod) override;
+  void send_mod_exp(const std::string& base, const std::string& exp, const std::string& mod);
+  void recv_mod_exp(std::string& _return);
  protected:
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -14201,6 +15396,16 @@ class ApplyProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_db_idx_long_double_lowerbound(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_db_idx_long_double_upperbound(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_db_idx_long_double_end(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_set_action_return_value(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_get_code_hash(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_get_block_num(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_sha3(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_blake2_f(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_k1_recover(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_alt_bn128_add(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_alt_bn128_mul(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_alt_bn128_pair(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_mod_exp(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   ApplyProcessor(::std::shared_ptr<ApplyIf> iface) :
     iface_(iface) {
@@ -14327,6 +15532,16 @@ class ApplyProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["db_idx_long_double_lowerbound"] = &ApplyProcessor::process_db_idx_long_double_lowerbound;
     processMap_["db_idx_long_double_upperbound"] = &ApplyProcessor::process_db_idx_long_double_upperbound;
     processMap_["db_idx_long_double_end"] = &ApplyProcessor::process_db_idx_long_double_end;
+    processMap_["set_action_return_value"] = &ApplyProcessor::process_set_action_return_value;
+    processMap_["get_code_hash"] = &ApplyProcessor::process_get_code_hash;
+    processMap_["get_block_num"] = &ApplyProcessor::process_get_block_num;
+    processMap_["sha3"] = &ApplyProcessor::process_sha3;
+    processMap_["blake2_f"] = &ApplyProcessor::process_blake2_f;
+    processMap_["k1_recover"] = &ApplyProcessor::process_k1_recover;
+    processMap_["alt_bn128_add"] = &ApplyProcessor::process_alt_bn128_add;
+    processMap_["alt_bn128_mul"] = &ApplyProcessor::process_alt_bn128_mul;
+    processMap_["alt_bn128_pair"] = &ApplyProcessor::process_alt_bn128_pair;
+    processMap_["mod_exp"] = &ApplyProcessor::process_mod_exp;
   }
 
   virtual ~ApplyProcessor() {}
@@ -15511,6 +16726,103 @@ class ApplyMultiface : virtual public ApplyIf {
     return ifaces_[i]->db_idx_long_double_end(code, scope, table);
   }
 
+  void set_action_return_value(const std::string& data) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->set_action_return_value(data);
+    }
+    ifaces_[i]->set_action_return_value(data);
+  }
+
+  void get_code_hash(std::string& _return, const Uint64& account, const int64_t struct_version) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->get_code_hash(_return, account, struct_version);
+    }
+    ifaces_[i]->get_code_hash(_return, account, struct_version);
+    return;
+  }
+
+  int64_t get_block_num() override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->get_block_num();
+    }
+    return ifaces_[i]->get_block_num();
+  }
+
+  void sha3(std::string& _return, const std::string& data, const int32_t keccak) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->sha3(_return, data, keccak);
+    }
+    ifaces_[i]->sha3(_return, data, keccak);
+    return;
+  }
+
+  void blake2_f(std::string& _return, const int64_t rounds, const std::string& state, const std::string& msg, const std::string& t0_offset, const std::string& t1_offset, const int32_t final) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->blake2_f(_return, rounds, state, msg, t0_offset, t1_offset, final);
+    }
+    ifaces_[i]->blake2_f(_return, rounds, state, msg, t0_offset, t1_offset, final);
+    return;
+  }
+
+  void k1_recover(std::string& _return, const std::string& sig, const std::string& dig) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->k1_recover(_return, sig, dig);
+    }
+    ifaces_[i]->k1_recover(_return, sig, dig);
+    return;
+  }
+
+  void alt_bn128_add(std::string& _return, const std::string& op1, const std::string& op2) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->alt_bn128_add(_return, op1, op2);
+    }
+    ifaces_[i]->alt_bn128_add(_return, op1, op2);
+    return;
+  }
+
+  void alt_bn128_mul(std::string& _return, const std::string& g1, const std::string& scalar) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->alt_bn128_mul(_return, g1, scalar);
+    }
+    ifaces_[i]->alt_bn128_mul(_return, g1, scalar);
+    return;
+  }
+
+  int32_t alt_bn128_pair(const std::string& pairs) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->alt_bn128_pair(pairs);
+    }
+    return ifaces_[i]->alt_bn128_pair(pairs);
+  }
+
+  void mod_exp(std::string& _return, const std::string& base, const std::string& exp, const std::string& mod) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->mod_exp(_return, base, exp, mod);
+    }
+    ifaces_[i]->mod_exp(_return, base, exp, mod);
+    return;
+  }
+
 };
 
 // The 'concurrent' client is a thread safe client that correctly handles
@@ -15912,6 +17224,36 @@ class ApplyConcurrentClient : virtual public ApplyIf {
   int32_t db_idx_long_double_end(const Uint64& code, const Uint64& scope, const Uint64& table) override;
   int32_t send_db_idx_long_double_end(const Uint64& code, const Uint64& scope, const Uint64& table);
   int32_t recv_db_idx_long_double_end(const int32_t seqid);
+  void set_action_return_value(const std::string& data) override;
+  int32_t send_set_action_return_value(const std::string& data);
+  void recv_set_action_return_value(const int32_t seqid);
+  void get_code_hash(std::string& _return, const Uint64& account, const int64_t struct_version) override;
+  int32_t send_get_code_hash(const Uint64& account, const int64_t struct_version);
+  void recv_get_code_hash(std::string& _return, const int32_t seqid);
+  int64_t get_block_num() override;
+  int32_t send_get_block_num();
+  int64_t recv_get_block_num(const int32_t seqid);
+  void sha3(std::string& _return, const std::string& data, const int32_t keccak) override;
+  int32_t send_sha3(const std::string& data, const int32_t keccak);
+  void recv_sha3(std::string& _return, const int32_t seqid);
+  void blake2_f(std::string& _return, const int64_t rounds, const std::string& state, const std::string& msg, const std::string& t0_offset, const std::string& t1_offset, const int32_t final) override;
+  int32_t send_blake2_f(const int64_t rounds, const std::string& state, const std::string& msg, const std::string& t0_offset, const std::string& t1_offset, const int32_t final);
+  void recv_blake2_f(std::string& _return, const int32_t seqid);
+  void k1_recover(std::string& _return, const std::string& sig, const std::string& dig) override;
+  int32_t send_k1_recover(const std::string& sig, const std::string& dig);
+  void recv_k1_recover(std::string& _return, const int32_t seqid);
+  void alt_bn128_add(std::string& _return, const std::string& op1, const std::string& op2) override;
+  int32_t send_alt_bn128_add(const std::string& op1, const std::string& op2);
+  void recv_alt_bn128_add(std::string& _return, const int32_t seqid);
+  void alt_bn128_mul(std::string& _return, const std::string& g1, const std::string& scalar) override;
+  int32_t send_alt_bn128_mul(const std::string& g1, const std::string& scalar);
+  void recv_alt_bn128_mul(std::string& _return, const int32_t seqid);
+  int32_t alt_bn128_pair(const std::string& pairs) override;
+  int32_t send_alt_bn128_pair(const std::string& pairs);
+  int32_t recv_alt_bn128_pair(const int32_t seqid);
+  void mod_exp(std::string& _return, const std::string& base, const std::string& exp, const std::string& mod) override;
+  int32_t send_mod_exp(const std::string& base, const std::string& exp, const std::string& mod);
+  void recv_mod_exp(std::string& _return, const int32_t seqid);
  protected:
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

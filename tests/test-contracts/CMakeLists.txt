@@ -1,5 +1,6 @@
 add_subdirectory(hello)
 add_subdirectory(multi_index_example)
+add_subdirectory(new_intrinsics)
 
 add_subdirectory(test_api/native)
 add_subdirectory(test_api_db/native)
