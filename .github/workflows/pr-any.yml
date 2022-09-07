@@ -13,9 +13,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.9]
-        step: ['test']
-        # step: ['lint', 'test:chain']
-    name: ${{ matrix.step }}
+    name: test
     runs-on: ubuntu-18.04
     steps:
       - name: Set up Python
@@ -59,7 +57,7 @@ jobs:
           mkdir build
           cd build
           CXX=clang++ CC=clang cmake -DENABLE_COVERAGE=TRUE -DBUILD_TESTS=TRUE -DCMAKE_BUILD_TYPE=Debug ..
-          make -j4
+          make -j$(nproc)
       - name: test
         run: |
           cd build

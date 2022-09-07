@@ -23,11 +23,17 @@ add_library ( chaintester
     src/TConnectedClient.cpp
 )
 
+if (APPLE)
+else()
+    set(PTHREAD_LIB pthread)
+endif()
 target_link_libraries ( chaintester PUBLIC 
     utils
     softfloat
     thrift
     ${CMAKE_DL_LIBS}
+    $<TARGET_FILE:Catch2>
+    ${PTHREAD_LIB}
 )
 
 target_include_directories(chaintester PUBLIC

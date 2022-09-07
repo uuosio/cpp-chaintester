@@ -951,6 +951,20 @@ datastream<Stream>& operator>>( datastream<Stream>& ds, T& v ) {
    return ds;
 }
 
+#ifdef EOSIO_NATIVE
+template<typename Stream>
+datastream<Stream>& operator<<( datastream<Stream>& ds, const uint128_t& v ) {
+   ds.write( (const char*)&v, sizeof(uint128_t) );
+   return ds;
+}
+
+template<typename Stream>
+datastream<Stream>& operator>>( datastream<Stream>& ds, uint128_t& v ) {
+   ds.read( (char*)&v, sizeof(uint128_t) );
+   return ds;
+}
+#endif
+
 /**
  * Unpack data inside a fixed size buffer as T
  *
