@@ -1314,12 +1314,3 @@ void init_intrinsics_func() {
     g_intrinsics_func.mod_exp = _mod_exp;
     intrinsics_init(&g_intrinsics_func);
 }
-
-class InitIntrinsics {
-public:
-    InitIntrinsics() {
-        init_intrinsics_func();
-    }
-};
-
-InitIntrinsics _init;
