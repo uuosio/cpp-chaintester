@@ -14,16 +14,20 @@ jobs:
       matrix:
         python-version: [3.9]
     name: test
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+      - name: install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install libboost-all-dev
       - name: Set up Clang
         uses: egor-tensin/setup-clang@v1
         with:
-          version: 7
+          version: 11
           platform: x64
       - name: show clang version
         run: |
@@ -38,14 +42,8 @@ jobs:
           python3 -m pip install -U pip setuptools
       - name: Install cdt
         run: |
-          wget https://github.com/EOSIO/eosio.cdt/releases/download/v1.7.0/eosio.cdt_1.7.0-1-ubuntu-18.04_amd64.deb
-          sudo apt install ./eosio.cdt_1.7.0-1-ubuntu-18.04_amd64.deb
-      - name: Install boost
-        run: |
-          sudo apt-get install libboost-all-dev
-      - name: Install llvm
-        run: |
-          sudo apt install llvm
+          wget https://github.com/EOSIO/eosio.cdt/releases/download/v1.8.1/eosio.cdt_1.8.1-1-ubuntu-20.04_amd64.deb
+          sudo apt install ./eosio.cdt_1.8.1-1-ubuntu-20.04_amd64.deb
       - name: Install EOS test framework
         run: |
           python3 -m pip install ipyeos
@@ -58,6 +56,8 @@ jobs:
           cd build
           CXX=clang++ CC=clang cmake -DENABLE_COVERAGE=TRUE -DBUILD_TESTS=TRUE -DCMAKE_BUILD_TYPE=Debug ..
           make -j$(nproc)
+      # - name: Setup upterm session
+      #   uses: lhotari/action-upterm@v1
       - name: test
         run: |
           cd build
@@ -65,4 +65,4 @@ jobs:
           find . -name "*.gcno"
           curl -S -f https://codecov.io/bash -o codecov
           chmod +x codecov
-          ./codecov -x "llvm-cov gcov" -Z
+          ./codecov -x "/usr/lib/llvm-11/bin/llvm-cov gcov" -Z

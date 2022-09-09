@@ -77,7 +77,7 @@ TEST_CASE( "test chaintester", "[chaintester]" ) {
     WARN(account_info->get_string("head_block_time"));
     
     ret = tester.deploy_contract("helloworld33", TEST_MULTI_INDEX_EXAMPLE_WASM, TEST_MULTI_INDEX_EXAMPLE_ABI);
-    WARN(ret->to_string());
+    // WARN(ret->to_string());
 
     auto args = R""""(
     {
