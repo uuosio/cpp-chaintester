@@ -1,6 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
-#include "chaintester.h"
-#include "intrinsics.h"
+#include <chaintester.h>
+#include <intrinsics.h>
 #include "test.h"
 
 extern "C" __attribute__ ((visibility ("default"))) void test_api_multi_index_native_apply( uint64_t receiver, uint64_t code, uint64_t action );

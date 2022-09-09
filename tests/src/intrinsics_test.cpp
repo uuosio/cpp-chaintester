@@ -2,8 +2,8 @@
 #include "rapidjson/stringbuffer.h"
 #include <catch2/catch_test_macros.hpp>
 
-#include "chaintester.h"
-#include "intrinsics.h"
+#include <chaintester.h>
+#include <intrinsics.h>
 #include "test.h"
 
 static void apply(uint64_t receiver, uint64_t first_receiver, uint64_t action) {

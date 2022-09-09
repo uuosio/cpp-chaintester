@@ -1,6 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
-#include "chaintester.h"
-#include "intrinsics.h"
+#include <chaintester.h>
+#include <intrinsics.h>
 #include "test.h"
 
 TEST_CASE( "test hello", "[hello]" ) {

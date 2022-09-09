@@ -31,6 +31,7 @@ target_link_libraries ( tests
     test_api_db_native
     test_api_multi_index_native
     new_intrinsics_native
+    intrinsics_native
     chaintester
 )
 

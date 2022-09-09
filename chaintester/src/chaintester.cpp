@@ -137,8 +137,11 @@ class ChainTesterClient: public IPCChainTesterClient {
 
 static std::shared_ptr<ChainTesterClient> gChainTesterClient;
 
+void init_intrinsics_func();
+
 std::shared_ptr<ChainTesterClient> GetChainTesterClient() {
     if (!gChainTesterClient) {
+        init_intrinsics_func();
         std::shared_ptr<TTransport> socket(new TSocket("127.0.0.1", 9090));
         std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
         std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
