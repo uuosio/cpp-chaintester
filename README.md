@@ -8,12 +8,13 @@ C++ test framework for EOS
 1. It is a C++ smart contracts test framework for EOS.
 2. It makes writing C++ Smart Contracts test code more convenient.
 3. It supports source-level C++ Smart Contracts debugging.
-4. It supports generating code coverage for C++ Smart Contracts.
+4. It supports generating code coverage reports for C++ Smart Contracts.
 
 ## How to Use
 
 ### Installing `ipyeos`
-`cpp-chaintester` depends on `ipyeos` to run your test code.
+
+`cpp-chaintester` depends on [ipyeos](https://github.com/uuosio/ipyeos) to run your test code.
 
 Install it with the following command:
 
@@ -33,7 +34,7 @@ Also, you can run eos-debugger in a docker container. Just follow the steps belo
 docker pull ghcr.io/uuosio/ipyeos:latest
 ```
 
-Run the debugging server on the Windows platform:
+Run the debugging server:
 
 ```bash
 docker run -it --rm -p 9090:9090 -p 9092:9092 -t ghcr.io/uuosio/ipyeos

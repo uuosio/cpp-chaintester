@@ -7,6 +7,10 @@
 
 #include <sstream>
 
+#include <eosio/check.hpp>
+
+#include <intrinsics.h>
+
 string I64Str(int64_t i) {
 	std::stringstream ss;
 	ss << i;
@@ -103,4 +107,19 @@ TEST_CASE( "test chaintester", "[chaintester]" ) {
 
     ret = tester.get_table_rows(true, "helloworld33", "helloworld33", "testtaba", "second", "second", 10, "i64", "2");
     WARN(ret->to_string());
+
+    try {
+        eosio::check(false, "oops!");
+        REQUIRE(0);
+    } catch (std::exception& ex) {
+        REQUIRE(string(ex.what()) == "oops!");
+    }
+
+    try {
+        get_block_num();
+        REQUIRE(0);
+    } catch (std::exception& ex) {
+        REQUIRE(string(ex.what()) == "error: call vm api function out of apply context!");
+    }
 }
+

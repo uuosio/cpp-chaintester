@@ -946,6 +946,10 @@ static void _eosio_assert( uint32_t test, const char* msg ) {
     if (test) {
         return;
     }
+
+    if (!IsInApply()) {
+        throw std::runtime_error(msg);
+    }
     GetApplyClient()->eosio_assert(0, string(msg));
 }
 
@@ -953,6 +957,11 @@ static void _eosio_assert_message( uint32_t test, const char* msg, uint32_t msg_
     if (test) {
         return;
     }
+
+    if (!IsInApply()) {
+        throw std::runtime_error(msg);
+    }
+
     GetApplyClient()->eosio_assert_message(0, string(msg, msg_len));
 }
 

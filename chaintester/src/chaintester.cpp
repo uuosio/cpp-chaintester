@@ -9,6 +9,7 @@
 #include <chrono>
 #include <thread>
 #include <memory>
+#include <mutex>
 
 #include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/transport/TServerSocket.h>
@@ -34,6 +35,22 @@ using namespace ::server;
 using namespace ::chaintester;
 
 static std::shared_ptr<ApplyClient> gApplyClient;
+static bool g_in_apply = false;
+std::mutex g_apply_mutex;
+
+bool IsInApply() {
+    return g_in_apply;
+}
+
+void InitApplyClient() {
+    if (!gApplyClient) {
+        std::shared_ptr<TTransport> socket(new TSocket("127.0.0.1", 9092));
+        std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
+        std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
+        transport->open();
+        gApplyClient = std::shared_ptr<ApplyClient>(new ApplyClient(protocol));
+    }
+}
 
 std::shared_ptr<ApplyClient> GetApplyClient() {
     if (!gApplyClient) {
@@ -42,6 +59,10 @@ std::shared_ptr<ApplyClient> GetApplyClient() {
         std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
         transport->open();
         gApplyClient = std::shared_ptr<ApplyClient>(new ApplyClient(protocol));
+    }
+
+    if (!IsInApply()) {
+        throw std::runtime_error("error: call vm api function out of apply context!");
     }
     return gApplyClient;
 }
@@ -60,15 +81,20 @@ class ApplyRequestHandler : virtual public ApplyRequestIf {
     memcpy(&_first_receiver, first_receiver.rawValue.c_str(), 8);
     memcpy(&_action, action.rawValue.c_str(), 8);
 
+    std::lock_guard<std::mutex> guard(g_apply_mutex);
+
+    g_in_apply = true;
     fn_apply apply = get_apply();
     try {
         if (apply != nullptr) {
             apply(_receiver, _first_receiver, _action);
         }
         GetApplyClient()->end_apply();
+        g_in_apply = false;
     } catch (apache::thrift::TException ex) {
         printf("+++++++exception on apply(%s, %s, %s):%s\n", n2s(_receiver).c_str(), n2s(_first_receiver).c_str(), n2s(_action).c_str(), ex.what());
         GetApplyClient()->end_apply();
+        g_in_apply = false;
     }
     return 1;
   }
@@ -147,9 +173,11 @@ std::shared_ptr<ChainTesterClient> GetChainTesterClient() {
         std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
         transport->open();
         gChainTesterClient = std::shared_ptr<ChainTesterClient>(new ChainTesterClient(protocol));
+
         gChainTesterClient->init_vm_api();
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
-        GetApplyClient();
+        InitApplyClient();
+
         gChainTesterClient->init_apply_request();
         GetApplyRequestServer()->wait_for_connection();
     }
