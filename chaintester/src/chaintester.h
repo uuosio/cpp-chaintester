@@ -163,6 +163,7 @@ private:
     ChainTester (const ChainTester& other);
     ChainTester (const ChainTester&& other);
     ChainTester& operator=(const ChainTester&);
+    ChainTester& operator=(ChainTester&& data);
 public:
     ChainTester(bool initialize=true);
     ~ChainTester();
