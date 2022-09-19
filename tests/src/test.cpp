@@ -121,5 +121,25 @@ TEST_CASE( "test chaintester", "[chaintester]" ) {
     } catch (std::exception& ex) {
         REQUIRE(string(ex.what()) == "error: call vm api function out of apply context!");
     }
-}
 
+    uint64_t old_balance = tester.get_balance("hello");
+
+    args = R""""(
+    {
+        "from": "hello",
+        "to": "eosio",
+        "quantity": "1.0000 EOS",
+        "memo": "hello"
+    }
+    )"""";
+
+    permissions = R""""(
+    {
+        "hello": "active"
+    }
+    )"""";
+    
+    tester.push_action("eosio.token", "transfer", args, permissions);
+    uint64_t new_balance = tester.get_balance("hello");
+    REQUIRE(old_balance == new_balance + 10000);
+}
