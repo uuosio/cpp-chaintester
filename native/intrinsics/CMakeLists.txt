@@ -18,7 +18,7 @@ target_compile_options(intrinsics_native PRIVATE
     ${PLATFORM_OPTIONS}
 )
 
-target_include_directories(intrinsics_native PRIVATE 
+target_include_directories(intrinsics_native PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CDT_INCLUDE_PATH}
 )
