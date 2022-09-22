@@ -4,6 +4,38 @@
 #include "config.hpp"
 
 using namespace eosio;
+
+void update_auth(ChainTester& t, string pub_key) {
+    const char* updateauth_args = R"(
+    {
+        "account": "testapi",
+        "permission": "active",
+        "parent": "owner",
+        "auth": {
+            "threshold": 1,
+            "keys": [
+                {
+                    "key": "%s",
+                    "weight": 1
+                }
+            ],
+            "accounts": [{"permission":{"actor": "testapi", "permission": "eosio.code"}, "weight":1}],
+            "waits": []
+        }
+    }
+    )";
+    char _updateauth_args[strlen(updateauth_args) + pub_key.size()+1];
+    snprintf(_updateauth_args, sizeof(_updateauth_args), updateauth_args, pub_key.c_str());
+
+    string permissions = R"(
+        {
+            "testapi": "active"
+        }
+    )";
+    t.push_action("eosio", "updateauth", string(_updateauth_args), permissions);
+    t.produce_block();
+}
+
 void init_test(ChainTester& t) {
     set_apply(test_api_native_apply);
 
@@ -14,6 +46,8 @@ void init_test(ChainTester& t) {
     auto priv_key = key->get_string("private");
     t.import_key(pub_key, priv_key);
     t.create_account("eosio", "testapi", pub_key, pub_key);
+    
+    update_auth(t, pub_key);
 
     t.deploy_contract("testapi", TEST_API_WASM, TEST_API_ABI);
     t.produce_block();
@@ -388,3 +422,23 @@ TEST_CASE( "ram_billing_in_notify_tests", "[print]" ) {
 
 }
 
+TEST_CASE( "test transaction", "[transaction]" ) {
+    ChainTester t(true);
+    init_test(t);
+
+	// test prints
+    auto ret = CALL_TEST_FUNCTION(t, "test_transaction", "test_read_transaction", {});
+    WARN(ret->get_string("action_traces", 0, "console"));
+
+    auto info = t.get_info();
+    // WARN(info->to_string());
+    auto num = info->get_uint64("last_irreversible_block_num");
+    CALL_TEST_FUNCTION(t, "test_transaction", "test_tapos_block_num", eosio::pack((int32_t)num));
+
+    auto last_irreversible_block_id = hex2bytes(info->get_string("last_irreversible_block_id"));
+    uint64_t hash[4];
+    memcpy(hash, last_irreversible_block_id.data(), last_irreversible_block_id.size());
+    CALL_TEST_FUNCTION(t, "test_transaction", "test_tapos_block_prefix", eosio::pack(hash[1]));
+
+    CALL_TEST_FUNCTION_AND_CHECK_EXCEPTION(t, "test_transaction", "send_action_recurse", {}, "transaction_exception", "max inline action depth per transaction reached");
+}

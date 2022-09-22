@@ -40,15 +40,15 @@ int64_t str2ms(const string& iso_time) {
 }
 
 //modified from https://gist.github.com/arnobaer/973c91a7e8b5088087e20257df3c82d3
-std::vector<uint8_t> hex2bytes(const std::string& s)
+std::vector<char> hex2bytes(const std::string& s)
 {
     size_t size = s.size()/2*2;
-    std::vector<uint8_t> v;
+    std::vector<char> v;
     v.reserve(size/2);
     for (auto i = 0; i < size; i += 2)
     {
         std::string slice(s.c_str()+i, 2);
-        uint8_t value = (uint8_t)std::stoul(slice, 0, 16);
+        char value = (char)std::stoul(slice, 0, 16);
         v.push_back(value);
     }
     return v;

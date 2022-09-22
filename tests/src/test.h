@@ -46,7 +46,7 @@ static std::shared_ptr<JsonObject> CallFunction(ChainTester& tester, const strin
         auto& o = ex.value();
         REQUIRE(o.HasMember("except"));
         auto& except = o["except"];
-        // WARN(o.to_string());
+        WARN(o.to_string());
         REQUIRE(except["name"].GetString() == required_exception_type);
         if ("wasm_execution_error" == required_exception_type) {
             auto s =  except["stack"][0]["format"].GetString();
