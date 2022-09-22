@@ -1,12 +1,9 @@
-#include "chaintester.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
-#include <catch2/catch_test_macros.hpp>
 
 #include "test.h"
 
 #include <sstream>
-
 #include <eosio/check.hpp>
 
 #include <intrinsics.h>

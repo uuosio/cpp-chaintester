@@ -17,3 +17,9 @@
 
 #define TEST_MULTI_INDEX_EXAMPLE_WASM "@CMAKE_BINARY_DIR@/tests/test-contracts/multi_index_example/multi_index_example/multi_index_example.wasm"
 #define TEST_MULTI_INDEX_EXAMPLE_ABI "@CMAKE_BINARY_DIR@/tests/test-contracts/multi_index_example/multi_index_example/multi_index_example.abi"
+
+#define BIOS_WASM "@CMAKE_BINARY_DIR@/tests/test-contracts/eosio.bios/eosio.bios.wasm"
+#define BIOS_ABI "@CMAKE_BINARY_DIR@/tests/test-contracts/eosio.bios/eosio.bios.abi"
+
+#define ACTIVATE_WASM "@CMAKE_BINARY_DIR@/tests/test-contracts/activate/activate.wasm"
+#define ACTIVATE_ABI "@CMAKE_BINARY_DIR@/tests/test-contracts/activate/activate.abi"

@@ -24,3 +24,26 @@ ExternalProject_Add(
    BUILD_ALWAYS 1
 )
 
+ExternalProject_Add(
+   activate-project
+   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/activate
+   BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/activate
+   CMAKE_ARGS -DCMAKE_TOOLCHAIN_FILE=${EOSIO_CDT_ROOT}/lib/cmake/eosio.cdt/EosioWasmToolchain.cmake
+   UPDATE_COMMAND ""
+   PATCH_COMMAND ""
+   TEST_COMMAND ""
+   INSTALL_COMMAND ""
+   BUILD_ALWAYS 1
+)
+
+ExternalProject_Add(
+   bios-project
+   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/eosio.bios
+   BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/eosio.bios
+   CMAKE_ARGS -DCMAKE_TOOLCHAIN_FILE=${EOSIO_CDT_ROOT}/lib/cmake/eosio.cdt/EosioWasmToolchain.cmake
+   UPDATE_COMMAND ""
+   PATCH_COMMAND ""
+   TEST_COMMAND ""
+   INSTALL_COMMAND ""
+   BUILD_ALWAYS 1
+)
