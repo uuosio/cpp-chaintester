@@ -11,6 +11,7 @@
 using namespace ::chaintester;
 
 extern "C" void extF80M_to_f128M( const extFloat80_t *, float128_t * );
+static void _eosio_assert( uint32_t test, const char* msg );
 
 Uint64 to_raw_uint64(uint64_t value) {
     Uint64 _value;
@@ -775,46 +776,58 @@ static int64_t _get_account_creation_time( capi_name account ) {
 }
 
 static void _assert_sha256( const char* data, uint32_t length, const capi_checksum256* hash ) {
+    _eosio_assert(data != nullptr, "assert_sha256: data is nullptr");
     GetApplyClient()->assert_sha256(string(data, length), string((char*)hash, 32));
 }
 
 static void _assert_sha1( const char* data, uint32_t length, const capi_checksum160* hash ) {
+    _eosio_assert(data != nullptr, "assert_sha1: data is nullptr");
     GetApplyClient()->assert_sha1(string(data, length), string((char*)hash, 20));
 }
 
 static void _assert_sha512( const char* data, uint32_t length, const capi_checksum512* hash ) {
+    _eosio_assert(data != nullptr, "assert_sha512: data is nullptr");
     GetApplyClient()->assert_sha512(string(data, length), string((char*)hash, 64));
 }
 
 static void _assert_ripemd160( const char* data, uint32_t length, const capi_checksum160* hash ) {
+    _eosio_assert(data != nullptr, "assert_ripemd160: data is nullptr");
     GetApplyClient()->assert_ripemd160(string(data, length), string((char*)hash, 20));
 }
 
 static void _sha256( const char* data, uint32_t length, capi_checksum256* hash ) {
+    _eosio_assert(data != nullptr, "sha256: data is nullptr");
     string ret;
     GetApplyClient()->sha256(ret, string(data, length));
     memcpy(hash, ret.c_str(), 32);
 }
 
 static void _sha1( const char* data, uint32_t length, capi_checksum160* hash ) {
+    _eosio_assert(data != nullptr, "sha1: data is nullptr");
     string ret;
     GetApplyClient()->sha1(ret, string(data, length));
     memcpy(hash, ret.c_str(), 20);
 }
 
 static void _sha512( const char* data, uint32_t length, capi_checksum512* hash ) {
+    _eosio_assert(data != nullptr, "sha512: data is nullptr");
     string ret;
     GetApplyClient()->sha512(ret, string(data, length));
     memcpy(hash, ret.c_str(), 64);
 }
 
 static void _ripemd160( const char* data, uint32_t length, capi_checksum160* hash ) {
+    _eosio_assert(data != nullptr, "ripemd160: data is nullptr");
     string ret;
     GetApplyClient()->ripemd160(ret, string(data, length));
     memcpy(hash, ret.c_str(), 20);
 }
 
 static int _recover_key( const capi_checksum256* digest, const char* sig, size_t siglen, char* pub, size_t publen ) {
+    _eosio_assert(digest != nullptr, "recover_key: digest is nullptr");
+    _eosio_assert(sig != nullptr, "recover_key: sig is nullptr");
+    _eosio_assert(pub != nullptr, "recover_key: pub is nullptr");
+
     string ret;
     GetApplyClient()->recover_key(ret, string((char*)digest, 32), string(sig, siglen));
     if (publen == 0) {
@@ -826,6 +839,9 @@ static int _recover_key( const capi_checksum256* digest, const char* sig, size_t
 }
 
 static void _assert_recover_key( const capi_checksum256* digest, const char* sig, size_t siglen, const char* pub, size_t publen ) {
+    _eosio_assert(digest != nullptr, "assert_recover_key: digest is nullptr");
+    _eosio_assert(sig != nullptr, "assert_recover_key: sig is nullptr");
+    _eosio_assert(pub != nullptr, "assert_recover_key: pub is nullptr");
     GetApplyClient()->assert_recover_key(string((char*)digest, 32), string(sig, siglen), string(pub, publen));
 }
 

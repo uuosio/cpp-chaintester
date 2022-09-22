@@ -110,34 +110,34 @@ TEST_CASE( "test crypto", "[crypto]" ) {
     ChainTester t(true);
     init_test(t);
 
-   CALL_TEST_FUNCTION( t, "test_crypto", "test_sha1", {} );
-   CALL_TEST_FUNCTION( t, "test_crypto", "test_sha256", {} );
-   CALL_TEST_FUNCTION( t, "test_crypto", "test_sha512", {} );
-   CALL_TEST_FUNCTION( t, "test_crypto", "test_ripemd160", {} );
-   CALL_TEST_FUNCTION( t, "test_crypto", "sha1_no_data", {} );
-   CALL_TEST_FUNCTION( t, "test_crypto", "sha256_no_data", {} );
-   CALL_TEST_FUNCTION( t, "test_crypto", "sha512_no_data", {} );
-   CALL_TEST_FUNCTION( t, "test_crypto", "ripemd160_no_data", {} );
+    CALL_TEST_FUNCTION( t, "test_crypto", "test_sha1", {} );
+    CALL_TEST_FUNCTION( t, "test_crypto", "test_sha256", {} );
+    CALL_TEST_FUNCTION( t, "test_crypto", "test_sha512", {} );
+    CALL_TEST_FUNCTION( t, "test_crypto", "test_ripemd160", {} );
+    CALL_TEST_FUNCTION( t, "test_crypto", "sha1_no_data", {} );
+    CALL_TEST_FUNCTION( t, "test_crypto", "sha256_no_data", {} );
+    CALL_TEST_FUNCTION( t, "test_crypto", "sha512_no_data", {} );
+    CALL_TEST_FUNCTION( t, "test_crypto", "ripemd160_no_data", {} );
 
-   CALL_TEST_FUNCTION_AND_CHECK_EXCEPTION( t, "test_crypto", "assert_sha256_false", {},
-                                           "crypto_api_exception", "hash mismatch" );
+    CALL_TEST_FUNCTION_AND_CHECK_EXCEPTION( t, "test_crypto", "assert_sha256_false", {},
+                                            "crypto_api_exception", "hash mismatch" );
 
-   CALL_TEST_FUNCTION( t, "test_crypto", "assert_sha256_true", {} );
+    CALL_TEST_FUNCTION( t, "test_crypto", "assert_sha256_true", {} );
 
-   CALL_TEST_FUNCTION_AND_CHECK_EXCEPTION( t, "test_crypto", "assert_sha1_false", {},
-                                           "crypto_api_exception", "hash mismatch" );
+    CALL_TEST_FUNCTION_AND_CHECK_EXCEPTION( t, "test_crypto", "assert_sha1_false", {},
+                                            "crypto_api_exception", "hash mismatch" );
 
-   CALL_TEST_FUNCTION( t, "test_crypto", "assert_sha1_true", {} );
+    CALL_TEST_FUNCTION( t, "test_crypto", "assert_sha1_true", {} );
 
-   CALL_TEST_FUNCTION_AND_CHECK_EXCEPTION( t, "test_crypto", "assert_sha512_false", {},
-                                           "crypto_api_exception", "hash mismatch" );
+    CALL_TEST_FUNCTION_AND_CHECK_EXCEPTION( t, "test_crypto", "assert_sha512_false", {},
+                                            "crypto_api_exception", "hash mismatch" );
 
-   CALL_TEST_FUNCTION( t, "test_crypto", "assert_sha512_true", {} );
+    CALL_TEST_FUNCTION( t, "test_crypto", "assert_sha512_true", {} );
 
-   CALL_TEST_FUNCTION_AND_CHECK_EXCEPTION( t, "test_crypto", "assert_ripemd160_false", {},
-                                           "crypto_api_exception", "hash mismatch" );
+    CALL_TEST_FUNCTION_AND_CHECK_EXCEPTION( t, "test_crypto", "assert_ripemd160_false", {},
+                                            "crypto_api_exception", "hash mismatch" );
 
-   CALL_TEST_FUNCTION( t, "test_crypto", "assert_ripemd160_true", {} );
+    CALL_TEST_FUNCTION( t, "test_crypto", "assert_ripemd160_true", {} );
 }
 
 TEST_CASE( "test types", "[types]" ) {
