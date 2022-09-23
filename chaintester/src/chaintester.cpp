@@ -159,6 +159,13 @@ class ChainTesterClient: public IPCChainTesterClient {
         GetApplyRequestServer()->serve_once();
         recv_push_actions(_return);
     }
+
+    void produce_block(const int32_t id, const int64_t next_block_skip_seconds)
+    {
+        send_produce_block(id, next_block_skip_seconds);
+        GetApplyRequestServer()->serve_once();
+        recv_produce_block();
+    }
 };
 
 static std::shared_ptr<ChainTesterClient> gChainTesterClient;

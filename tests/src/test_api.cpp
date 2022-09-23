@@ -442,6 +442,10 @@ TEST_CASE( "test transaction", "[transaction]" ) {
     CALL_TEST_FUNCTION(t, "test_transaction", "test_tapos_block_prefix", eosio::pack(hash[1]));
 
     CALL_TEST_FUNCTION_AND_CHECK_EXCEPTION(t, "test_transaction", "send_action_recurse", {}, "transaction_exception", "max inline action depth per transaction reached");
+
+    CALL_TEST_FUNCTION(t, "test_transaction", "send_transaction", {});
+    t.produce_block();
+    t.produce_block();
 }
 
 TEST_CASE( "test chain", "[chain]" ) {
