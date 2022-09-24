@@ -26,6 +26,8 @@
 
 #include "chaintester.h"
 
+#include "vmapiclient.h"
+
 using namespace ::apache::thrift;
 using namespace ::apache::thrift::protocol;
 using namespace ::apache::thrift::transport;
@@ -34,37 +36,14 @@ using namespace ::apache::thrift::transport;
 using namespace ::server;
 using namespace ::chaintester;
 
-static std::shared_ptr<ApplyClient> gApplyClient;
-static bool g_in_apply = false;
 std::mutex g_apply_mutex;
 
-bool IsInApply() {
-    return g_in_apply;
-}
-
 void InitApplyClient() {
-    if (!gApplyClient) {
-        std::shared_ptr<TTransport> socket(new TSocket("127.0.0.1", 9092));
-        std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
-        std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
-        transport->open();
-        gApplyClient = std::shared_ptr<ApplyClient>(new ApplyClient(protocol));
-    }
+    VMAPIClient::get_instance();
 }
 
-std::shared_ptr<ApplyClient> GetApplyClient() {
-    if (!gApplyClient) {
-        std::shared_ptr<TTransport> socket(new TSocket("127.0.0.1", 9092));
-        std::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
-        std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
-        transport->open();
-        gApplyClient = std::shared_ptr<ApplyClient>(new ApplyClient(protocol));
-    }
-
-    if (!IsInApply()) {
-        throw std::runtime_error("error: call vm api function out of apply context!");
-    }
-    return gApplyClient;
+VMAPIClient& GetApplyClient() {
+    return *VMAPIClient::get_instance();
 }
 
 class ApplyRequestHandler : virtual public ApplyRequestIf {
@@ -83,19 +62,7 @@ class ApplyRequestHandler : virtual public ApplyRequestIf {
 
     std::lock_guard<std::mutex> guard(g_apply_mutex);
 
-    g_in_apply = true;
-    fn_apply apply = get_apply();
-    try {
-        if (apply != nullptr) {
-            apply(_receiver, _first_receiver, _action);
-        }
-        GetApplyClient()->end_apply();
-        g_in_apply = false;
-    } catch (apache::thrift::TException ex) {
-        printf("+++++++exception on apply(%s, %s, %s):%s\n", n2s(_receiver).c_str(), n2s(_first_receiver).c_str(), n2s(_action).c_str(), ex.what());
-        GetApplyClient()->end_apply();
-        g_in_apply = false;
-    }
+    GetApplyClient().on_apply(_receiver, _first_receiver, _action);
     return 1;
   }
 

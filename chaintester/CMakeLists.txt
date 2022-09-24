@@ -15,6 +15,7 @@ add_library ( chaintester
     src/gen/PushActions.cpp
     src/gen/interfaces_types.cpp
     src/chaintester.cpp
+    src/vmapiclient.cpp
     src/intrinsics.cpp
     src/loader.cpp
 

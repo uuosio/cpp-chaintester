@@ -7,6 +7,7 @@
 #include "gen/ApplyRequest.h"
 
 #include "chaintester.h"
+#include "vmapiclient.h"
 
 using namespace ::chaintester;
 
@@ -24,8 +25,6 @@ uint64_t from_raw_uint64(Uint64 value) {
     memcpy(&_value, value.rawValue.c_str(), 8);
     return _value;
 }
-
-std::shared_ptr<chaintester::ApplyClient> GetApplyClient();
 
 static uint32_t _get_active_producers( capi_name* producers, uint32_t datalen ) {
     string ret;
@@ -963,7 +962,7 @@ static void _eosio_assert( uint32_t test, const char* msg ) {
         return;
     }
 
-    if (!IsInApply()) {
+    if (!GetApplyClient().is_in_apply()) {
         throw std::runtime_error(msg);
     }
     GetApplyClient()->eosio_assert(0, string(msg));
@@ -974,7 +973,7 @@ static void _eosio_assert_message( uint32_t test, const char* msg, uint32_t msg_
         return;
     }
 
-    if (!IsInApply()) {
+    if (!GetApplyClient().is_in_apply()) {
         throw std::runtime_error(msg);
     }
 

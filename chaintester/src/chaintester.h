@@ -201,6 +201,3 @@ public:
 };
 
 std::string hex_str(const uint8_t *data, int len);
-
-std::shared_ptr<ApplyClient> GetApplyClient();
-bool IsInApply();
