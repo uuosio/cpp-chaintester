@@ -58,6 +58,9 @@ jobs:
           make -j$(nproc)
       # - name: Setup upterm session
       #   uses: lhotari/action-upterm@v1
+      - name: Install llvm
+        run: |
+          sudo apt install llvm
       - name: test
         run: |
           cd build
