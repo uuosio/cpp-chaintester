@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include <thrift/transport/TSocket.h>
 #include <thrift/transport/TTransportUtils.h>
 
