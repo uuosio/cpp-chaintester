@@ -40,7 +40,7 @@ target_link_libraries ( chaintester PUBLIC
 
 target_include_directories(chaintester PUBLIC
     "./gen"
-    ${CMAKE_SOURCE_DIR}/native/intrinsics/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../native/intrinsics/include
     "${CMAKE_CURRENT_SOURCE_DIR}/../libs/thrift/lib/cpp/src"
     "${CMAKE_CURRENT_BINARY_DIR}/../libs/thrift"
     "${CMAKE_CURRENT_SOURCE_DIR}/../libs/rapidjson/include"
