@@ -4,7 +4,7 @@ add_library(utils
 
 target_compile_options(utils PRIVATE -DEOSIO_NATIVE -Wno-unknown-attributes)
 
-target_include_directories(utils PUBLIC
+target_include_directories(utils PRIVATE
     ${CDT_INCLUDE_PATH}
 )
 
