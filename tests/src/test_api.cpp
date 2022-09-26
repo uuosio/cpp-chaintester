@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <eosio/eosio.hpp>
 #include <eosio/privileged.hpp>
 
@@ -40,7 +41,14 @@ void update_auth(ChainTester& t, string pub_key) {
 void init_test(ChainTester& t) {
     set_apply(test_api_native_apply);
 
-    t.enable_debug_contract("testapi", true);
+    const char * TEST_COVERAGE = std::getenv("TEST_COVERAGE");
+    if (TEST_COVERAGE == nullptr || string("") == TEST_COVERAGE || string("0") == TEST_COVERAGE || string("FALSE") == TEST_COVERAGE) {
+        t.enable_debug_contract("testapi", false);
+    } else if (string("1") == TEST_COVERAGE || string("TRUE") == TEST_COVERAGE) {
+        t.enable_debug_contract("testapi", true);
+    } else {
+        throw std::runtime_error("Invalid TEST_COVERAGE ENV");
+    }
 
     auto key = t.create_key();
     auto pub_key = key->get_string("public");

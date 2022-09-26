@@ -62,8 +62,13 @@ jobs:
         run: |
           sudo apt install llvm
       - name: test
+        working-directory: build
         run: |
-          cd build
+          ./tests/tests
+      - name: test coverage
+        working-directory: build
+        run: |
+          export TEST_COVERAGE=1
           ./tests/tests
           llvm-cov gcov `find . -name "*.gcda"`
       - name: Upload coverage to Codecov
