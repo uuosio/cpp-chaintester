@@ -7,6 +7,10 @@
 #include "check.hpp"
 #include "serialize.hpp"
 
+#if defined(__MINGW32__)
+extern "C" char* strptime(const char* s, const char* f, struct tm* tm);
+#endif
+
 namespace eosio {
   /**
    *  @defgroup time

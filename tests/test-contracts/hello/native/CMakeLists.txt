@@ -10,7 +10,7 @@ target_compile_options(hello_native PRIVATE
     -O0
     ${COVERAGE_OPTIONS}
     -DEOSIO_NATIVE
-    -Wno-unknown-attributes
+    -Wno-attributes
 )
 
 target_include_directories(hello_native PRIVATE

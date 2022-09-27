@@ -10,7 +10,7 @@ target_compile_options(test_api_db_native PRIVATE
     -O0
     ${COVERAGE_OPTIONS}
     -DEOSIO_NATIVE
-    -Wno-unknown-attributes
+    -Wno-attributes
     -Wno-deprecated-declarations
 )
 

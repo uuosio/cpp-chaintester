@@ -19,7 +19,7 @@ target_compile_options(tests PRIVATE
     -g
     -O0
     -DEOSIO_NATIVE
-    -Wno-unknown-attributes
+    -Wno-attributes
     -Wno-deprecated-declarations
 )
 

@@ -10,7 +10,7 @@ target_compile_options(new_intrinsics_native PRIVATE
     -O0
     ${COVERAGE_OPTIONS}
     -DEOSIO_NATIVE
-    -Wno-unknown-attributes
+    -Wno-attributes
 )
 
 target_include_directories(new_intrinsics_native PRIVATE

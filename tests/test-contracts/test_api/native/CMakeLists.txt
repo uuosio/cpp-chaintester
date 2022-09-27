@@ -5,7 +5,7 @@ target_compile_options(test_api_native PRIVATE
     -O0
     ${COVERAGE_OPTIONS}
     -DEOSIO_NATIVE
-    -Wno-unknown-attributes
+    -Wno-attributes
 )
 
 target_link_options(test_api_native PRIVATE ${COVERAGE_OPTIONS})

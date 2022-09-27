@@ -14,7 +14,7 @@ target_compile_options(intrinsics_native PRIVATE
     -O0
     ${COVERAGE_OPTIONS}
     -DEOSIO_NATIVE
-    -Wno-unknown-attributes
+    -Wno-attributes
     ${PLATFORM_OPTIONS}
 )
 
