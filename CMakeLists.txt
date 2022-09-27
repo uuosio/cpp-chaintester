@@ -19,15 +19,6 @@ ExternalProject_Add(
     BUILD_ALWAYS 1
 )
 
-add_library(thrift STATIC IMPORTED)
-set_target_properties(thrift PROPERTIES IMPORTED_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/libs/thrift/lib/libthrift${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}")
-
-add_custom_target(thrift-stub
-        BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/libs/thrift/lib/libthrift${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
-        COMMAND ""
-        DEPENDS thrift_external
-)
-
 set(CDT_INCLUDE_PATH
     ${CMAKE_CURRENT_SOURCE_DIR}/libs/cdt/include
     ${CMAKE_CURRENT_SOURCE_DIR}/libs/cdt/include/eosiolib/capi

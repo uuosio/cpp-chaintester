@@ -49,6 +49,16 @@ target_include_directories(chaintester PUBLIC
 
 add_dependencies(chaintester thrift_external)
 
+get_target_property(DEBUG_POSTFIX chaintester DEBUG_POSTFIX)
+add_library(thrift STATIC IMPORTED)
+set_target_properties(thrift PROPERTIES IMPORTED_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/../libs/thrift/lib/libthrift${DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}")
+
+add_custom_target(thrift-stub
+        BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/libs/thrift/lib/libthrift${DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+        COMMAND ""
+        DEPENDS thrift_external
+)
+
 # target_compile_options(chaintester PRIVATE 
 #     -g
 #     -O3
