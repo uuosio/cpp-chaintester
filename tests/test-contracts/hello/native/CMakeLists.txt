@@ -11,6 +11,7 @@ target_compile_options(hello_native PRIVATE
     ${COVERAGE_OPTIONS}
     -DEOSIO_NATIVE
     -Wno-attributes
+    -Wno-unused-value
 )
 
 target_include_directories(hello_native PRIVATE

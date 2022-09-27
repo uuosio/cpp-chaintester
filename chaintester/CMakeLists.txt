@@ -31,11 +31,11 @@ endif()
 target_link_libraries ( chaintester PUBLIC 
     utils
     softfloat
-    thrift
     intrinsics_native
     ${CMAKE_DL_LIBS}
     $<TARGET_FILE:Catch2>
     ${PTHREAD_LIB}
+    thrift
 )
 
 target_include_directories(chaintester PUBLIC
@@ -47,25 +47,8 @@ target_include_directories(chaintester PUBLIC
     "/usr/local/include"
 )
 
-add_dependencies(chaintester thrift_external)
+add_dependencies(chaintester Catch2)
 
-get_target_property(DEBUG_POSTFIX chaintester DEBUG_POSTFIX)
-add_library(thrift STATIC IMPORTED)
-set_target_properties(thrift PROPERTIES IMPORTED_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/../libs/thrift/lib/libthrift${DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}")
-
-add_custom_target(thrift-stub
-        BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/libs/thrift/lib/libthrift${DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
-        COMMAND ""
-        DEPENDS thrift_external
-)
-
-# target_compile_options(chaintester PRIVATE 
-#     -g
-#     -O3
-#     -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping
-# )
-
-# target_link_options(chaintester PRIVATE -fprofile-arcs -ftest-coverage -fprofile-instr-generate -fcoverage-mapping)
 
 set(SPECIAL_SRC_FILES
     src/chaintester.cpp

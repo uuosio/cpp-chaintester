@@ -11,6 +11,7 @@ target_compile_options(new_intrinsics_native PRIVATE
     ${COVERAGE_OPTIONS}
     -DEOSIO_NATIVE
     -Wno-attributes
+    -Wno-unused-value
 )
 
 target_include_directories(new_intrinsics_native PRIVATE

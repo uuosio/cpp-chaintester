@@ -11,6 +11,7 @@ target_compile_options(test_api_db_native PRIVATE
     ${COVERAGE_OPTIONS}
     -DEOSIO_NATIVE
     -Wno-attributes
+    -Wno-unused-value
     -Wno-deprecated-declarations
 )
 
