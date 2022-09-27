@@ -12,7 +12,9 @@ fn_apply get_apply() {
     return g_apply;
 }
 
+#ifndef __MINGW32__
 
+#include <dlfcn.h>
 bool load_native_contract(const char *native_contract_path) {
     void *handle = dlopen(native_contract_path, RTLD_LAZY | RTLD_LOCAL);
     if (handle == 0) {
@@ -36,5 +38,8 @@ bool load_native_contract(const char *native_contract_path) {
         return false;
     }
     set_apply(native_apply);
-    return true;;
+    return true;
 }
+
+#endif
+
