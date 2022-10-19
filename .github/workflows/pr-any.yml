@@ -24,6 +24,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install libboost-all-dev
+          sudo apt-get install ninja-build
       - name: Set up Clang
         uses: egor-tensin/setup-clang@v1
         with:
@@ -42,8 +43,8 @@ jobs:
           python3 -m pip install -U pip setuptools
       - name: Install cdt
         run: |
-          wget https://github.com/EOSIO/eosio.cdt/releases/download/v1.8.1/eosio.cdt_1.8.1-1-ubuntu-20.04_amd64.deb
-          sudo apt install ./eosio.cdt_1.8.1-1-ubuntu-20.04_amd64.deb
+          python3 -m pip install -U eoscdt
+          eoscdt check
       - name: Install EOS test framework
         run: |
           python3 -m pip install ipyeos
@@ -54,8 +55,8 @@ jobs:
         run: |
           mkdir build
           cd build
-          CXX=clang++ CC=clang cmake -DENABLE_COVERAGE=TRUE -DBUILD_TESTS=TRUE -DCMAKE_BUILD_TYPE=Debug ..
-          make -j$(nproc)
+          CXX=clang++ CC=clang cmake -DENABLE_COVERAGE=TRUE -DBUILD_TESTS=TRUE -DCMAKE_BUILD_TYPE=Debug -Dcdt_DIR=`cdt-get-dir` -GNinja ..
+          ninja
       # - name: Setup upterm session
       #   uses: lhotari/action-upterm@v1
       - name: Install llvm
