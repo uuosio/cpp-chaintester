@@ -9,14 +9,14 @@ add_subdirectory(test_api_multi_index/native)
 include(ExternalProject)
 # if no cdt root is given use default path
 if(EOSIO_CDT_ROOT STREQUAL "" OR NOT EOSIO_CDT_ROOT)
-   find_package(eosio.cdt)
+   find_package(cdt)
 endif()
 
 ExternalProject_Add(
    test-api-project
    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/test_api
    BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/test_api
-   CMAKE_ARGS -DCMAKE_TOOLCHAIN_FILE=${EOSIO_CDT_ROOT}/lib/cmake/eosio.cdt/EosioWasmToolchain.cmake
+   CMAKE_ARGS -DCMAKE_TOOLCHAIN_FILE=${CDT_ROOT}/lib/cmake/cdt/CDTWasmToolchain.cmake
    UPDATE_COMMAND ""
    PATCH_COMMAND ""
    TEST_COMMAND ""
@@ -28,7 +28,7 @@ ExternalProject_Add(
    activate-project
    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/activate
    BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/activate
-   CMAKE_ARGS -DCMAKE_TOOLCHAIN_FILE=${EOSIO_CDT_ROOT}/lib/cmake/eosio.cdt/EosioWasmToolchain.cmake
+   CMAKE_ARGS -DCMAKE_TOOLCHAIN_FILE=${CDT_ROOT}/lib/cmake/cdt/CDTWasmToolchain.cmake
    UPDATE_COMMAND ""
    PATCH_COMMAND ""
    TEST_COMMAND ""
@@ -40,7 +40,7 @@ ExternalProject_Add(
    bios-project
    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/eosio.bios
    BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/eosio.bios
-   CMAKE_ARGS -DCMAKE_TOOLCHAIN_FILE=${EOSIO_CDT_ROOT}/lib/cmake/eosio.cdt/EosioWasmToolchain.cmake
+   CMAKE_ARGS -DCMAKE_TOOLCHAIN_FILE=${CDT_ROOT}/lib/cmake/cdt/CDTWasmToolchain.cmake
    UPDATE_COMMAND ""
    PATCH_COMMAND ""
    TEST_COMMAND ""

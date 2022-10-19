@@ -1,5 +1,5 @@
 set(EOSIO_WASM_OLD_BEHAVIOR "Off")
-find_package(eosio.cdt)
+find_package(cdt)
 
 add_contract(activate activate ${CMAKE_CURRENT_SOURCE_DIR}/src/activate.cpp)
 
