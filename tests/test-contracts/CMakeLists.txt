@@ -8,7 +8,7 @@ add_subdirectory(test_api_multi_index/native)
 
 include(ExternalProject)
 # if no cdt root is given use default path
-if(EOSIO_CDT_ROOT STREQUAL "" OR NOT EOSIO_CDT_ROOT)
+if(CDT_ROOT STREQUAL "" OR NOT CDT_ROOT)
    find_package(cdt)
 endif()
 
