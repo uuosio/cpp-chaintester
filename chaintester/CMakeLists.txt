@@ -58,3 +58,5 @@ set(SPECIAL_SRC_FILES
 if (ENABLE_COVERAGE)
     set_property(SOURCE ${SPECIAL_SRC_FILES} PROPERTY COMPILE_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
 endif()
+
+target_compile_options(chaintester PRIVATE -Wno-deprecated-declarations)
