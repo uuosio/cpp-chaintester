@@ -277,11 +277,15 @@ std::shared_ptr<JsonObject> ChainTester::deploy_contract(const string& account, 
     if (wasm.is_open()) {
         std::vector<uint8_t> wasm_data(std::istreambuf_iterator<char>(wasm), {});
         hex_wasm_data = hex_str(wasm_data.data(), wasm_data.size());
+    } else {
+        throw std::runtime_error("wasm file does not exists!");
     }
 
     if (abi.is_open()) {
         std::vector<uint8_t> abi_data(std::istreambuf_iterator<char>(abi), {});
         str_abi_data = string((char *)abi_data.data(), abi_data.size());
+    } else {
+        throw std::runtime_error("abi file does not exists!");
     }
 
     client->deploy_contract(ret, id, account, hex_wasm_data, str_abi_data);
