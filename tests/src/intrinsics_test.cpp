@@ -20,7 +20,7 @@ static void apply(uint64_t receiver, uint64_t first_receiver, uint64_t action) {
 
 TEST_CASE( "test intrinsics", "[intrinsics]" ) {
     ChainTester tester(true);
-    set_apply(apply);
+    set_native_apply(apply);
     // tester.enable_debug_contract("hello", true);
     tester.enable_debug_contract("hello", true);
     tester.deploy_contract("hello", HELLO_WASM, HELLO_ABI);

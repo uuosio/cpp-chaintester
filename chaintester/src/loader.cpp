@@ -4,11 +4,11 @@
 
 fn_apply g_apply = nullptr;
 
-void set_apply(fn_apply fn) {
+void set_native_apply(fn_apply fn) {
     g_apply = fn;
 }
 
-fn_apply get_apply() {
+fn_apply get_native_apply() {
     return g_apply;
 }
 
@@ -37,7 +37,7 @@ bool load_native_contract(const char *native_contract_path) {
         exit(-1);
         return false;
     }
-    set_apply(native_apply);
+    set_native_apply(native_apply);
     return true;
 }
 

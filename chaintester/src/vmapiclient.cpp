@@ -44,12 +44,12 @@ bool VMAPIClient::is_in_apply() {
 
 VMAPIClient* VMAPIClient::_instance = nullptr;
 
-fn_apply get_apply();
+fn_apply get_native_apply();
 
 void VMAPIClient::on_apply(uint64_t receiver, uint64_t first_receiver, uint64_t action) {
     in_apply = true;
 
-    fn_apply apply = get_apply();
+    fn_apply apply = get_native_apply();
     try {
         if (apply != nullptr) {
             apply(receiver, first_receiver, action);
