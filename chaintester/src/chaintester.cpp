@@ -309,14 +309,26 @@ std::shared_ptr<JsonObject> ChainTester::get_table_rows(bool json,
     return std::make_shared<JsonObject>(ret);
 }
 
-uint64_t ChainTester::get_balance(const string& account, const string& token_account, const string& symbol) {
+int64_t ChainTester::get_balance(const string& account, const string& token_account, const string& symbol) {
     std::shared_ptr<JsonObject> ret = this->get_table_rows(false, token_account, account, "accounts", symbol, "", 1);
     if (!ret->has_value("rows", 0, "data")) {
         return 0;
     }
     string s = ret->get_string("rows", 0, "data");
     auto raw = hex2bytes(s);
-    uint64_t balance;
+    int64_t balance;
+    memcpy(&balance, raw.data(), 8);
+    return balance;
+}
+
+optional<int64_t> ChainTester::get_balance_ex(const string& account, const string& token_account, const string& symbol) {
+    std::shared_ptr<JsonObject> ret = this->get_table_rows(false, token_account, account, "accounts", symbol, "", 1);
+    if (!ret->has_value("rows", 0, "data")) {
+        return std::nullopt;
+    }
+    string s = ret->get_string("rows", 0, "data");
+    auto raw = hex2bytes(s);
+    int64_t balance;
     memcpy(&balance, raw.data(), 8);
     return balance;
 }

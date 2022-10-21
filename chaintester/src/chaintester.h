@@ -197,7 +197,9 @@ public:
                                     const string& index_position = "",
                                     bool reverse = false,
                                     bool show_payer = true);
-    uint64_t get_balance(const string& account, const string& token_account="eosio.token", const string& symbol="EOS");
+    int64_t get_balance(const string& account, const string& token_account="eosio.token", const string& symbol="EOS");
+    optional<int64_t> get_balance_ex(const string& account, const string& token_account, const string& symbol);
+
 };
 
 std::string hex_str(const uint8_t *data, int len);
