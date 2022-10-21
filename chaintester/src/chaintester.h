@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <variant>
+#include <optional>
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
