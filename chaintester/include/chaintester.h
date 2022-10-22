@@ -5,6 +5,7 @@
 #include "jsonobject.h"
 #include "chainexception.h"
 #include "loader.h"
+#include "utils.h"
 
 using namespace eosio;
 

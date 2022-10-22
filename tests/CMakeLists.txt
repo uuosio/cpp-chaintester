@@ -41,9 +41,7 @@ add_dependencies(tests chaintester)
 target_include_directories(tests PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
     "${CMAKE_CURRENT_BINARY_DIR}"
-    ${CDT_INCLUDE_PATH}
-    "${CMAKE_SOURCE_DIR}/libs/Catch2/src"
-    "${CMAKE_SOURCE_DIR}/chaintester/src"
+    ${CMAKE_CURRENT_SOURCE_DIR}/../native/intrinsics/include
     "${CMAKE_BINARY_DIR}/generated-includes"
 )
 

@@ -38,7 +38,7 @@ target_link_libraries ( ipcchaintester PUBLIC
     thrift
 )
 
-target_include_directories(ipcchaintester PUBLIC
+target_include_directories(ipcchaintester PRIVATE
     "./gen"
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/../native/intrinsics/include
@@ -70,8 +70,11 @@ target_link_libraries ( chaintester PUBLIC
     ipcchaintester
 )
 
-target_include_directories(ipcchaintester PUBLIC
+target_include_directories(chaintester PUBLIC
     ${CDT_INCLUDE_PATH}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    "${CMAKE_CURRENT_SOURCE_DIR}/../libs/Catch2/src"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../libs/rapidjson/include"
 )
 
 target_compile_options(chaintester PRIVATE -DEOSIO_NATIVE -Wno-unknown-attributes -Wno-unused-value)
