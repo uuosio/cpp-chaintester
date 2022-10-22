@@ -21,6 +21,7 @@ target_compile_options(tests PRIVATE
     -DEOSIO_NATIVE
     -Wno-attributes
     -Wno-deprecated-declarations
+    -Wno-unused-value
 )
 
 target_link_options(tests PRIVATE ${COVERAGE_OPTIONS})

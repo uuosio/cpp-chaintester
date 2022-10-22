@@ -14,27 +14,27 @@ TEST_CASE( "test multi_index", "[multi_index]" ) {
     auto pub_key = key->get_string("public");
     auto priv_key = key->get_string("private");
     t.import_key(pub_key, priv_key);
-    t.create_account("eosio", "testapi", pub_key, pub_key);
-    t.enable_debug_contract("testapi", true);
+    t.create_account("eosio"_n, "testapi"_n, pub_key, pub_key);
+    t.enable_debug_contract("testapi"_n, true);
 
-    t.deploy_contract("testapi", HELLO_WASM, HELLO_ABI);
+    t.deploy_contract("testapi"_n, HELLO_WASM, HELLO_ABI);
 
     auto check_failure = [&t]( const string& a, const char* expected_error_msg ) {
         CallFunction(t, "testapi", s2n(a), {}, "eosio_assert_message_exception", expected_error_msg);
     };
 
-    t.push_action( "testapi", "s1g");        // idx64_general
-    t.push_action( "testapi", "s1store");    // idx64_store_only
-    t.push_action( "testapi", "s1check");    // idx64_check_without_storing
-    t.push_action( "testapi", "s2g");        // idx128_general
-    t.push_action( "testapi", "s2store");    // idx128_store_only
-    t.push_action( "testapi", "s2check");    // idx128_check_without_storing
-    t.push_action( "testapi", "s2autoinc");  // idx128_autoincrement_test
-    t.push_action( "testapi", "s2autoinc1"); // idx128_autoincrement_test_part1
-    t.push_action( "testapi", "s2autoinc2"); // idx128_autoincrement_test_part2
-    t.push_action( "testapi", "s3g");        // idx256_general
-    t.push_action( "testapi", "sdg");        // idx_double_general
-    t.push_action( "testapi", "sldg");       // idx_long_double_general
+    t.push_action( "testapi"_n, "s1g"_n);        // idx64_general
+    t.push_action( "testapi"_n, "s1store"_n);    // idx64_store_only
+    t.push_action( "testapi"_n, "s1check"_n);    // idx64_check_without_storing
+    t.push_action( "testapi"_n, "s2g"_n);        // idx128_general
+    t.push_action( "testapi"_n, "s2store"_n);    // idx128_store_only
+    t.push_action( "testapi"_n, "s2check"_n);    // idx128_check_without_storing
+    t.push_action( "testapi"_n, "s2autoinc"_n);  // idx128_autoincrement_test
+    t.push_action( "testapi"_n, "s2autoinc1"_n); // idx128_autoincrement_test_part1
+    t.push_action( "testapi"_n, "s2autoinc2"_n); // idx128_autoincrement_test_part2
+    t.push_action( "testapi"_n, "s3g"_n);        // idx256_general
+    t.push_action( "testapi"_n, "sdg"_n);        // idx_double_general
+    t.push_action( "testapi"_n, "sldg"_n);       // idx_long_double_general
 
     check_failure( "s1pkend", "cannot increment end iterator" ); // idx64_pk_iterator_exceed_end
     check_failure( "s1skend", "cannot increment end iterator" ); // idx64_sk_iterator_exceed_end
@@ -55,7 +55,7 @@ TEST_CASE( "test multi_index", "[multi_index]" ) {
     check_failure( "s1findfail3", "unable to find secondary key" ); // idx64_require_find_sk_fail
     check_failure( "s1findfail4", "unable to find sec key" ); // idx64_require_find_sk_fail_with_msg
 
-    t.push_action( "testapi", "s1skcache"); // idx64_sk_cache_pk_lookup
-    t.push_action( "testapi", "s1pkcache"); // idx64_pk_cache_sk_lookup
+    t.push_action( "testapi"_n, "s1skcache"_n); // idx64_sk_cache_pk_lookup
+    t.push_action( "testapi"_n, "s1pkcache"_n); // idx64_pk_cache_sk_lookup
 
 }

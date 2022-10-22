@@ -8,9 +8,9 @@ TEST_CASE( "test hello", "[hello]" ) {
     set_native_apply(hello_native_apply);
 
     ChainTester tester(true);
-    tester.enable_debug_contract("hello", true);
+    tester.enable_debug_contract("hello"_n, true);
 
-    tester.deploy_contract("hello", HELLO_WASM, HELLO_ABI);
+    tester.deploy_contract("hello"_n, HELLO_WASM, HELLO_ABI);
 
     auto args = R""""(
     {
@@ -18,12 +18,7 @@ TEST_CASE( "test hello", "[hello]" ) {
     }
     )"""";
 
-    auto permissions = R""""(
-    {
-        "hello": "active"
-    }
-    )"""";
-    tester.push_action("hello", "hi", args, permissions);
+    tester.push_action("hello"_n, "hi"_n, args, "hello"_n);
     tester.produce_block();
 
     args = R""""(
@@ -31,6 +26,6 @@ TEST_CASE( "test hello", "[hello]" ) {
         "nm": "hello"
     }
     )"""";
-    tester.push_action("hello", "check", args, permissions);
+    tester.push_action("hello"_n, "check"_n, args, "hello"_n);
     tester.produce_block();
 }

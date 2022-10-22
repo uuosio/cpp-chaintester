@@ -8,13 +8,13 @@ target_include_directories(utils PRIVATE
     ${CDT_INCLUDE_PATH}
 )
 
-add_library ( chaintester 
+add_library ( ipcchaintester 
     src/gen/Apply.cpp
     src/gen/ApplyRequest.cpp
     src/gen/IPCChainTester.cpp
     src/gen/PushActions.cpp
     src/gen/interfaces_types.cpp
-    src/chaintester.cpp
+    src/ipcchaintester.cpp
     src/vmapiclient.cpp
     src/intrinsics.cpp
     src/loader.cpp
@@ -28,7 +28,7 @@ if (APPLE)
 else()
     set(PTHREAD_LIB pthread)
 endif()
-target_link_libraries ( chaintester PUBLIC 
+target_link_libraries ( ipcchaintester PUBLIC 
     utils
     softfloat
     intrinsics_native
@@ -38,8 +38,9 @@ target_link_libraries ( chaintester PUBLIC
     thrift
 )
 
-target_include_directories(chaintester PUBLIC
+target_include_directories(ipcchaintester PUBLIC
     "./gen"
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/../native/intrinsics/include
     "${CMAKE_CURRENT_SOURCE_DIR}/../libs/thrift/lib/cpp/src"
     "${CMAKE_CURRENT_BINARY_DIR}/../libs/thrift"
@@ -47,11 +48,11 @@ target_include_directories(chaintester PUBLIC
     "/usr/local/include"
 )
 
-add_dependencies(chaintester Catch2)
+add_dependencies(ipcchaintester Catch2)
 
 
 set(SPECIAL_SRC_FILES
-    src/chaintester.cpp
+    src/ipcchaintester.cpp
     src/intrinsics.cpp
 )
 
@@ -59,4 +60,18 @@ if (ENABLE_COVERAGE)
     set_property(SOURCE ${SPECIAL_SRC_FILES} PROPERTY COMPILE_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
 endif()
 
-target_compile_options(chaintester PRIVATE -Wno-deprecated-declarations)
+target_compile_options(ipcchaintester PRIVATE -Wno-deprecated-declarations -DCHAINTEST_LIB)
+
+add_library ( chaintester 
+    src/chaintester.cpp
+)
+
+target_link_libraries ( chaintester PUBLIC 
+    ipcchaintester
+)
+
+target_include_directories(ipcchaintester PUBLIC
+    ${CDT_INCLUDE_PATH}
+)
+
+target_compile_options(chaintester PRIVATE -DEOSIO_NATIVE -Wno-unknown-attributes -Wno-unused-value)

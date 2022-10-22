@@ -14,18 +14,18 @@ TEST_CASE( "test api db", "[api_db]" ) {
     auto pub_key = key->get_string("public");
     auto priv_key = key->get_string("private");
     t.import_key(pub_key, priv_key);
-    t.create_account("eosio", "testapi", pub_key, pub_key);
-    t.enable_debug_contract("testapi", true);
+    t.create_account("eosio"_n, "testapi"_n, pub_key, pub_key);
+    t.enable_debug_contract("testapi"_n, true);
 
-    t.deploy_contract("testapi", TEST_API_DB_WASM, TEST_API_DB_ABI);
+    t.deploy_contract("testapi"_n, TEST_API_DB_WASM, TEST_API_DB_ABI);
 
 
-    t.push_action( "testapi", "pg"); // primary_i64_general
-    t.push_action( "testapi", "pl"); // primary_i64_lowerbound
-    t.push_action( "testapi", "pu"); // primary_i64_upperbound
-    t.push_action( "testapi", "s1g"); // idx64_general
-    t.push_action( "testapi", "s1l"); // idx64_lowerbound
-    t.push_action( "testapi", "s1u"); // idx64_upperbound
+    t.push_action( "testapi"_n, "pg"_n); // primary_i64_general
+    t.push_action( "testapi"_n, "pl"_n); // primary_i64_lowerbound
+    t.push_action( "testapi"_n, "pu"_n); // primary_i64_upperbound
+    t.push_action( "testapi"_n, "s1g"_n); // idx64_general
+    t.push_action( "testapi"_n, "s1l"_n); // idx64_lowerbound
+    t.push_action( "testapi"_n, "s1u"_n); // idx64_upperbound
 
    // Store value in primary table
 //    t.push_action( "testapi"_n, "tia"_n, "testapi"_n, mutable_variant_object() // test_invalid_access

@@ -34,7 +34,7 @@ void update_auth(ChainTester& t, string pub_key) {
             "testapi": "active"
         }
     )";
-    t.push_action("eosio", "updateauth", string(_updateauth_args), permissions);
+    t.push_action("eosio"_n, "updateauth"_n, string(_updateauth_args), permissions);
     t.produce_block();
 }
 
@@ -43,9 +43,9 @@ void init_test(ChainTester& t) {
 
     const char * TEST_COVERAGE = std::getenv("TEST_COVERAGE");
     if (TEST_COVERAGE == nullptr || string("") == TEST_COVERAGE || string("0") == TEST_COVERAGE || string("FALSE") == TEST_COVERAGE) {
-        t.enable_debug_contract("testapi", false);
+        t.enable_debug_contract("testapi"_n, false);
     } else if (string("1") == TEST_COVERAGE || string("TRUE") == TEST_COVERAGE) {
-        t.enable_debug_contract("testapi", true);
+        t.enable_debug_contract("testapi"_n, true);
     } else {
         throw std::runtime_error("Invalid TEST_COVERAGE ENV");
     }
@@ -54,28 +54,28 @@ void init_test(ChainTester& t) {
     auto pub_key = key->get_string("public");
     auto priv_key = key->get_string("private");
     t.import_key(pub_key, priv_key);
-    t.create_account("eosio", "testapi", pub_key, pub_key);
+    t.create_account("eosio"_n, "testapi"_n, pub_key, pub_key);
     
     update_auth(t, pub_key);
 
-    t.deploy_contract("testapi", TEST_API_WASM, TEST_API_ABI);
+    t.deploy_contract("testapi"_n, TEST_API_WASM, TEST_API_ABI);
     t.produce_block();
 }
 
 void init_test2(ChainTester& t) {
     set_native_apply(test_api_native_apply);
 
-    t.enable_debug_contract("testapi", true);
+    t.enable_debug_contract("testapi"_n, true);
 
     auto key = t.create_key();
     auto pub_key = key->get_string("public");
     auto priv_key = key->get_string("private");
     t.import_key(pub_key, priv_key);
-    t.create_account("eosio", "testapi", pub_key, pub_key);
-    t.create_account("eosio", "testapi2", pub_key, pub_key);
+    t.create_account("eosio"_n, "testapi"_n, pub_key, pub_key);
+    t.create_account("eosio"_n, "testapi2"_n, pub_key, pub_key);
 
-    t.deploy_contract("testapi", TEST_API_WASM, TEST_API_ABI);
-    t.deploy_contract("testapi2", TEST_API_WASM, TEST_API_ABI);
+    t.deploy_contract("testapi"_n, TEST_API_WASM, TEST_API_ABI);
+    t.deploy_contract("testapi2"_n, TEST_API_WASM, TEST_API_ABI);
     t.produce_block();
 }
 
@@ -180,7 +180,7 @@ TEST_CASE( "test account creation time", "[account]" ) {
     for (int i=0; i<10; i++) {
         t.produce_block();
     }
-    auto ret = t.get_account("testapi");
+    auto ret = t.get_account("testapi"_n);
 
     auto s = ret->get_string("created");
     CALL_TEST_FUNCTION( t, "test_permission", "test_account_creation_time",
@@ -198,7 +198,7 @@ TEST_CASE( "test permission usage", "[account]" ) {
         t.produce_block();
     }
 
-    auto ret = t.get_account("testapi");
+    auto ret = t.get_account("testapi"_n);
     auto s = ret->get_string("created");
     CALL_TEST_FUNCTION( t, "test_permission", "test_permission_last_used",
                            eosio::pack<test_permission_last_used_msg>(test_permission_last_used_msg{
@@ -235,10 +235,10 @@ TEST_CASE( "test action", "[action]" ) {
     auto priv_key = key->get_string("private");
 
     t.import_key(pub_key, priv_key);
-    t.create_account("eosio", "acc1", pub_key, pub_key);
-    t.create_account("eosio", "acc2", pub_key, pub_key);
-    t.create_account("eosio", "acc3", pub_key, pub_key);
-    t.create_account("eosio", "acc4", pub_key, pub_key);
+    t.create_account("eosio"_n, "acc1"_n, pub_key, pub_key);
+    t.create_account("eosio"_n, "acc2"_n, pub_key, pub_key);
+    t.create_account("eosio"_n, "acc3"_n, pub_key, pub_key);
+    t.create_account("eosio"_n, "acc4"_n, pub_key, pub_key);
 
     // test assert_true
     CALL_TEST_FUNCTION( t, "test_action", "assert_true", {});
@@ -259,14 +259,17 @@ TEST_CASE( "test action", "[action]" ) {
     auto a4only = std::vector<eosio::permission_level>{{"acc4"_n, config::active_name}};
     CALL_TEST_FUNCTION_AND_CHECK_EXCEPTION( t, "test_action", "require_auth", eosio::pack(a4only), "missing_auth_exception", "missing authority of");
 
-    auto a = TxAction{"testapi", n2s(TEST_METHOD("test_action", "require_auth")), "",
-        R"(
-            {
-                "testapi": "active",
-                "acc3": "active",
-                "acc4": "active"
-            }
-        )"};
+    auto a = action{
+        vector<permission_level>(
+        {
+            {"testapi"_n, "active"_n},
+            {"acc3"_n, "active"_n},
+            {"acc4"_n, "active"_n}
+        }),
+        "testapi"_n,
+        name(TEST_METHOD("test_action", "require_auth")),
+        std::make_tuple()
+    };
     t.push_actions({a});
 }
 
@@ -460,7 +463,7 @@ TEST_CASE( "test chain", "[chain]" ) {
     ChainTester t(false);
     set_native_apply(test_api_native_apply);
 
-    t.enable_debug_contract("testapi", true);
+    t.enable_debug_contract("testapi"_n, true);
 
     string permissions = R"(
         {
@@ -489,7 +492,7 @@ TEST_CASE( "test chain", "[chain]" ) {
     char buffer[args.size() + 13 + 1];
     snprintf(buffer, sizeof(buffer), args.c_str(), "testapi");
 
-    t.push_action("eosio", "newaccount", string(buffer), permissions);
+    t.push_action("eosio"_n, "newaccount"_n, string(buffer), permissions);
 
     string pub_key = "EOS6AjF6hvF7GSuSd4sCgfPKq5uWaXvGM2aQtEUCwmEHygQaqxBSV";
 
@@ -518,10 +521,10 @@ TEST_CASE( "test chain", "[chain]" ) {
 
     for (auto& a: producers) {
         snprintf(buffer, sizeof(buffer), args.c_str(), a.c_str());
-        t.push_action("eosio", "newaccount", string(buffer), permissions);
+        t.push_action("eosio"_n, "newaccount"_n, string(buffer), permissions);
         t.produce_block();
     }
-    t.deploy_contract("eosio", ACTIVATE_WASM, ACTIVATE_ABI);
+    t.deploy_contract("eosio"_n, ACTIVATE_WASM, ACTIVATE_ABI);
 
     vector<string> feature_digests = {
         "1a99a59d87e06e09ec5b028a9cbb7749b4a5ad8819004365d02dc4379a8b7241", //ONLY_LINK_TO_EXISTING_PERMISSION" 
@@ -546,14 +549,14 @@ TEST_CASE( "test chain", "[chain]" ) {
 
     for (auto& digest: feature_digests) {
         snprintf(buffer, sizeof(buffer), R"({"feature_digest": "%s"})", digest.c_str());
-        t.push_action("eosio", "activate", string(buffer), permissions);
+        t.push_action("eosio"_n, "activate"_n, string(buffer), permissions);
     }
     t.produce_block();
 
-    t.deploy_contract("eosio", BIOS_WASM, BIOS_ABI);
+    t.deploy_contract("eosio"_n, BIOS_WASM, BIOS_ABI);
     t.produce_block();
 
-    t.deploy_contract("testapi", TEST_API_WASM, TEST_API_ABI);
+    t.deploy_contract("testapi"_n, TEST_API_WASM, TEST_API_ABI);
     t.produce_block();
 
     ecc_public_key _key;
@@ -577,7 +580,7 @@ TEST_CASE( "test chain", "[chain]" ) {
         });
     }
 
-    auto ret = t.push_action("eosio", "setprods", eosio::pack(prods), permissions);
+    auto ret = t.push_action("eosio"_n, "setprods"_n, eosio::pack(prods));
     // WARN(ret->to_string());
     for (int i=0; i<200; i++) {
         t.produce_block();

@@ -22,8 +22,8 @@ TEST_CASE( "test intrinsics", "[intrinsics]" ) {
     ChainTester tester(true);
     set_native_apply(apply);
     // tester.enable_debug_contract("hello", true);
-    tester.enable_debug_contract("hello", true);
-    tester.deploy_contract("hello", HELLO_WASM, HELLO_ABI);
+    tester.enable_debug_contract("hello"_n, true);
+    tester.deploy_contract("hello"_n, HELLO_WASM, HELLO_ABI);
 
     auto args = R""""(
     {
@@ -31,11 +31,6 @@ TEST_CASE( "test intrinsics", "[intrinsics]" ) {
     }
     )"""";
 
-    auto permissions = R""""(
-    {
-        "hello": "active"
-    }
-    )"""";
-    tester.push_action("hello", "hi", args, permissions);
+    tester.push_action("hello"_n, "hi"_n, args, "hello"_n);
     tester.produce_block();
 }

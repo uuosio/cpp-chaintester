@@ -71,13 +71,13 @@ TEST_CASE( "test chaintester", "[chaintester]" ) {
     WARN(info->get_string("chain_id"));
     WARN(info->to_string());
 
-    auto ret = tester.create_account("hello", "helloworld33", pub_key, pub_key, 10*1024*1024, 100000, 1000000);
+    auto ret = tester.create_account("hello"_n, "helloworld33"_n, pub_key, pub_key, 10*1024*1024, 100000, 1000000);
     tester.produce_block();
 
-    auto account_info = tester.get_account("helloworld33");
+    auto account_info = tester.get_account("helloworld33"_n);
     WARN(account_info->get_string("head_block_time"));
     
-    ret = tester.deploy_contract("helloworld33", TEST_MULTI_INDEX_EXAMPLE_WASM, TEST_MULTI_INDEX_EXAMPLE_ABI);
+    ret = tester.deploy_contract("helloworld33"_n, TEST_MULTI_INDEX_EXAMPLE_WASM, TEST_MULTI_INDEX_EXAMPLE_ABI);
     // WARN(ret->to_string());
 
     auto args = R""""(
@@ -92,17 +92,17 @@ TEST_CASE( "test chaintester", "[chaintester]" ) {
     }
     )"""";
     
-    ret = tester.push_action("helloworld33", "set", args, permissions);
+    ret = tester.push_action("helloworld33"_n, "set"_n, args, "helloworld33"_n);
     WARN(ret->to_string());
 
     /*
         key_type: "i64"|"i128"|"i256"|"float64"|"float128"|"sha256"|"ripemd160"
         index_position: "2"|"3"|"4"|"5"|"6"|"7"|"8"|"9"|"10"
     */
-    ret = tester.get_table_rows(true, "helloworld33", "helloworld33", "testtaba", "alice", "alice", 10);
+    ret = tester.get_table_rows(true, "helloworld33"_n, "helloworld33"_n, "testtaba"_n, "alice"_n, "alice"_n, 10);
     WARN(ret->to_string());
 
-    ret = tester.get_table_rows(true, "helloworld33", "helloworld33", "testtaba", "second", "second", 10, "i64", "2");
+    ret = tester.get_table_rows(true, "helloworld33"_n, "helloworld33"_n, "testtaba"_n, "second"_n, "second"_n, 10, "i64", "2");
     WARN(ret->to_string());
 
     try {
@@ -119,7 +119,7 @@ TEST_CASE( "test chaintester", "[chaintester]" ) {
         REQUIRE(string(ex.what()) == "error: call vm api function out of apply context!");
     }
 
-    uint64_t old_balance = tester.get_balance("hello");
+    uint64_t old_balance = tester.get_balance("hello"_n);
 
     args = R""""(
     {
@@ -136,7 +136,7 @@ TEST_CASE( "test chaintester", "[chaintester]" ) {
     }
     )"""";
     
-    tester.push_action("eosio.token", "transfer", args, permissions);
-    uint64_t new_balance = tester.get_balance("hello");
+    tester.push_action("eosio.token"_n, "transfer"_n, args, permissions);
+    uint64_t new_balance = tester.get_balance("hello"_n);
     REQUIRE(old_balance == new_balance + 10000);
 }
