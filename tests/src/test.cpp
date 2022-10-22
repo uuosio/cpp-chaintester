@@ -92,7 +92,7 @@ TEST_CASE( "test chaintester", "[chaintester]" ) {
     }
     )"""";
     
-    ret = tester.push_action("helloworld33"_n, "set"_n, args, "helloworld33"_n);
+    ret = tester.push_action_ex("helloworld33"_n, "set"_n, args, "helloworld33"_n);
     WARN(ret->to_string());
 
     /*
@@ -136,7 +136,7 @@ TEST_CASE( "test chaintester", "[chaintester]" ) {
     }
     )"""";
     
-    tester.push_action("eosio.token"_n, "transfer"_n, args, permissions);
+    tester.push_action_ex("eosio.token"_n, "transfer"_n, args, permissions);
     uint64_t new_balance = tester.get_balance("hello"_n);
     REQUIRE(old_balance == new_balance + 10000);
 }

@@ -33,7 +33,7 @@ static uint64_t TEST_METHOD(const char* CLASS, const char *METHOD) {
 
 static std::shared_ptr<JsonObject> CallFunction(ChainTester& tester, const string& account, uint64_t action, const vector<char>& data, const string& required_exception_type="", const string& exception_message="") {
     try {
-        auto ret = tester.push_action(name(account), name(action), data, "testapi"_n);
+        auto ret = tester.push_action_ex(name(account), name(action), data, "testapi"_n);
         REQUIRE(!ret->HasMember("except"));
         return ret;
     } catch(chain_exception& ex) {

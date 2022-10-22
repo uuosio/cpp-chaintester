@@ -30,7 +30,7 @@ TEST_CASE( "test_new_intrinsics", "[new intrinsics]" ) {
         }
     );
 
-    auto ret = tester.push_action("hello"_n, "test"_n, args, "hello"_n);
+    auto ret = tester.push_action_ex("hello"_n, "test"_n, args, "hello"_n);
     tester.produce_block();
     // WARN(ret->to_string());
     REQUIRE(ret->get_string("action_traces", 0, "return_value") == hex_str((uint8_t*)"helloworld", 10));

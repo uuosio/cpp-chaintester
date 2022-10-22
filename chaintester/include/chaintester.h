@@ -33,19 +33,23 @@ public:
     void produce_block(int64_t next_block_delay_seconds = 0);
     void produce_blocks(int n);
 
-    std::shared_ptr<JsonObject> push_action(const name account, const name action, const vector<char>& arguments, const vector<permission_level>& permissions);
-    std::shared_ptr<JsonObject> push_action(const name account, const name action, const vector<char>& arguments, const name signer=name());
-    std::shared_ptr<JsonObject> push_action(const name account, const name action, const string& arguments, const name signer=name());
-    std::shared_ptr<JsonObject> push_action(const name account, const name action, const string& arguments="", const string& permissions="");
+    std::shared_ptr<JsonObject> push_action_ex(const name account, const name action, const vector<char>& arguments, const vector<permission_level>& permissions);
+    std::shared_ptr<JsonObject> push_action_ex(const name account, const name action, const vector<char>& arguments, const name signer=name());
+    std::shared_ptr<JsonObject> push_action_ex(const name account, const name action, const string& arguments, const name signer=name());
+    std::shared_ptr<JsonObject> push_action_ex(const name account, const name action, const string& arguments="", const string& permissions="");
 
-    template<typename T>
-    std::shared_ptr<JsonObject> push_action(const name account, const name action, const T&& arguments, const vector<permission_level>& permissions) {
-        return this->push_action(account, action, eosio::pack(arguments), permissions);
+    std::shared_ptr<JsonObject> push_action(const name account, const name action) {
+        return this->push_action_ex(account, action, "", name());
     }
 
     template<typename T>
-    std::shared_ptr<JsonObject> push_action(const name account, const name action, const T&& arguments, const name signer) {
-        return this->push_action(account, action, eosio::pack(arguments), signer);
+    std::shared_ptr<JsonObject> push_action(const name account, const name action, const T& arguments, const vector<permission_level>& permissions) {
+        return this->push_action_ex(account, action, eosio::pack(arguments), permissions);
+    }
+
+    template<typename T>
+    std::shared_ptr<JsonObject> push_action(const name account, const name action, const T& arguments, const name signer) {
+        return this->push_action_ex(account, action, eosio::pack(arguments), signer);
     }
 
     std::shared_ptr<JsonObject> push_actions(const std::vector<action>& actions);

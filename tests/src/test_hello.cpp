@@ -18,7 +18,7 @@ TEST_CASE( "test hello", "[hello]" ) {
     }
     )"""";
 
-    tester.push_action("hello"_n, "hi"_n, args, "hello"_n);
+    tester.push_action_ex("hello"_n, "hi"_n, args, "hello"_n);
     tester.produce_block();
 
     args = R""""(
@@ -26,6 +26,6 @@ TEST_CASE( "test hello", "[hello]" ) {
         "nm": "hello"
     }
     )"""";
-    tester.push_action("hello"_n, "check"_n, args, "hello"_n);
+    tester.push_action_ex("hello"_n, "check"_n, args, "hello"_n);
     tester.produce_block();
 }

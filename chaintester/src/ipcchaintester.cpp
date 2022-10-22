@@ -288,17 +288,6 @@ std::shared_ptr<JsonObject> IPCChainTester::push_actions(const std::vector<TxAct
     return _ret;
 }
 
-std::string hex_str(const uint8_t *data, int len)
-{
-     std::stringstream ss;
-     ss << std::hex;
-
-     for( int i(0) ; i < len; ++i )
-         ss << std::setw(2) << std::setfill('0') << (int)data[i];
-
-     return ss.str();
-}
-
 std::shared_ptr<JsonObject> IPCChainTester::deploy_contract(const string& account, const string& wasmFile, const string& abiFile) {
     string ret;
     std::ifstream wasm(wasmFile, std::ios::binary);

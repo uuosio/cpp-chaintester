@@ -34,7 +34,7 @@ void update_auth(ChainTester& t, string pub_key) {
             "testapi": "active"
         }
     )";
-    t.push_action("eosio"_n, "updateauth"_n, string(_updateauth_args), permissions);
+    t.push_action_ex("eosio"_n, "updateauth"_n, string(_updateauth_args), permissions);
     t.produce_block();
 }
 
@@ -492,7 +492,7 @@ TEST_CASE( "test chain", "[chain]" ) {
     char buffer[args.size() + 13 + 1];
     snprintf(buffer, sizeof(buffer), args.c_str(), "testapi");
 
-    t.push_action("eosio"_n, "newaccount"_n, string(buffer), permissions);
+    t.push_action_ex("eosio"_n, "newaccount"_n, string(buffer), permissions);
 
     string pub_key = "EOS6AjF6hvF7GSuSd4sCgfPKq5uWaXvGM2aQtEUCwmEHygQaqxBSV";
 
@@ -521,7 +521,7 @@ TEST_CASE( "test chain", "[chain]" ) {
 
     for (auto& a: producers) {
         snprintf(buffer, sizeof(buffer), args.c_str(), a.c_str());
-        t.push_action("eosio"_n, "newaccount"_n, string(buffer), permissions);
+        t.push_action_ex("eosio"_n, "newaccount"_n, string(buffer), permissions);
         t.produce_block();
     }
     t.deploy_contract("eosio"_n, ACTIVATE_WASM, ACTIVATE_ABI);
@@ -549,7 +549,7 @@ TEST_CASE( "test chain", "[chain]" ) {
 
     for (auto& digest: feature_digests) {
         snprintf(buffer, sizeof(buffer), R"({"feature_digest": "%s"})", digest.c_str());
-        t.push_action("eosio"_n, "activate"_n, string(buffer), permissions);
+        t.push_action_ex("eosio"_n, "activate"_n, string(buffer), permissions);
     }
     t.produce_block();
 
@@ -580,7 +580,7 @@ TEST_CASE( "test chain", "[chain]" ) {
         });
     }
 
-    auto ret = t.push_action("eosio"_n, "setprods"_n, eosio::pack(prods));
+    auto ret = t.push_action_ex("eosio"_n, "setprods"_n, eosio::pack(prods));
     // WARN(ret->to_string());
     for (int i=0; i<200; i++) {
         t.produce_block();

@@ -57,11 +57,11 @@ static string permissions_to_json_string(const vector<permission_level>& permiss
     return _permissions;
 }
 
-std::shared_ptr<JsonObject> ChainTester::push_action(const name account, const name action, const vector<char>& arguments, const vector<permission_level>& permissions) {
+std::shared_ptr<JsonObject> ChainTester::push_action_ex(const name account, const name action, const vector<char>& arguments, const vector<permission_level>& permissions) {
     return tester->push_action(account.to_string(), action.to_string(), arguments, permissions_to_json_string(permissions));
 }
 
-std::shared_ptr<JsonObject> ChainTester::push_action(const name account, const name action, const vector<char>& arguments, const name signer) {
+std::shared_ptr<JsonObject> ChainTester::push_action_ex(const name account, const name action, const vector<char>& arguments, const name signer) {
     name _signer = signer;
     if (signer == name()) {
         _signer = account;
@@ -69,7 +69,7 @@ std::shared_ptr<JsonObject> ChainTester::push_action(const name account, const n
     return tester->push_action(account.to_string(), action.to_string(), arguments, std::vector<Permission>({std::make_pair(_signer.to_string(), string("active"))}));
 }
 
-std::shared_ptr<JsonObject> ChainTester::push_action(const name account, const name action, const string& arguments, const name signer) {
+std::shared_ptr<JsonObject> ChainTester::push_action_ex(const name account, const name action, const string& arguments, const name signer) {
     name _signer = signer;
     if (signer == name()) {
         _signer = account;
@@ -77,7 +77,7 @@ std::shared_ptr<JsonObject> ChainTester::push_action(const name account, const n
     return tester->push_action(account.to_string(), action.to_string(), arguments, std::vector<Permission>({std::make_pair(_signer.to_string(), string("active"))}));
 }
 
-std::shared_ptr<JsonObject> ChainTester::push_action(const name account, const name action, const string& arguments, const string& permissions) {
+std::shared_ptr<JsonObject> ChainTester::push_action_ex(const name account, const name action, const string& arguments, const string& permissions) {
     return tester->push_action(account.to_string(), action.to_string(), arguments, permissions);
 }
 
