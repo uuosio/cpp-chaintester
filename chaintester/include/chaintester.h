@@ -43,8 +43,8 @@ public:
         return this->push_action(account, action, eosio::pack(arguments), permissions);
     }
 
-    template<typename... Ts>
-    std::shared_ptr<JsonObject> push_action(const name account, const name action, const std::tuple<Ts...>& arguments, const name signer) {
+    template<typename T>
+    std::shared_ptr<JsonObject> push_action(const name account, const name action, const T&& arguments, const name signer) {
         return this->push_action(account, action, eosio::pack(arguments), signer);
     }
 

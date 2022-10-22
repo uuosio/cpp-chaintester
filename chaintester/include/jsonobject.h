@@ -37,7 +37,7 @@ public:
     template<typename... Ts>
     Value& get_value(Ts... args) {
         if (!this->has_value(args...)) {
-            throw std::runtime_error("value did not exists!");
+            throw std::runtime_error("value does not exists!");
         }
 
         const int size = sizeof...(args);
