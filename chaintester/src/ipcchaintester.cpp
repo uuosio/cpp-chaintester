@@ -115,7 +115,7 @@ class ChainTesterClient: public IPCChainTesterClient {
     ChainTesterClient(std::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, std::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot): IPCChainTesterClient(iprot, oprot) {
     }
 
-    void push_action(std::string& _return, const int32_t id, const std::string& account, const std::string& action, const std::string& arguments, const std::string& permissions)
+    void push_action(std::string& _return, const int32_t id, const std::string& account, const std::string& action, const ActionArguments& arguments, const std::string& permissions)
     {
         send_push_action(id, account, action, arguments, permissions);
         GetApplyRequestServer()->serve_once();
@@ -235,15 +235,15 @@ string permissions_to_json_string(const Permissions& permissions) {
     return "";
 }
 
-std::shared_ptr<JsonObject> IPCChainTester::push_action(const string& account, const string& action, const ActionArguments& arguments, const Permissions& permissions) {
+std::shared_ptr<JsonObject> IPCChainTester::push_action(const string& account, const string& action, const TxActionArguments& arguments, const Permissions& permissions) {
     string ret;
-    string _arguments;
     string _permissions;
+    ActionArguments _arguments;
 
     if(const string* s  = std::get_if<string>(&arguments)) {
-        _arguments = *s;
+        _arguments.__set_json_args(*s);
     } else if (const vector<char>* v  = std::get_if<vector<char>>(&arguments)) {
-        _arguments = hex_str((uint8_t*)v->data(), v->size());
+        _arguments.__set_raw_args(string(v->data(), v->size()));
     }
 
     _permissions = permissions_to_json_string(permissions);
@@ -265,11 +265,11 @@ std::shared_ptr<JsonObject> IPCChainTester::push_action(const string& account, c
 std::shared_ptr<JsonObject> IPCChainTester::push_actions(const std::vector<TxAction>& actions) {
     vector<Action> aa;
     for (auto& a : actions) {
-        string arguments;
+        ActionArguments arguments;
         if(const string* s  = std::get_if<string>(&a.arguments)) {
-            arguments = *s;
+            arguments.__set_json_args(*s);
         } else if (const vector<char>* v  = std::get_if<vector<char>>(&a.arguments)) {
-            arguments = hex_str((uint8_t*)v->data(), v->size());
+            arguments.__set_raw_args(string(v->data(), v->size()));
         }
         Action _a;
         _a.account = a.account;

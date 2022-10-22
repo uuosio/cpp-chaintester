@@ -38,14 +38,14 @@ uint32_t PushActions_push_actions_args::read(::apache::thrift::protocol::TProtoc
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->actions.clear();
-            uint32_t _size36;
-            ::apache::thrift::protocol::TType _etype39;
-            xfer += iprot->readListBegin(_etype39, _size36);
-            this->actions.resize(_size36);
-            uint32_t _i40;
-            for (_i40 = 0; _i40 < _size36; ++_i40)
+            uint32_t _size38;
+            ::apache::thrift::protocol::TType _etype41;
+            xfer += iprot->readListBegin(_etype41, _size38);
+            this->actions.resize(_size38);
+            uint32_t _i42;
+            for (_i42 = 0; _i42 < _size38; ++_i42)
             {
-              xfer += this->actions[_i40].read(iprot);
+              xfer += this->actions[_i42].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -74,10 +74,10 @@ uint32_t PushActions_push_actions_args::write(::apache::thrift::protocol::TProto
   xfer += oprot->writeFieldBegin("actions", ::apache::thrift::protocol::T_LIST, 1);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->actions.size()));
-    std::vector<Action> ::const_iterator _iter41;
-    for (_iter41 = this->actions.begin(); _iter41 != this->actions.end(); ++_iter41)
+    std::vector<Action> ::const_iterator _iter43;
+    for (_iter43 = this->actions.begin(); _iter43 != this->actions.end(); ++_iter43)
     {
-      xfer += (*_iter41).write(oprot);
+      xfer += (*_iter43).write(oprot);
     }
     xfer += oprot->writeListEnd();
   }
@@ -101,10 +101,10 @@ uint32_t PushActions_push_actions_pargs::write(::apache::thrift::protocol::TProt
   xfer += oprot->writeFieldBegin("actions", ::apache::thrift::protocol::T_LIST, 1);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>((*(this->actions)).size()));
-    std::vector<Action> ::const_iterator _iter42;
-    for (_iter42 = (*(this->actions)).begin(); _iter42 != (*(this->actions)).end(); ++_iter42)
+    std::vector<Action> ::const_iterator _iter44;
+    for (_iter44 = (*(this->actions)).begin(); _iter44 != (*(this->actions)).end(); ++_iter44)
     {
-      xfer += (*_iter42).write(oprot);
+      xfer += (*_iter44).write(oprot);
     }
     xfer += oprot->writeListEnd();
   }

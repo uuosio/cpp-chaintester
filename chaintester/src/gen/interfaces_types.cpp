@@ -220,6 +220,122 @@ const char* AssertException::what() const noexcept {
 }
 
 
+ActionArguments::~ActionArguments() noexcept {
+}
+
+
+void ActionArguments::__set_raw_args(const std::string& val) {
+  this->raw_args = val;
+__isset.raw_args = true;
+}
+
+void ActionArguments::__set_json_args(const std::string& val) {
+  this->json_args = val;
+__isset.json_args = true;
+}
+std::ostream& operator<<(std::ostream& out, const ActionArguments& obj)
+{
+  obj.printTo(out);
+  return out;
+}
+
+
+uint32_t ActionArguments::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readBinary(this->raw_args);
+          this->__isset.raw_args = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->json_args);
+          this->__isset.json_args = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t ActionArguments::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("ActionArguments");
+
+  if (this->__isset.raw_args) {
+    xfer += oprot->writeFieldBegin("raw_args", ::apache::thrift::protocol::T_STRING, 1);
+    xfer += oprot->writeBinary(this->raw_args);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.json_args) {
+    xfer += oprot->writeFieldBegin("json_args", ::apache::thrift::protocol::T_STRING, 2);
+    xfer += oprot->writeString(this->json_args);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(ActionArguments &a, ActionArguments &b) {
+  using ::std::swap;
+  swap(a.raw_args, b.raw_args);
+  swap(a.json_args, b.json_args);
+  swap(a.__isset, b.__isset);
+}
+
+ActionArguments::ActionArguments(const ActionArguments& other4) {
+  raw_args = other4.raw_args;
+  json_args = other4.json_args;
+  __isset = other4.__isset;
+}
+ActionArguments& ActionArguments::operator=(const ActionArguments& other5) {
+  raw_args = other5.raw_args;
+  json_args = other5.json_args;
+  __isset = other5.__isset;
+  return *this;
+}
+void ActionArguments::printTo(std::ostream& out) const {
+  using ::apache::thrift::to_string;
+  out << "ActionArguments(";
+  out << "raw_args="; (__isset.raw_args ? (out << to_string(raw_args)) : (out << "<null>"));
+  out << ", " << "json_args="; (__isset.json_args ? (out << to_string(json_args)) : (out << "<null>"));
+  out << ")";
+}
+
+
 Action::~Action() noexcept {
 }
 
@@ -236,7 +352,7 @@ void Action::__set_permissions(const std::string& val) {
   this->permissions = val;
 }
 
-void Action::__set_arguments(const std::string& val) {
+void Action::__set_arguments(const ActionArguments& val) {
   this->arguments = val;
 }
 std::ostream& operator<<(std::ostream& out, const Action& obj)
@@ -292,8 +408,8 @@ uint32_t Action::read(::apache::thrift::protocol::TProtocol* iprot) {
         }
         break;
       case 4:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->arguments);
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->arguments.read(iprot);
           this->__isset.arguments = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -328,8 +444,8 @@ uint32_t Action::write(::apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeString(this->permissions);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("arguments", ::apache::thrift::protocol::T_STRING, 4);
-  xfer += oprot->writeString(this->arguments);
+  xfer += oprot->writeFieldBegin("arguments", ::apache::thrift::protocol::T_STRUCT, 4);
+  xfer += this->arguments.write(oprot);
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -346,19 +462,19 @@ void swap(Action &a, Action &b) {
   swap(a.__isset, b.__isset);
 }
 
-Action::Action(const Action& other4) {
-  account = other4.account;
-  action = other4.action;
-  permissions = other4.permissions;
-  arguments = other4.arguments;
-  __isset = other4.__isset;
+Action::Action(const Action& other6) {
+  account = other6.account;
+  action = other6.action;
+  permissions = other6.permissions;
+  arguments = other6.arguments;
+  __isset = other6.__isset;
 }
-Action& Action::operator=(const Action& other5) {
-  account = other5.account;
-  action = other5.action;
-  permissions = other5.permissions;
-  arguments = other5.arguments;
-  __isset = other5.__isset;
+Action& Action::operator=(const Action& other7) {
+  account = other7.account;
+  action = other7.action;
+  permissions = other7.permissions;
+  arguments = other7.arguments;
+  __isset = other7.__isset;
   return *this;
 }
 void Action::printTo(std::ostream& out) const {
@@ -447,13 +563,13 @@ void swap(Uint64 &a, Uint64 &b) {
   swap(a.__isset, b.__isset);
 }
 
-Uint64::Uint64(const Uint64& other6) {
-  rawValue = other6.rawValue;
-  __isset = other6.__isset;
+Uint64::Uint64(const Uint64& other8) {
+  rawValue = other8.rawValue;
+  __isset = other8.__isset;
 }
-Uint64& Uint64::operator=(const Uint64& other7) {
-  rawValue = other7.rawValue;
-  __isset = other7.__isset;
+Uint64& Uint64::operator=(const Uint64& other9) {
+  rawValue = other9.rawValue;
+  __isset = other9.__isset;
   return *this;
 }
 void Uint64::printTo(std::ostream& out) const {
@@ -556,15 +672,15 @@ void swap(DataBuffer &a, DataBuffer &b) {
   swap(a.__isset, b.__isset);
 }
 
-DataBuffer::DataBuffer(const DataBuffer& other8) {
-  size = other8.size;
-  buffer = other8.buffer;
-  __isset = other8.__isset;
+DataBuffer::DataBuffer(const DataBuffer& other10) {
+  size = other10.size;
+  buffer = other10.buffer;
+  __isset = other10.__isset;
 }
-DataBuffer& DataBuffer::operator=(const DataBuffer& other9) {
-  size = other9.size;
-  buffer = other9.buffer;
-  __isset = other9.__isset;
+DataBuffer& DataBuffer::operator=(const DataBuffer& other11) {
+  size = other11.size;
+  buffer = other11.buffer;
+  __isset = other11.__isset;
   return *this;
 }
 void DataBuffer::printTo(std::ostream& out) const {
@@ -668,15 +784,15 @@ void swap(NextPreviousReturn &a, NextPreviousReturn &b) {
   swap(a.__isset, b.__isset);
 }
 
-NextPreviousReturn::NextPreviousReturn(const NextPreviousReturn& other10) {
-  iterator = other10.iterator;
-  primary = other10.primary;
-  __isset = other10.__isset;
+NextPreviousReturn::NextPreviousReturn(const NextPreviousReturn& other12) {
+  iterator = other12.iterator;
+  primary = other12.primary;
+  __isset = other12.__isset;
 }
-NextPreviousReturn& NextPreviousReturn::operator=(const NextPreviousReturn& other11) {
-  iterator = other11.iterator;
-  primary = other11.primary;
-  __isset = other11.__isset;
+NextPreviousReturn& NextPreviousReturn::operator=(const NextPreviousReturn& other13) {
+  iterator = other13.iterator;
+  primary = other13.primary;
+  __isset = other13.__isset;
   return *this;
 }
 void NextPreviousReturn::printTo(std::ostream& out) const {
@@ -780,15 +896,15 @@ void swap(IteratorPrimaryReturn &a, IteratorPrimaryReturn &b) {
   swap(a.__isset, b.__isset);
 }
 
-IteratorPrimaryReturn::IteratorPrimaryReturn(const IteratorPrimaryReturn& other12) {
-  iterator = other12.iterator;
-  primary = other12.primary;
-  __isset = other12.__isset;
+IteratorPrimaryReturn::IteratorPrimaryReturn(const IteratorPrimaryReturn& other14) {
+  iterator = other14.iterator;
+  primary = other14.primary;
+  __isset = other14.__isset;
 }
-IteratorPrimaryReturn& IteratorPrimaryReturn::operator=(const IteratorPrimaryReturn& other13) {
-  iterator = other13.iterator;
-  primary = other13.primary;
-  __isset = other13.__isset;
+IteratorPrimaryReturn& IteratorPrimaryReturn::operator=(const IteratorPrimaryReturn& other15) {
+  iterator = other15.iterator;
+  primary = other15.primary;
+  __isset = other15.__isset;
   return *this;
 }
 void IteratorPrimaryReturn::printTo(std::ostream& out) const {
@@ -892,15 +1008,15 @@ void swap(FindPrimaryReturn &a, FindPrimaryReturn &b) {
   swap(a.__isset, b.__isset);
 }
 
-FindPrimaryReturn::FindPrimaryReturn(const FindPrimaryReturn& other14) {
-  iterator = other14.iterator;
-  secondary = other14.secondary;
-  __isset = other14.__isset;
+FindPrimaryReturn::FindPrimaryReturn(const FindPrimaryReturn& other16) {
+  iterator = other16.iterator;
+  secondary = other16.secondary;
+  __isset = other16.__isset;
 }
-FindPrimaryReturn& FindPrimaryReturn::operator=(const FindPrimaryReturn& other15) {
-  iterator = other15.iterator;
-  secondary = other15.secondary;
-  __isset = other15.__isset;
+FindPrimaryReturn& FindPrimaryReturn::operator=(const FindPrimaryReturn& other17) {
+  iterator = other17.iterator;
+  secondary = other17.secondary;
+  __isset = other17.__isset;
   return *this;
 }
 void FindPrimaryReturn::printTo(std::ostream& out) const {
@@ -1004,15 +1120,15 @@ void swap(FindSecondaryReturn &a, FindSecondaryReturn &b) {
   swap(a.__isset, b.__isset);
 }
 
-FindSecondaryReturn::FindSecondaryReturn(const FindSecondaryReturn& other16) {
-  iterator = other16.iterator;
-  primary = other16.primary;
-  __isset = other16.__isset;
+FindSecondaryReturn::FindSecondaryReturn(const FindSecondaryReturn& other18) {
+  iterator = other18.iterator;
+  primary = other18.primary;
+  __isset = other18.__isset;
 }
-FindSecondaryReturn& FindSecondaryReturn::operator=(const FindSecondaryReturn& other17) {
-  iterator = other17.iterator;
-  primary = other17.primary;
-  __isset = other17.__isset;
+FindSecondaryReturn& FindSecondaryReturn::operator=(const FindSecondaryReturn& other19) {
+  iterator = other19.iterator;
+  primary = other19.primary;
+  __isset = other19.__isset;
   return *this;
 }
 void FindSecondaryReturn::printTo(std::ostream& out) const {
@@ -1133,17 +1249,17 @@ void swap(LowerBoundUpperBoundReturn &a, LowerBoundUpperBoundReturn &b) {
   swap(a.__isset, b.__isset);
 }
 
-LowerBoundUpperBoundReturn::LowerBoundUpperBoundReturn(const LowerBoundUpperBoundReturn& other18) {
-  iterator = other18.iterator;
-  secondary = other18.secondary;
-  primary = other18.primary;
-  __isset = other18.__isset;
+LowerBoundUpperBoundReturn::LowerBoundUpperBoundReturn(const LowerBoundUpperBoundReturn& other20) {
+  iterator = other20.iterator;
+  secondary = other20.secondary;
+  primary = other20.primary;
+  __isset = other20.__isset;
 }
-LowerBoundUpperBoundReturn& LowerBoundUpperBoundReturn::operator=(const LowerBoundUpperBoundReturn& other19) {
-  iterator = other19.iterator;
-  secondary = other19.secondary;
-  primary = other19.primary;
-  __isset = other19.__isset;
+LowerBoundUpperBoundReturn& LowerBoundUpperBoundReturn::operator=(const LowerBoundUpperBoundReturn& other21) {
+  iterator = other21.iterator;
+  secondary = other21.secondary;
+  primary = other21.primary;
+  __isset = other21.__isset;
   return *this;
 }
 void LowerBoundUpperBoundReturn::printTo(std::ostream& out) const {
@@ -1265,17 +1381,17 @@ void swap(GetResourceLimitsReturn &a, GetResourceLimitsReturn &b) {
   swap(a.__isset, b.__isset);
 }
 
-GetResourceLimitsReturn::GetResourceLimitsReturn(const GetResourceLimitsReturn& other20) noexcept {
-  ram_bytes = other20.ram_bytes;
-  net_weight = other20.net_weight;
-  cpu_weight = other20.cpu_weight;
-  __isset = other20.__isset;
+GetResourceLimitsReturn::GetResourceLimitsReturn(const GetResourceLimitsReturn& other22) noexcept {
+  ram_bytes = other22.ram_bytes;
+  net_weight = other22.net_weight;
+  cpu_weight = other22.cpu_weight;
+  __isset = other22.__isset;
 }
-GetResourceLimitsReturn& GetResourceLimitsReturn::operator=(const GetResourceLimitsReturn& other21) noexcept {
-  ram_bytes = other21.ram_bytes;
-  net_weight = other21.net_weight;
-  cpu_weight = other21.cpu_weight;
-  __isset = other21.__isset;
+GetResourceLimitsReturn& GetResourceLimitsReturn::operator=(const GetResourceLimitsReturn& other23) noexcept {
+  ram_bytes = other23.ram_bytes;
+  net_weight = other23.net_weight;
+  cpu_weight = other23.cpu_weight;
+  __isset = other23.__isset;
   return *this;
 }
 void GetResourceLimitsReturn::printTo(std::ostream& out) const {

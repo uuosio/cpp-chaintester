@@ -6,13 +6,14 @@
 
 
 namespace chaintester {
-    class IPCChainTesterClient;
     class ApplyClient;
 }
 
+class ChainTesterClient;
+
 using namespace chaintester;
 
-using ActionArguments = std::variant<string, vector<char>>;
+using TxActionArguments = std::variant<string, vector<char>>;
 
 using Permission = std::pair<string, string>;
 using Permissions = std::variant<string, vector<Permission>>;
@@ -20,13 +21,13 @@ using Permissions = std::variant<string, vector<Permission>>;
 struct TxAction {
   std::string account;
   std::string action;
-  ActionArguments arguments;
+  TxActionArguments arguments;
   Permissions permissions;
 };
 
 class IPCChainTester {
 private:
-    std::shared_ptr<IPCChainTesterClient> client;
+    std::shared_ptr<ChainTesterClient> client;
     int32_t id;
 private:
     IPCChainTester (const IPCChainTester& other);
@@ -47,7 +48,7 @@ public:
     void produce_block(int64_t next_block_delay_seconds = 0);
     void produce_blocks(int n);
 
-    std::shared_ptr<JsonObject> push_action(const string& account, const string& action, const ActionArguments& arguments="", const Permissions& permissions="");
+    std::shared_ptr<JsonObject> push_action(const string& account, const string& action, const TxActionArguments& arguments="", const Permissions& permissions="");
     std::shared_ptr<JsonObject> push_actions(const std::vector<TxAction> & actions);
     std::shared_ptr<JsonObject> deploy_contract(const string& account, const string& wasmFile, const string& abiFile);
 

@@ -38,7 +38,7 @@ class IPCChainTesterIf {
   virtual bool import_key(const int32_t id, const std::string& pub_key, const std::string& priv_key) = 0;
   virtual void get_required_keys(std::string& _return, const int32_t id, const std::string& transaction, const std::vector<std::string> & available_keys) = 0;
   virtual void produce_block(const int32_t id, const int64_t next_block_skip_seconds) = 0;
-  virtual void push_action(std::string& _return, const int32_t id, const std::string& account, const std::string& action, const std::string& arguments, const std::string& permissions) = 0;
+  virtual void push_action(std::string& _return, const int32_t id, const std::string& account, const std::string& action, const ActionArguments& arguments, const std::string& permissions) = 0;
   virtual void push_actions(std::string& _return, const int32_t id, const std::vector<Action> & actions) = 0;
   virtual void deploy_contract(std::string& _return, const int32_t id, const std::string& account, const std::string& wasm, const std::string& abi) = 0;
   virtual void get_table_rows(std::string& _return, const int32_t id, const bool json, const std::string& code, const std::string& scope, const std::string& table, const std::string& lower_bound, const std::string& upper_bound, const int64_t limit, const std::string& key_type, const std::string& index_position, const bool reverse, const bool show_payer) = 0;
@@ -123,7 +123,7 @@ class IPCChainTesterNull : virtual public IPCChainTesterIf {
   void produce_block(const int32_t /* id */, const int64_t /* next_block_skip_seconds */) override {
     return;
   }
-  void push_action(std::string& /* _return */, const int32_t /* id */, const std::string& /* account */, const std::string& /* action */, const std::string& /* arguments */, const std::string& /* permissions */) override {
+  void push_action(std::string& /* _return */, const int32_t /* id */, const std::string& /* account */, const std::string& /* action */, const ActionArguments& /* arguments */, const std::string& /* permissions */) override {
     return;
   }
   void push_actions(std::string& /* _return */, const int32_t /* id */, const std::vector<Action> & /* actions */) override {
@@ -1850,7 +1850,6 @@ class IPCChainTester_push_action_args {
                                   : id(0),
                                     account(),
                                     action(),
-                                    arguments(),
                                     permissions() {
   }
 
@@ -1858,7 +1857,7 @@ class IPCChainTester_push_action_args {
   int32_t id;
   std::string account;
   std::string action;
-  std::string arguments;
+  ActionArguments arguments;
   std::string permissions;
 
   _IPCChainTester_push_action_args__isset __isset;
@@ -1869,7 +1868,7 @@ class IPCChainTester_push_action_args {
 
   void __set_action(const std::string& val);
 
-  void __set_arguments(const std::string& val);
+  void __set_arguments(const ActionArguments& val);
 
   void __set_permissions(const std::string& val);
 
@@ -1907,7 +1906,7 @@ class IPCChainTester_push_action_pargs {
   const int32_t* id;
   const std::string* account;
   const std::string* action;
-  const std::string* arguments;
+  const ActionArguments* arguments;
   const std::string* permissions;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
@@ -2478,8 +2477,8 @@ class IPCChainTesterClient : virtual public IPCChainTesterIf {
   void produce_block(const int32_t id, const int64_t next_block_skip_seconds) override;
   void send_produce_block(const int32_t id, const int64_t next_block_skip_seconds);
   void recv_produce_block();
-  void push_action(std::string& _return, const int32_t id, const std::string& account, const std::string& action, const std::string& arguments, const std::string& permissions) override;
-  void send_push_action(const int32_t id, const std::string& account, const std::string& action, const std::string& arguments, const std::string& permissions);
+  void push_action(std::string& _return, const int32_t id, const std::string& account, const std::string& action, const ActionArguments& arguments, const std::string& permissions) override;
+  void send_push_action(const int32_t id, const std::string& account, const std::string& action, const ActionArguments& arguments, const std::string& permissions);
   void recv_push_action(std::string& _return);
   void push_actions(std::string& _return, const int32_t id, const std::vector<Action> & actions) override;
   void send_push_actions(const int32_t id, const std::vector<Action> & actions);
@@ -2728,7 +2727,7 @@ class IPCChainTesterMultiface : virtual public IPCChainTesterIf {
     ifaces_[i]->produce_block(id, next_block_skip_seconds);
   }
 
-  void push_action(std::string& _return, const int32_t id, const std::string& account, const std::string& action, const std::string& arguments, const std::string& permissions) override {
+  void push_action(std::string& _return, const int32_t id, const std::string& account, const std::string& action, const ActionArguments& arguments, const std::string& permissions) override {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
@@ -2846,8 +2845,8 @@ class IPCChainTesterConcurrentClient : virtual public IPCChainTesterIf {
   void produce_block(const int32_t id, const int64_t next_block_skip_seconds) override;
   int32_t send_produce_block(const int32_t id, const int64_t next_block_skip_seconds);
   void recv_produce_block(const int32_t seqid);
-  void push_action(std::string& _return, const int32_t id, const std::string& account, const std::string& action, const std::string& arguments, const std::string& permissions) override;
-  int32_t send_push_action(const int32_t id, const std::string& account, const std::string& action, const std::string& arguments, const std::string& permissions);
+  void push_action(std::string& _return, const int32_t id, const std::string& account, const std::string& action, const ActionArguments& arguments, const std::string& permissions) override;
+  int32_t send_push_action(const int32_t id, const std::string& account, const std::string& action, const ActionArguments& arguments, const std::string& permissions);
   void recv_push_action(std::string& _return, const int32_t seqid);
   void push_actions(std::string& _return, const int32_t id, const std::vector<Action> & actions) override;
   int32_t send_push_actions(const int32_t id, const std::vector<Action> & actions);

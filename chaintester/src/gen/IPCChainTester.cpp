@@ -2687,14 +2687,14 @@ uint32_t IPCChainTester_get_required_keys_args::read(::apache::thrift::protocol:
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->available_keys.clear();
-            uint32_t _size22;
-            ::apache::thrift::protocol::TType _etype25;
-            xfer += iprot->readListBegin(_etype25, _size22);
-            this->available_keys.resize(_size22);
-            uint32_t _i26;
-            for (_i26 = 0; _i26 < _size22; ++_i26)
+            uint32_t _size24;
+            ::apache::thrift::protocol::TType _etype27;
+            xfer += iprot->readListBegin(_etype27, _size24);
+            this->available_keys.resize(_size24);
+            uint32_t _i28;
+            for (_i28 = 0; _i28 < _size24; ++_i28)
             {
-              xfer += iprot->readString(this->available_keys[_i26]);
+              xfer += iprot->readString(this->available_keys[_i28]);
             }
             xfer += iprot->readListEnd();
           }
@@ -2731,10 +2731,10 @@ uint32_t IPCChainTester_get_required_keys_args::write(::apache::thrift::protocol
   xfer += oprot->writeFieldBegin("available_keys", ::apache::thrift::protocol::T_LIST, 3);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->available_keys.size()));
-    std::vector<std::string> ::const_iterator _iter27;
-    for (_iter27 = this->available_keys.begin(); _iter27 != this->available_keys.end(); ++_iter27)
+    std::vector<std::string> ::const_iterator _iter29;
+    for (_iter29 = this->available_keys.begin(); _iter29 != this->available_keys.end(); ++_iter29)
     {
-      xfer += oprot->writeString((*_iter27));
+      xfer += oprot->writeString((*_iter29));
     }
     xfer += oprot->writeListEnd();
   }
@@ -2766,10 +2766,10 @@ uint32_t IPCChainTester_get_required_keys_pargs::write(::apache::thrift::protoco
   xfer += oprot->writeFieldBegin("available_keys", ::apache::thrift::protocol::T_LIST, 3);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->available_keys)).size()));
-    std::vector<std::string> ::const_iterator _iter28;
-    for (_iter28 = (*(this->available_keys)).begin(); _iter28 != (*(this->available_keys)).end(); ++_iter28)
+    std::vector<std::string> ::const_iterator _iter30;
+    for (_iter30 = (*(this->available_keys)).begin(); _iter30 != (*(this->available_keys)).end(); ++_iter30)
     {
-      xfer += oprot->writeString((*_iter28));
+      xfer += oprot->writeString((*_iter30));
     }
     xfer += oprot->writeListEnd();
   }
@@ -3111,8 +3111,8 @@ uint32_t IPCChainTester_push_action_args::read(::apache::thrift::protocol::TProt
         }
         break;
       case 4:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->arguments);
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->arguments.read(iprot);
           this->__isset.arguments = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -3155,8 +3155,8 @@ uint32_t IPCChainTester_push_action_args::write(::apache::thrift::protocol::TPro
   xfer += oprot->writeString(this->action);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("arguments", ::apache::thrift::protocol::T_STRING, 4);
-  xfer += oprot->writeString(this->arguments);
+  xfer += oprot->writeFieldBegin("arguments", ::apache::thrift::protocol::T_STRUCT, 4);
+  xfer += this->arguments.write(oprot);
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldBegin("permissions", ::apache::thrift::protocol::T_STRING, 5);
@@ -3190,8 +3190,8 @@ uint32_t IPCChainTester_push_action_pargs::write(::apache::thrift::protocol::TPr
   xfer += oprot->writeString((*(this->action)));
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("arguments", ::apache::thrift::protocol::T_STRING, 4);
-  xfer += oprot->writeString((*(this->arguments)));
+  xfer += oprot->writeFieldBegin("arguments", ::apache::thrift::protocol::T_STRUCT, 4);
+  xfer += (*(this->arguments)).write(oprot);
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldBegin("permissions", ::apache::thrift::protocol::T_STRING, 5);
@@ -3349,14 +3349,14 @@ uint32_t IPCChainTester_push_actions_args::read(::apache::thrift::protocol::TPro
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->actions.clear();
-            uint32_t _size29;
-            ::apache::thrift::protocol::TType _etype32;
-            xfer += iprot->readListBegin(_etype32, _size29);
-            this->actions.resize(_size29);
-            uint32_t _i33;
-            for (_i33 = 0; _i33 < _size29; ++_i33)
+            uint32_t _size31;
+            ::apache::thrift::protocol::TType _etype34;
+            xfer += iprot->readListBegin(_etype34, _size31);
+            this->actions.resize(_size31);
+            uint32_t _i35;
+            for (_i35 = 0; _i35 < _size31; ++_i35)
             {
-              xfer += this->actions[_i33].read(iprot);
+              xfer += this->actions[_i35].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -3389,10 +3389,10 @@ uint32_t IPCChainTester_push_actions_args::write(::apache::thrift::protocol::TPr
   xfer += oprot->writeFieldBegin("actions", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->actions.size()));
-    std::vector<Action> ::const_iterator _iter34;
-    for (_iter34 = this->actions.begin(); _iter34 != this->actions.end(); ++_iter34)
+    std::vector<Action> ::const_iterator _iter36;
+    for (_iter36 = this->actions.begin(); _iter36 != this->actions.end(); ++_iter36)
     {
-      xfer += (*_iter34).write(oprot);
+      xfer += (*_iter36).write(oprot);
     }
     xfer += oprot->writeListEnd();
   }
@@ -3420,10 +3420,10 @@ uint32_t IPCChainTester_push_actions_pargs::write(::apache::thrift::protocol::TP
   xfer += oprot->writeFieldBegin("actions", ::apache::thrift::protocol::T_LIST, 2);
   {
     xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>((*(this->actions)).size()));
-    std::vector<Action> ::const_iterator _iter35;
-    for (_iter35 = (*(this->actions)).begin(); _iter35 != (*(this->actions)).end(); ++_iter35)
+    std::vector<Action> ::const_iterator _iter37;
+    for (_iter37 = (*(this->actions)).begin(); _iter37 != (*(this->actions)).end(); ++_iter37)
     {
-      xfer += (*_iter35).write(oprot);
+      xfer += (*_iter37).write(oprot);
     }
     xfer += oprot->writeListEnd();
   }
@@ -5000,13 +5000,13 @@ void IPCChainTesterClient::recv_produce_block()
   return;
 }
 
-void IPCChainTesterClient::push_action(std::string& _return, const int32_t id, const std::string& account, const std::string& action, const std::string& arguments, const std::string& permissions)
+void IPCChainTesterClient::push_action(std::string& _return, const int32_t id, const std::string& account, const std::string& action, const ActionArguments& arguments, const std::string& permissions)
 {
   send_push_action(id, account, action, arguments, permissions);
   recv_push_action(_return);
 }
 
-void IPCChainTesterClient::send_push_action(const int32_t id, const std::string& account, const std::string& action, const std::string& arguments, const std::string& permissions)
+void IPCChainTesterClient::send_push_action(const int32_t id, const std::string& account, const std::string& action, const ActionArguments& arguments, const std::string& permissions)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("push_action", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -7549,13 +7549,13 @@ void IPCChainTesterConcurrentClient::recv_produce_block(const int32_t seqid)
   } // end while(true)
 }
 
-void IPCChainTesterConcurrentClient::push_action(std::string& _return, const int32_t id, const std::string& account, const std::string& action, const std::string& arguments, const std::string& permissions)
+void IPCChainTesterConcurrentClient::push_action(std::string& _return, const int32_t id, const std::string& account, const std::string& action, const ActionArguments& arguments, const std::string& permissions)
 {
   int32_t seqid = send_push_action(id, account, action, arguments, permissions);
   recv_push_action(_return, seqid);
 }
 
-int32_t IPCChainTesterConcurrentClient::send_push_action(const int32_t id, const std::string& account, const std::string& action, const std::string& arguments, const std::string& permissions)
+int32_t IPCChainTesterConcurrentClient::send_push_action(const int32_t id, const std::string& account, const std::string& action, const ActionArguments& arguments, const std::string& permissions)
 {
   int32_t cseqid = this->sync_->generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());

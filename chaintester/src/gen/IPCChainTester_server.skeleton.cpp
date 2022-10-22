@@ -100,7 +100,7 @@ class IPCChainTesterHandler : virtual public IPCChainTesterIf {
     printf("produce_block\n");
   }
 
-  void push_action(std::string& _return, const int32_t id, const std::string& account, const std::string& action, const std::string& arguments, const std::string& permissions) {
+  void push_action(std::string& _return, const int32_t id, const std::string& account, const std::string& action, const ActionArguments& arguments, const std::string& permissions) {
     // Your implementation goes here
     printf("push_action\n");
   }

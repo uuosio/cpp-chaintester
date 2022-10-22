@@ -25,6 +25,8 @@ class TransactionException;
 
 class AssertException;
 
+class ActionArguments;
+
 class Action;
 
 class Uint64;
@@ -133,6 +135,60 @@ void swap(AssertException &a, AssertException &b);
 
 std::ostream& operator<<(std::ostream& out, const AssertException& obj);
 
+typedef struct _ActionArguments__isset {
+  _ActionArguments__isset() : raw_args(false), json_args(false) {}
+  bool raw_args :1;
+  bool json_args :1;
+} _ActionArguments__isset;
+
+class ActionArguments : public virtual ::apache::thrift::TBase {
+ public:
+
+  ActionArguments(const ActionArguments&);
+  ActionArguments& operator=(const ActionArguments&);
+  ActionArguments() noexcept
+                  : raw_args(),
+                    json_args() {
+  }
+
+  virtual ~ActionArguments() noexcept;
+  std::string raw_args;
+  std::string json_args;
+
+  _ActionArguments__isset __isset;
+
+  void __set_raw_args(const std::string& val);
+
+  void __set_json_args(const std::string& val);
+
+  bool operator == (const ActionArguments & rhs) const
+  {
+    if (__isset.raw_args != rhs.__isset.raw_args)
+      return false;
+    else if (__isset.raw_args && !(raw_args == rhs.raw_args))
+      return false;
+    if (__isset.json_args != rhs.__isset.json_args)
+      return false;
+    else if (__isset.json_args && !(json_args == rhs.json_args))
+      return false;
+    return true;
+  }
+  bool operator != (const ActionArguments &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ActionArguments & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot) override;
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const override;
+
+  virtual void printTo(std::ostream& out) const;
+};
+
+void swap(ActionArguments &a, ActionArguments &b);
+
+std::ostream& operator<<(std::ostream& out, const ActionArguments& obj);
+
 typedef struct _Action__isset {
   _Action__isset() : account(false), action(false), permissions(false), arguments(false) {}
   bool account :1;
@@ -149,15 +205,14 @@ class Action : public virtual ::apache::thrift::TBase {
   Action() noexcept
          : account(),
            action(),
-           permissions(),
-           arguments() {
+           permissions() {
   }
 
   virtual ~Action() noexcept;
   std::string account;
   std::string action;
   std::string permissions;
-  std::string arguments;
+  ActionArguments arguments;
 
   _Action__isset __isset;
 
@@ -167,7 +222,7 @@ class Action : public virtual ::apache::thrift::TBase {
 
   void __set_permissions(const std::string& val);
 
-  void __set_arguments(const std::string& val);
+  void __set_arguments(const ActionArguments& val);
 
   bool operator == (const Action & rhs) const
   {
