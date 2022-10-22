@@ -60,7 +60,7 @@ if (ENABLE_COVERAGE)
     set_property(SOURCE ${SPECIAL_SRC_FILES} PROPERTY COMPILE_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
 endif()
 
-target_compile_options(ipcchaintester PRIVATE -Wno-deprecated-declarations -DCHAINTEST_LIB)
+target_compile_options(ipcchaintester PRIVATE -Wno-deprecated-declarations)
 
 add_library ( chaintester 
     src/chaintester.cpp
