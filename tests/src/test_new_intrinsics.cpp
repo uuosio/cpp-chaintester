@@ -1,5 +1,5 @@
 #include <catch2/catch_test_macros.hpp>
-#include <chaintester.h>
+#include <chaintester/chaintester.hpp>
 #include <intrinsics.h>
 #include "test.h"
 #include <eosio/eosio.hpp>
@@ -16,9 +16,9 @@ TEST_CASE( "test_new_intrinsics", "[new intrinsics]" ) {
     set_native_apply(new_intrinsics_native_apply);
 
     ChainTester tester(true);
-    tester.enable_debug_contract("hello"_n, true);
+    tester.enable_debug_contract("hello"_n, is_coverage_enabled());
 
-    tester.deploy_contract("hello"_n, HELLO_WASM, HELLO_ABI);
+    tester.deploy_contract("hello"_n, TEST_NEW_INTRINSICS_WASM, TEST_NEW_INTRINSICS_ABI);
     auto info = tester.get_info();
     // WARN(info->to_string());
     WARN(info->get_uint64("head_block_num"));

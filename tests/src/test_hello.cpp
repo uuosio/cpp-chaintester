@@ -1,5 +1,5 @@
 #include <catch2/catch_test_macros.hpp>
-#include <chaintester.h>
+#include <chaintester/chaintester.hpp>
 #include <intrinsics.h>
 #include "test.h"
 
@@ -8,7 +8,7 @@ TEST_CASE( "test hello", "[hello]" ) {
     set_native_apply(hello_native_apply);
 
     ChainTester tester(true);
-    tester.enable_debug_contract("hello"_n, true);
+    tester.enable_debug_contract("hello"_n, is_coverage_enabled());
 
     tester.deploy_contract("hello"_n, HELLO_WASM, HELLO_ABI);
 

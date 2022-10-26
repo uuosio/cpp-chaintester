@@ -2,8 +2,7 @@
 
 #include <stdint.h>
 #include <catch2/catch_test_macros.hpp>
-#include <chaintester.h>
-#include "utils.h"
+#include <chaintester/chaintester.hpp>
 #include "generated.h"
 
 using namespace std;
@@ -36,11 +35,11 @@ static std::shared_ptr<JsonObject> CallFunction(ChainTester& tester, const strin
         auto ret = tester.push_action_ex(name(account), name(action), data, "testapi"_n);
         REQUIRE(!ret->HasMember("except"));
         return ret;
-    } catch(chain_exception& ex) {
+    } catch(ChainException& ex) {
         auto& o = ex.value();
         REQUIRE(o.HasMember("except"));
         auto& except = o["except"];
-        WARN(o.to_string());
+        // WARN(o.to_string());
         REQUIRE(except["name"].GetString() == required_exception_type);
         if ("wasm_execution_error" == required_exception_type) {
             auto s =  except["stack"][0]["format"].GetString();
@@ -50,7 +49,7 @@ static std::shared_ptr<JsonObject> CallFunction(ChainTester& tester, const strin
             REQUIRE(string(s).find(exception_message) != std::string::npos);
         } else {
             auto s =  except["stack"][0]["format"].GetString();
-            WARN(s);
+            // WARN(s);
             REQUIRE(string(s).find(exception_message) != std::string::npos);
         }
         return std::make_shared<JsonObject>(o.to_string());
@@ -64,3 +63,4 @@ static std::shared_ptr<JsonObject> CallFunction(ChainTester& tester, const strin
 string I64Str(int64_t i);
 string U64Str(uint64_t i);
 string U128Str(unsigned __int128 n);
+bool is_coverage_enabled();

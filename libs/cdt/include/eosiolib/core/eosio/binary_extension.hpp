@@ -114,13 +114,7 @@ namespace eosio {
                return _get();
             return def;
          }
-         constexpr T&& value_or()&& {
-            if (!_has_value)
-               return std::move(T());
-            _has_value = false;
-            return std::move(_get());
-         }
-         constexpr const T&& value_or()const&& {
+         T&& value_or()&& {
             if (!_has_value)
                return std::move(T());
             _has_value = false;

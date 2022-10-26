@@ -6,7 +6,7 @@
 #include "gen/Apply.h"
 #include "gen/ApplyRequest.h"
 
-#include "ipcchaintester.h"
+#include "ipcchaintester.hpp"
 #include "vmapiclient.h"
 
 using namespace ::chaintester;

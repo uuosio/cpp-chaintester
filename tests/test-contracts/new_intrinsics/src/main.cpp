@@ -4,7 +4,7 @@ extern "C" __attribute__ ((visibility ("default"))) void new_intrinsics_native_a
    if (code == receiver) {
       switch(action) {
          case "test"_n.value:
-            eosio::execute_action( eosio::name(receiver), eosio::name(code), &hello::test );
+            eosio::execute_action( eosio::name(receiver), eosio::name(code), &new_intrinsics::test );
             break;
       }
    }

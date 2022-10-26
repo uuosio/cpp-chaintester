@@ -64,6 +64,7 @@ target_compile_options(ipcchaintester PRIVATE -Wno-deprecated-declarations)
 
 add_library ( chaintester 
     src/chaintester.cpp
+    src/base58.cpp
 )
 
 target_link_libraries ( chaintester PUBLIC 
@@ -75,6 +76,7 @@ target_include_directories(chaintester PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     "${CMAKE_CURRENT_SOURCE_DIR}/../libs/Catch2/src"
     "${CMAKE_CURRENT_SOURCE_DIR}/../libs/rapidjson/include"
+    "${CMAKE_BINARY_DIR}/generated-includes"
 )
 
 target_compile_options(chaintester PRIVATE -DEOSIO_NATIVE -Wno-unknown-attributes -Wno-unused-value)

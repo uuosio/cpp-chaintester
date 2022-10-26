@@ -25,6 +25,18 @@ ExternalProject_Add(
 )
 
 ExternalProject_Add(
+   test-api-multi-index-project
+   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/test_api_multi_index
+   BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/test_api_multi_index
+   CMAKE_ARGS -DCMAKE_TOOLCHAIN_FILE=${CDT_ROOT}/lib/cmake/cdt/CDTWasmToolchain.cmake
+   UPDATE_COMMAND ""
+   PATCH_COMMAND ""
+   TEST_COMMAND ""
+   INSTALL_COMMAND ""
+   BUILD_ALWAYS 1
+)
+
+ExternalProject_Add(
    activate-project
    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/activate
    BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/activate

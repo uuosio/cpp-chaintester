@@ -1,9 +1,8 @@
 #pragma once
 
-#include "jsonobject.h"
-#include "loader.h"
-#include "utils.h"
-
+#include <chaintester/jsonobject.hpp>
+#include <chaintester/loader.h>
+#include <chaintester/utils.hpp>
 
 namespace chaintester {
     class ApplyClient;

@@ -28,7 +28,7 @@ jobs:
       - name: Set up Clang
         uses: egor-tensin/setup-clang@v1
         with:
-          version: 11
+          version: 14
           platform: x64
       - name: show clang version
         run: |
@@ -59,9 +59,6 @@ jobs:
           ninja
       # - name: Setup upterm session
       #   uses: lhotari/action-upterm@v1
-      - name: Install llvm
-        run: |
-          sudo apt install llvm
       - name: test
         working-directory: build
         run: |
@@ -71,8 +68,10 @@ jobs:
         run: |
           export TEST_COVERAGE=1
           ./tests/tests
-          llvm-cov gcov `find . -name "*.gcda"`
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          gcov: true
+      - name: upload coverage file to codecov
+        run: |
+          cd build
+          /usr/lib/llvm-14/bin/llvm-cov gcov `find . -name "*.gcda"`
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov

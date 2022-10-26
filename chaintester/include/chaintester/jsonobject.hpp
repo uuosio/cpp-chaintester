@@ -103,10 +103,6 @@ public:
 
     const string& to_string() const {
         return raw;
-        // StringBuffer buffer;
-        // Writer<StringBuffer> writer(buffer);
-        // this->Accept(writer);
-        // return std::string(buffer.GetString(), buffer.GetLength());
     }
 };
 

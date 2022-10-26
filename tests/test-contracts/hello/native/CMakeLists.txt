@@ -1,6 +1,6 @@
 add_library( hello_native
     ../src/hello.cpp
-    ../src/main.cpp
+    main.cpp
 )
 
 set_target_properties(hello_native PROPERTIES CXX_VISIBILITY_PRESET hidden)

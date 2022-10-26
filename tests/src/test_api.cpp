@@ -65,7 +65,7 @@ void init_test(ChainTester& t) {
 void init_test2(ChainTester& t) {
     set_native_apply(test_api_native_apply);
 
-    t.enable_debug_contract("testapi"_n, true);
+    t.enable_debug_contract("testapi"_n, is_coverage_enabled());
 
     auto key = t.create_key();
     auto pub_key = key->get_string("public");
@@ -463,7 +463,7 @@ TEST_CASE( "test chain", "[chain]" ) {
     ChainTester t(false);
     set_native_apply(test_api_native_apply);
 
-    t.enable_debug_contract("testapi"_n, true);
+    t.enable_debug_contract("testapi"_n, is_coverage_enabled());
 
     string permissions = R"(
         {

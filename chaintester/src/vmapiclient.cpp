@@ -2,6 +2,9 @@
 #include <thrift/transport/TSocket.h>
 #include <thrift/transport/TTransportUtils.h>
 
+#include <chaintester/loader.h>
+#include <chaintester/utils.hpp>
+
 #include "gen/IPCChainTester.h"
 #include "gen/Apply.h"
 #include "gen/ApplyRequest.h"
@@ -9,8 +12,6 @@
 #include "TSimpleServer.h"
 
 #include "vmapiclient.h"
-#include "loader.h"
-#include "utils.h"
 
 using namespace ::apache::thrift;
 using namespace ::apache::thrift::protocol;

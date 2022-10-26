@@ -1,5 +1,5 @@
 #include <catch2/catch_test_macros.hpp>
-#include <chaintester.h>
+#include <chaintester/chaintester.hpp>
 #include <intrinsics.h>
 #include "test.h"
 
@@ -15,7 +15,7 @@ TEST_CASE( "test api db", "[api_db]" ) {
     auto priv_key = key->get_string("private");
     t.import_key(pub_key, priv_key);
     t.create_account("eosio"_n, "testapi"_n, pub_key, pub_key);
-    t.enable_debug_contract("testapi"_n, true);
+    t.enable_debug_contract("testapi"_n, is_coverage_enabled());
 
     t.deploy_contract("testapi"_n, TEST_API_DB_WASM, TEST_API_DB_ABI);
 

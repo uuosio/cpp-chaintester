@@ -1,5 +1,5 @@
-#include "ipcchaintester.h"
-#include "chaintester.h"
+#include "ipcchaintester.hpp"
+#include <chaintester/chaintester.hpp>
 
 ChainTester::ChainTester(bool initialize) {
     tester = std::make_unique<IPCChainTester>(initialize);
@@ -98,6 +98,10 @@ std::shared_ptr<JsonObject> ChainTester::deploy_contract(const name account, con
     return tester->deploy_contract(account.to_string(), wasmFile, abiFile);
 }
 
+ActionSender ChainTester::new_action(name account, name action, name signer) {
+    return ActionSender(*this, account, action, signer);
+}
+
 std::shared_ptr<JsonObject> ChainTester::get_table_rows(bool json,
                                 const name code, const name scope, const name table,
                                 const name lower_bound, const name upper_bound,
@@ -122,4 +126,33 @@ int64_t ChainTester::get_balance(const name account, const name token_account, c
 
 optional<int64_t> ChainTester::get_balance_ex(const name account, const name token_account, const string& symbol) {
     return tester->get_balance_ex(account.to_string(), token_account.to_string(), symbol);
+}
+
+ActionSender::ActionSender(ChainTester& tester, name account, name action, const name signer):
+    tester(tester),
+    account(account),
+    action(action),
+    permissions({{signer, "active"_n}})
+{
+}
+
+ActionSender::ActionSender(ChainTester& tester, name account, name action, const vector<permission_level>& permissions): 
+    tester(tester),
+    account(account),
+    action(action),
+    permissions(permissions)
+{
+
+}
+
+// ActionSender::ActionSender(const ActionSender& other):
+//     tester(other.tester),
+//     account(other.account),
+//     action(other.action),
+//     permissions(other.permissions)
+// {
+// }
+
+ActionSender::~ActionSender() {
+
 }

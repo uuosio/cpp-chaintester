@@ -47,6 +47,18 @@ string U128Str(uint128_t n) {
     return string(buf + i);
 }
 
+bool is_coverage_enabled() {
+    const char * TEST_COVERAGE = std::getenv("TEST_COVERAGE");
+    if (TEST_COVERAGE == nullptr || string("") == TEST_COVERAGE || string("0") == TEST_COVERAGE || string("FALSE") == TEST_COVERAGE) {
+        return false;
+    } else if (string("1") == TEST_COVERAGE || string("TRUE") == TEST_COVERAGE) {
+        return true;
+    } else {
+        throw std::runtime_error("invalid TEST_COVERAGE ENV");
+    }
+    return false;
+}
+
 static void apply(uint64_t receiver, uint64_t first_receiver, uint64_t action) {
     //GetApplyClient()->prints("hello, c++\n");
 }

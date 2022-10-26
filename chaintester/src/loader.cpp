@@ -1,6 +1,6 @@
 #include <intrinsics.h>
 
-#include "loader.h"
+#include <chaintester/loader.h>
 
 fn_apply g_apply = nullptr;
 

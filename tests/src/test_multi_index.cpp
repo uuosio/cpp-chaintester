@@ -1,5 +1,5 @@
 #include <catch2/catch_test_macros.hpp>
-#include <chaintester.h>
+#include <chaintester/chaintester.hpp>
 #include <intrinsics.h>
 #include "test.h"
 
@@ -15,9 +15,9 @@ TEST_CASE( "test multi_index", "[multi_index]" ) {
     auto priv_key = key->get_string("private");
     t.import_key(pub_key, priv_key);
     t.create_account("eosio"_n, "testapi"_n, pub_key, pub_key);
-    t.enable_debug_contract("testapi"_n, true);
+    t.enable_debug_contract("testapi"_n, is_coverage_enabled());
 
-    t.deploy_contract("testapi"_n, HELLO_WASM, HELLO_ABI);
+    t.deploy_contract("testapi"_n, TEST_API_MULTI_INDEX_WASM, TEST_API_MULTI_INDEX_ABI);
 
     auto check_failure = [&t]( const string& a, const char* expected_error_msg ) {
         CallFunction(t, "testapi", s2n(a), {}, "eosio_assert_message_exception", expected_error_msg);
@@ -29,6 +29,7 @@ TEST_CASE( "test multi_index", "[multi_index]" ) {
     t.push_action( "testapi"_n, "s2g"_n);        // idx128_general
     t.push_action( "testapi"_n, "s2store"_n);    // idx128_store_only
     t.push_action( "testapi"_n, "s2check"_n);    // idx128_check_without_storing
+
     t.push_action( "testapi"_n, "s2autoinc"_n);  // idx128_autoincrement_test
     t.push_action( "testapi"_n, "s2autoinc1"_n); // idx128_autoincrement_test_part1
     t.push_action( "testapi"_n, "s2autoinc2"_n); // idx128_autoincrement_test_part2

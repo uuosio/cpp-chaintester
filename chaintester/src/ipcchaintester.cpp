@@ -26,8 +26,8 @@
 #include "TSimpleServer.h"
 
 #include "vmapiclient.h"
-#include "ipcchaintester.h"
-#include "chainexception.h"
+#include "ipcchaintester.hpp"
+#include <chaintester/chainexception.hpp>
 
 
 using namespace ::apache::thrift;
@@ -257,7 +257,7 @@ std::shared_ptr<JsonObject> IPCChainTester::push_action(const string& account, c
     client->push_action(ret, id, account, action, _arguments, _permissions);
     auto _ret = std::make_shared<JsonObject>(ret);
     if (_ret->has_value("except")) {
-        throw chain_exception(ret);
+        throw ChainException(ret);
     }
     return _ret;
 }
@@ -283,7 +283,7 @@ std::shared_ptr<JsonObject> IPCChainTester::push_actions(const std::vector<TxAct
     client->push_actions(ret, id, aa);
     auto _ret = std::make_shared<JsonObject>(ret);
     if (_ret->has_value("except")) {
-        throw chain_exception(ret);
+        throw ChainException(ret);
     }
     return _ret;
 }
@@ -313,7 +313,7 @@ std::shared_ptr<JsonObject> IPCChainTester::deploy_contract(const string& accoun
     client->deploy_contract(ret, id, account, hex_wasm_data, str_abi_data);
     auto _ret = std::make_shared<JsonObject>(ret);
     if (_ret->has_value("except")) {
-        throw chain_exception(ret);
+        throw ChainException(ret);
     }
     return _ret;
 }

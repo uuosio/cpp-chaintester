@@ -2,7 +2,7 @@
 #include "rapidjson/stringbuffer.h"
 #include <catch2/catch_test_macros.hpp>
 
-#include <chaintester.h>
+#include <chaintester/chaintester.hpp>
 #include <intrinsics.h>
 #include "test.h"
 
@@ -22,7 +22,7 @@ TEST_CASE( "test intrinsics", "[intrinsics]" ) {
     ChainTester tester(true);
     set_native_apply(apply);
     // tester.enable_debug_contract("hello", true);
-    tester.enable_debug_contract("hello"_n, true);
+    tester.enable_debug_contract("hello"_n, is_coverage_enabled());
     tester.deploy_contract("hello"_n, HELLO_WASM, HELLO_ABI);
 
     auto args = R""""(
@@ -31,6 +31,6 @@ TEST_CASE( "test intrinsics", "[intrinsics]" ) {
     }
     )"""";
 
-    tester.push_action("hello"_n, "hi"_n, args, "hello"_n);
+    tester.push_action_ex("hello"_n, "hi"_n, args, "hello"_n);
     tester.produce_block();
 }
