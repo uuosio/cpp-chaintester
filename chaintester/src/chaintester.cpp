@@ -102,6 +102,10 @@ ActionSender ChainTester::new_action(name account, name action, name signer) {
     return ActionSender(*this, account, action, signer);
 }
 
+ActionSender ChainTester::new_action_sender() {
+    return ActionSender(*this);
+}
+
 std::shared_ptr<JsonObject> ChainTester::get_table_rows(bool json,
                                 const name code, const name scope, const name table,
                                 const name lower_bound, const name upper_bound,
@@ -141,6 +145,12 @@ ActionSender::ActionSender(ChainTester& tester, name account, name action, const
     account(account),
     action(action),
     permissions(permissions)
+{
+
+}
+
+ActionSender::ActionSender(ChainTester& tester):
+    tester(tester)
 {
 
 }

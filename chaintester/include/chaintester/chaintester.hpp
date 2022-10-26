@@ -38,20 +38,21 @@ public:
     void produce_block(int64_t next_block_delay_seconds = 0);
     void produce_blocks(int n);
 
-    template<typename T>
-    std::shared_ptr<JsonObject> push_action(const name account, const name action, const T& arguments, const vector<permission_level>& permissions) {
-        return this->push_action_ex(account, action, eosio::pack(arguments), permissions);
+    template<typename... Ts>
+    std::shared_ptr<JsonObject> push_action(const vector<permission_level>& permissions, const name account, const name action, Ts... arguments) {
+        return this->push_action_ex(account, action, eosio::pack(arguments...), permissions);
     }
 
-    template<typename T>
-    std::shared_ptr<JsonObject> push_action(const name account, const name action, const T& arguments, const name signer) {
-        return this->push_action_ex(account, action, eosio::pack(arguments), signer);
+    template<typename... Ts>
+    std::shared_ptr<JsonObject> push_action(const name signer, const name account, const name action, Ts... arguments) {
+        return this->push_action_ex(account, action, eosio::pack(arguments...), signer);
     }
 
     std::shared_ptr<JsonObject> push_actions(const std::vector<action>& actions);
     std::shared_ptr<JsonObject> deploy_contract(const name account, const string& wasmFile, const string& abiFile);
 
     ActionSender new_action(name account, name action, name signer);
+    ActionSender new_action_sender();
 //     /*
 //         key_type: "i64"|"i128"|"i256"|"float64"|"float128"|"sha256"|"ripemd160"
 //         index_position: "2"|"3"|"4"|"5"|"6"|"7"|"8"|"9"|"10"
@@ -92,9 +93,49 @@ private:
 private:
     ActionSender(ChainTester& tester, name account, name action, const name signer=name());
     ActionSender(ChainTester& tester, name account, name action, const vector<permission_level>& permissions);
+    ActionSender(ChainTester& tester);
 
 public:
     ~ActionSender();
+
+    template<typename... Ts>
+    ActionSender& add_action(const name signer, name account, name action, Ts... args) {
+        actions.emplace_back(
+            eosio::action{
+                permission_level{signer, "active"_n},
+                account,
+                action,
+                std::make_tuple(args...)
+            }
+        );
+        return *this;
+    }
+
+    template<typename... Ts>
+    ActionSender& add_action(const vector<permission_level>& permissions, name account, name action, Ts... args) {
+        actions.emplace_back(
+            eosio::action{
+                permissions,
+                account,
+                action,
+                std::make_tuple(args...)
+            }
+        );
+        return *this;
+    }
+
+    std::shared_ptr<JsonObject> send() {
+        return tester.push_actions(actions);
+    }
+
+    ChainException send_and_catch_exception() {
+        try {
+            tester.push_actions(actions);
+            throw std::runtime_error("send_require_assertion: should throw exception");
+        } catch(ChainException& ex) {
+            return ex;
+        }
+    }
 
     template<typename... Ts>
     std::shared_ptr<JsonObject> send(Ts... args) {
@@ -119,6 +160,7 @@ private:
     name account;
     name action;
     vector<permission_level> permissions;
+    std::vector<eosio::action> actions;
     ChainTester& tester;
 
 friend class ChainTester;
