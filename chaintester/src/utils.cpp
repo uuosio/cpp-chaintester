@@ -2,14 +2,15 @@
 #include <sstream>
 #include <stdint.h>
 #include <string>
-#include <eosio/name.hpp>
 #include <iostream>
 #include <vector>
+
+#include <eosio/name.hpp>
 
 using namespace std;
 using namespace eosio;
 
-#if defined(__MINGW32__)
+#if defined(_WIN32)
 #include <iostream>
 #include <time.h>
 #include <iomanip>

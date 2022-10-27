@@ -198,7 +198,11 @@ std::shared_ptr<JsonObject> IPCChainTester::create_account(const string& creator
 std::shared_ptr<JsonObject> IPCChainTester::get_account(const string& account) {
     string ret;
     client->get_account(ret, id, account);
-    return std::make_shared<JsonObject>(ret);
+    auto _ret = std::make_shared<JsonObject>(ret);
+    if (_ret->has_value("except")) {
+        throw ChainException(ret);
+    }
+    return _ret;
 }
 
 void IPCChainTester::produce_block(int64_t next_block_delay_seconds) {

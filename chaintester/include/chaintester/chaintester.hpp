@@ -51,7 +51,6 @@ public:
     std::shared_ptr<JsonObject> push_actions(const std::vector<action>& actions);
     std::shared_ptr<JsonObject> deploy_contract(const name account, const string& wasmFile, const string& abiFile);
 
-    ActionSender new_action(name account, name action, name signer);
     ActionSender new_action_sender();
 //     /*
 //         key_type: "i64"|"i128"|"i256"|"float64"|"float128"|"sha256"|"ripemd160"
@@ -91,8 +90,6 @@ private:
     ActionSender (const ActionSender& other) = delete;
 
 private:
-    ActionSender(ChainTester& tester, name account, name action, const name signer=name());
-    ActionSender(ChainTester& tester, name account, name action, const vector<permission_level>& permissions);
     ActionSender(ChainTester& tester);
 
 public:
@@ -136,30 +133,7 @@ public:
             return ex;
         }
     }
-
-    template<typename... Ts>
-    std::shared_ptr<JsonObject> send(Ts... args) {
-        return tester.push_action_ex(account, action, eosio::pack(std::make_tuple(args...)), permissions);
-    }
-
-    template<typename... Ts>
-    ChainException send_and_catch_exception(Ts... args) {
-        try {
-            tester.push_action_ex(account, action, eosio::pack(std::make_tuple(args...)), permissions);
-            throw std::runtime_error("send_require_assertion: should throw exception");
-        } catch(ChainException& ex) {
-            return ex;
-        }
-    }
-
-    std::shared_ptr<JsonObject> send_raw(vector<char>& raw_args) {
-        return tester.push_action_ex(account, action, raw_args, permissions);
-    }
-
 private:
-    name account;
-    name action;
-    vector<permission_level> permissions;
     std::vector<eosio::action> actions;
     ChainTester& tester;
 
