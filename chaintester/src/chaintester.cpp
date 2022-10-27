@@ -16,6 +16,10 @@ std::shared_ptr<JsonObject> ChainTester::create_key(const char* key_type) {
     return tester->create_key(key_type);
 }
 
+bool ChainTester::set_native_contract(name contract, const string& dylib) {
+    return tester->set_native_contract(contract.to_string(), dylib);
+}
+
 void ChainTester::enable_debug_contract(name contract, bool enable) {
     tester->enable_debug_contract(contract.to_string().c_str(), enable);
 }
