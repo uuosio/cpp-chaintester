@@ -12,3 +12,8 @@ extern "C" __attribute__ ((visibility ("default"))) void hello_native_apply( uin
       }
    }
 }
+#include <stdio.h>
+extern "C" __attribute__ ((visibility ("default"))) void native_apply( uint64_t receiver, uint64_t code, uint64_t action ) {
+   printf("+++++++++=native_apply!!!!!\n");
+   hello_native_apply(receiver, code, action);
+}
