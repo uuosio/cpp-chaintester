@@ -29,3 +29,9 @@
 
 #define ACTIVATE_WASM "@CMAKE_BINARY_DIR@/tests/test-contracts/activate/activate.wasm"
 #define ACTIVATE_ABI "@CMAKE_BINARY_DIR@/tests/test-contracts/activate/activate.abi"
+
+#ifdef __APPLE__
+    #define HELLO_NATIVE_LIB "@CMAKE_BINARY_DIR@/tests/test-contracts/hello/native/libhello_native_sharedd.dylib"
+#else
+    #define HELLO_NATIVE_LIB "@CMAKE_BINARY_DIR@/tests/test-contracts/hello/native/libhello_native_sharedd.so"
+#endif

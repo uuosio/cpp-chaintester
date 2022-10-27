@@ -535,3 +535,8 @@ IntrinsicsFuncs* get_intrinsics() {
 void intrinsics_init(struct IntrinsicsFuncs *fn) {
     g_intrinsics_func = fn;
 }
+
+
+__attribute__((visibility("default"))) extern "C" void native_init(struct IntrinsicsFuncs *fn) {
+    g_intrinsics_func = fn;
+}
