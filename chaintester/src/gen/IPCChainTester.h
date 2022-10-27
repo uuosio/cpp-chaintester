@@ -25,6 +25,7 @@ class IPCChainTesterIf {
   virtual void init_vm_api() = 0;
   virtual void init_apply_request() = 0;
   virtual bool set_native_contract(const std::string& contract, const std::string& dylib) = 0;
+  virtual void enable_debugging(const bool enable) = 0;
   virtual void enable_debug_contract(const int32_t id, const std::string& contract, const bool enable) = 0;
   virtual bool is_debug_contract_enabled(const int32_t id, const std::string& contract) = 0;
   virtual void pack_abi(std::string& _return, const std::string& abi) = 0;
@@ -81,6 +82,9 @@ class IPCChainTesterNull : virtual public IPCChainTesterIf {
   bool set_native_contract(const std::string& /* contract */, const std::string& /* dylib */) override {
     bool _return = false;
     return _return;
+  }
+  void enable_debugging(const bool /* enable */) override {
+    return;
   }
   void enable_debug_contract(const int32_t /* id */, const std::string& /* contract */, const bool /* enable */) override {
     return;
@@ -325,6 +329,93 @@ class IPCChainTester_set_native_contract_presult {
   bool* success;
 
   _IPCChainTester_set_native_contract_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _IPCChainTester_enable_debugging_args__isset {
+  _IPCChainTester_enable_debugging_args__isset() : enable(false) {}
+  bool enable :1;
+} _IPCChainTester_enable_debugging_args__isset;
+
+class IPCChainTester_enable_debugging_args {
+ public:
+
+  IPCChainTester_enable_debugging_args(const IPCChainTester_enable_debugging_args&) noexcept;
+  IPCChainTester_enable_debugging_args& operator=(const IPCChainTester_enable_debugging_args&) noexcept;
+  IPCChainTester_enable_debugging_args() noexcept
+                                       : enable(0) {
+  }
+
+  virtual ~IPCChainTester_enable_debugging_args() noexcept;
+  bool enable;
+
+  _IPCChainTester_enable_debugging_args__isset __isset;
+
+  void __set_enable(const bool val);
+
+  bool operator == (const IPCChainTester_enable_debugging_args & rhs) const
+  {
+    if (!(enable == rhs.enable))
+      return false;
+    return true;
+  }
+  bool operator != (const IPCChainTester_enable_debugging_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const IPCChainTester_enable_debugging_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class IPCChainTester_enable_debugging_pargs {
+ public:
+
+
+  virtual ~IPCChainTester_enable_debugging_pargs() noexcept;
+  const bool* enable;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class IPCChainTester_enable_debugging_result {
+ public:
+
+  IPCChainTester_enable_debugging_result(const IPCChainTester_enable_debugging_result&) noexcept;
+  IPCChainTester_enable_debugging_result& operator=(const IPCChainTester_enable_debugging_result&) noexcept;
+  IPCChainTester_enable_debugging_result() noexcept {
+  }
+
+  virtual ~IPCChainTester_enable_debugging_result() noexcept;
+
+  bool operator == (const IPCChainTester_enable_debugging_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const IPCChainTester_enable_debugging_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const IPCChainTester_enable_debugging_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class IPCChainTester_enable_debugging_presult {
+ public:
+
+
+  virtual ~IPCChainTester_enable_debugging_presult() noexcept;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
 
@@ -2557,6 +2648,9 @@ class IPCChainTesterClient : virtual public IPCChainTesterIf {
   bool set_native_contract(const std::string& contract, const std::string& dylib) override;
   void send_set_native_contract(const std::string& contract, const std::string& dylib);
   bool recv_set_native_contract();
+  void enable_debugging(const bool enable) override;
+  void send_enable_debugging(const bool enable);
+  void recv_enable_debugging();
   void enable_debug_contract(const int32_t id, const std::string& contract, const bool enable) override;
   void send_enable_debug_contract(const int32_t id, const std::string& contract, const bool enable);
   void recv_enable_debug_contract();
@@ -2629,6 +2723,7 @@ class IPCChainTesterProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_init_vm_api(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_init_apply_request(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_set_native_contract(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_enable_debugging(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_enable_debug_contract(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_is_debug_contract_enabled(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_pack_abi(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
@@ -2653,6 +2748,7 @@ class IPCChainTesterProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["init_vm_api"] = &IPCChainTesterProcessor::process_init_vm_api;
     processMap_["init_apply_request"] = &IPCChainTesterProcessor::process_init_apply_request;
     processMap_["set_native_contract"] = &IPCChainTesterProcessor::process_set_native_contract;
+    processMap_["enable_debugging"] = &IPCChainTesterProcessor::process_enable_debugging;
     processMap_["enable_debug_contract"] = &IPCChainTesterProcessor::process_enable_debug_contract;
     processMap_["is_debug_contract_enabled"] = &IPCChainTesterProcessor::process_is_debug_contract_enabled;
     processMap_["pack_abi"] = &IPCChainTesterProcessor::process_pack_abi;
@@ -2724,6 +2820,15 @@ class IPCChainTesterMultiface : virtual public IPCChainTesterIf {
       ifaces_[i]->set_native_contract(contract, dylib);
     }
     return ifaces_[i]->set_native_contract(contract, dylib);
+  }
+
+  void enable_debugging(const bool enable) override {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->enable_debugging(enable);
+    }
+    ifaces_[i]->enable_debugging(enable);
   }
 
   void enable_debug_contract(const int32_t id, const std::string& contract, const bool enable) override {
@@ -2939,6 +3044,9 @@ class IPCChainTesterConcurrentClient : virtual public IPCChainTesterIf {
   bool set_native_contract(const std::string& contract, const std::string& dylib) override;
   int32_t send_set_native_contract(const std::string& contract, const std::string& dylib);
   bool recv_set_native_contract(const int32_t seqid);
+  void enable_debugging(const bool enable) override;
+  int32_t send_enable_debugging(const bool enable);
+  void recv_enable_debugging(const int32_t seqid);
   void enable_debug_contract(const int32_t id, const std::string& contract, const bool enable) override;
   int32_t send_enable_debug_contract(const int32_t id, const std::string& contract, const bool enable);
   void recv_enable_debug_contract(const int32_t seqid);

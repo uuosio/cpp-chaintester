@@ -185,6 +185,10 @@ bool IPCChainTester::set_native_contract(const string& contract, const string& d
     return client->set_native_contract(contract, dylib);
 }
 
+void IPCChainTester::enable_debugging(bool enable) {
+    client->enable_debugging(enable);
+}
+
 void IPCChainTester::enable_debug_contract(const string& contract, bool enable) {
     client->enable_debug_contract(id, contract, enable);
 }

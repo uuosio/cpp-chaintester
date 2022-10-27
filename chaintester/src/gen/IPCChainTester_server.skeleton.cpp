@@ -35,6 +35,11 @@ class IPCChainTesterHandler : virtual public IPCChainTesterIf {
     printf("set_native_contract\n");
   }
 
+  void enable_debugging(const bool enable) {
+    // Your implementation goes here
+    printf("enable_debugging\n");
+  }
+
   void enable_debug_contract(const int32_t id, const std::string& contract, const bool enable) {
     // Your implementation goes here
     printf("enable_debug_contract\n");
