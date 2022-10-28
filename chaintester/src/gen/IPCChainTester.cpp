@@ -151,6 +151,14 @@ uint32_t IPCChainTester_set_native_contract_args::read(::apache::thrift::protoco
     switch (fid)
     {
       case 1:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->id);
+          this->__isset.id = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
           xfer += iprot->readString(this->contract);
           this->__isset.contract = true;
@@ -158,7 +166,7 @@ uint32_t IPCChainTester_set_native_contract_args::read(::apache::thrift::protoco
           xfer += iprot->skip(ftype);
         }
         break;
-      case 2:
+      case 3:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
           xfer += iprot->readString(this->dylib);
           this->__isset.dylib = true;
@@ -183,11 +191,15 @@ uint32_t IPCChainTester_set_native_contract_args::write(::apache::thrift::protoc
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
   xfer += oprot->writeStructBegin("IPCChainTester_set_native_contract_args");
 
-  xfer += oprot->writeFieldBegin("contract", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeFieldBegin("id", ::apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32(this->id);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("contract", ::apache::thrift::protocol::T_STRING, 2);
   xfer += oprot->writeString(this->contract);
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("dylib", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeFieldBegin("dylib", ::apache::thrift::protocol::T_STRING, 3);
   xfer += oprot->writeString(this->dylib);
   xfer += oprot->writeFieldEnd();
 
@@ -206,11 +218,15 @@ uint32_t IPCChainTester_set_native_contract_pargs::write(::apache::thrift::proto
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
   xfer += oprot->writeStructBegin("IPCChainTester_set_native_contract_pargs");
 
-  xfer += oprot->writeFieldBegin("contract", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeFieldBegin("id", ::apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32((*(this->id)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("contract", ::apache::thrift::protocol::T_STRING, 2);
   xfer += oprot->writeString((*(this->contract)));
   xfer += oprot->writeFieldEnd();
 
-  xfer += oprot->writeFieldBegin("dylib", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeFieldBegin("dylib", ::apache::thrift::protocol::T_STRING, 3);
   xfer += oprot->writeString((*(this->dylib)));
   xfer += oprot->writeFieldEnd();
 
@@ -4535,18 +4551,19 @@ void IPCChainTesterClient::send_init_apply_request()
   oprot_->getTransport()->flush();
 }
 
-bool IPCChainTesterClient::set_native_contract(const std::string& contract, const std::string& dylib)
+bool IPCChainTesterClient::set_native_contract(const int32_t id, const std::string& contract, const std::string& dylib)
 {
-  send_set_native_contract(contract, dylib);
+  send_set_native_contract(id, contract, dylib);
   return recv_set_native_contract();
 }
 
-void IPCChainTesterClient::send_set_native_contract(const std::string& contract, const std::string& dylib)
+void IPCChainTesterClient::send_set_native_contract(const int32_t id, const std::string& contract, const std::string& dylib)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("set_native_contract", ::apache::thrift::protocol::T_CALL, cseqid);
 
   IPCChainTester_set_native_contract_pargs args;
+  args.id = &id;
   args.contract = &contract;
   args.dylib = &dylib;
   args.write(oprot_);
@@ -5838,7 +5855,7 @@ void IPCChainTesterProcessor::process_set_native_contract(int32_t seqid, ::apach
 
   IPCChainTester_set_native_contract_result result;
   try {
-    result.success = iface_->set_native_contract(args.contract, args.dylib);
+    result.success = iface_->set_native_contract(args.id, args.contract, args.dylib);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != nullptr) {
@@ -6941,19 +6958,20 @@ void IPCChainTesterConcurrentClient::send_init_apply_request()
   sentry.commit();
 }
 
-bool IPCChainTesterConcurrentClient::set_native_contract(const std::string& contract, const std::string& dylib)
+bool IPCChainTesterConcurrentClient::set_native_contract(const int32_t id, const std::string& contract, const std::string& dylib)
 {
-  int32_t seqid = send_set_native_contract(contract, dylib);
+  int32_t seqid = send_set_native_contract(id, contract, dylib);
   return recv_set_native_contract(seqid);
 }
 
-int32_t IPCChainTesterConcurrentClient::send_set_native_contract(const std::string& contract, const std::string& dylib)
+int32_t IPCChainTesterConcurrentClient::send_set_native_contract(const int32_t id, const std::string& contract, const std::string& dylib)
 {
   int32_t cseqid = this->sync_->generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
   oprot_->writeMessageBegin("set_native_contract", ::apache::thrift::protocol::T_CALL, cseqid);
 
   IPCChainTester_set_native_contract_pargs args;
+  args.id = &id;
   args.contract = &contract;
   args.dylib = &dylib;
   args.write(oprot_);

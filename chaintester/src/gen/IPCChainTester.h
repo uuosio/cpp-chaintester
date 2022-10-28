@@ -24,7 +24,7 @@ class IPCChainTesterIf {
   virtual ~IPCChainTesterIf() {}
   virtual void init_vm_api() = 0;
   virtual void init_apply_request() = 0;
-  virtual bool set_native_contract(const std::string& contract, const std::string& dylib) = 0;
+  virtual bool set_native_contract(const int32_t id, const std::string& contract, const std::string& dylib) = 0;
   virtual void enable_debugging(const bool enable) = 0;
   virtual void enable_debug_contract(const int32_t id, const std::string& contract, const bool enable) = 0;
   virtual bool is_debug_contract_enabled(const int32_t id, const std::string& contract) = 0;
@@ -79,7 +79,7 @@ class IPCChainTesterNull : virtual public IPCChainTesterIf {
   void init_apply_request() override {
     return;
   }
-  bool set_native_contract(const std::string& /* contract */, const std::string& /* dylib */) override {
+  bool set_native_contract(const int32_t /* id */, const std::string& /* contract */, const std::string& /* dylib */) override {
     bool _return = false;
     return _return;
   }
@@ -221,7 +221,8 @@ class IPCChainTester_init_apply_request_pargs {
 };
 
 typedef struct _IPCChainTester_set_native_contract_args__isset {
-  _IPCChainTester_set_native_contract_args__isset() : contract(false), dylib(false) {}
+  _IPCChainTester_set_native_contract_args__isset() : id(false), contract(false), dylib(false) {}
+  bool id :1;
   bool contract :1;
   bool dylib :1;
 } _IPCChainTester_set_native_contract_args__isset;
@@ -232,15 +233,19 @@ class IPCChainTester_set_native_contract_args {
   IPCChainTester_set_native_contract_args(const IPCChainTester_set_native_contract_args&);
   IPCChainTester_set_native_contract_args& operator=(const IPCChainTester_set_native_contract_args&);
   IPCChainTester_set_native_contract_args() noexcept
-                                          : contract(),
+                                          : id(0),
+                                            contract(),
                                             dylib() {
   }
 
   virtual ~IPCChainTester_set_native_contract_args() noexcept;
+  int32_t id;
   std::string contract;
   std::string dylib;
 
   _IPCChainTester_set_native_contract_args__isset __isset;
+
+  void __set_id(const int32_t val);
 
   void __set_contract(const std::string& val);
 
@@ -248,6 +253,8 @@ class IPCChainTester_set_native_contract_args {
 
   bool operator == (const IPCChainTester_set_native_contract_args & rhs) const
   {
+    if (!(id == rhs.id))
+      return false;
     if (!(contract == rhs.contract))
       return false;
     if (!(dylib == rhs.dylib))
@@ -271,6 +278,7 @@ class IPCChainTester_set_native_contract_pargs {
 
 
   virtual ~IPCChainTester_set_native_contract_pargs() noexcept;
+  const int32_t* id;
   const std::string* contract;
   const std::string* dylib;
 
@@ -2645,8 +2653,8 @@ class IPCChainTesterClient : virtual public IPCChainTesterIf {
   void send_init_vm_api();
   void init_apply_request() override;
   void send_init_apply_request();
-  bool set_native_contract(const std::string& contract, const std::string& dylib) override;
-  void send_set_native_contract(const std::string& contract, const std::string& dylib);
+  bool set_native_contract(const int32_t id, const std::string& contract, const std::string& dylib) override;
+  void send_set_native_contract(const int32_t id, const std::string& contract, const std::string& dylib);
   bool recv_set_native_contract();
   void enable_debugging(const bool enable) override;
   void send_enable_debugging(const bool enable);
@@ -2813,13 +2821,13 @@ class IPCChainTesterMultiface : virtual public IPCChainTesterIf {
     ifaces_[i]->init_apply_request();
   }
 
-  bool set_native_contract(const std::string& contract, const std::string& dylib) override {
+  bool set_native_contract(const int32_t id, const std::string& contract, const std::string& dylib) override {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->set_native_contract(contract, dylib);
+      ifaces_[i]->set_native_contract(id, contract, dylib);
     }
-    return ifaces_[i]->set_native_contract(contract, dylib);
+    return ifaces_[i]->set_native_contract(id, contract, dylib);
   }
 
   void enable_debugging(const bool enable) override {
@@ -3041,8 +3049,8 @@ class IPCChainTesterConcurrentClient : virtual public IPCChainTesterIf {
   void send_init_vm_api();
   void init_apply_request() override;
   void send_init_apply_request();
-  bool set_native_contract(const std::string& contract, const std::string& dylib) override;
-  int32_t send_set_native_contract(const std::string& contract, const std::string& dylib);
+  bool set_native_contract(const int32_t id, const std::string& contract, const std::string& dylib) override;
+  int32_t send_set_native_contract(const int32_t id, const std::string& contract, const std::string& dylib);
   bool recv_set_native_contract(const int32_t seqid);
   void enable_debugging(const bool enable) override;
   int32_t send_enable_debugging(const bool enable);

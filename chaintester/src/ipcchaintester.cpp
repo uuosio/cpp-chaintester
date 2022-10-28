@@ -182,7 +182,7 @@ std::shared_ptr<JsonObject> IPCChainTester::create_key(const char* key_type) {
 }
 
 bool IPCChainTester::set_native_contract(const string& contract, const string& dylib) {
-    return client->set_native_contract(contract, dylib);
+    return client->set_native_contract(id, contract, dylib);
 }
 
 void IPCChainTester::enable_debugging(bool enable) {
