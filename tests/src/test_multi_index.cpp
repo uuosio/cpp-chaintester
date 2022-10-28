@@ -6,9 +6,9 @@
 extern "C" __attribute__ ((visibility ("default"))) void test_api_multi_index_native_apply( uint64_t receiver, uint64_t code, uint64_t action );
 
 TEST_CASE( "test multi_index", "[multi_index]" ) {
-    set_native_apply("testapi"_n, test_api_multi_index_native_apply);
 
     ChainTester t(true);
+    t.set_native_apply("testapi"_n, test_api_multi_index_native_apply);
 
     auto key = t.create_key();
     auto pub_key = key->get_string("public");

@@ -1,7 +1,8 @@
 #pragma once
 
+#include <map>
 #include <chaintester/jsonobject.hpp>
-//#include <chaintester/loader.h>
+#include <chaintester/native.h>
 #include <chaintester/utils.hpp>
 
 namespace chaintester {
@@ -43,6 +44,7 @@ public:
     bool set_native_contract(const string& contract, const string& dylib);
     void enable_debugging(bool enable);
     void enable_debug_contract(const string& contract, bool enable);
+    void set_native_apply(const string& contract, fn_native_apply apply);
     bool import_key(const string& pub_key, const string& priv_key);
     std::shared_ptr<JsonObject> create_account(const string& creator, const string& account, const string& owner_key, const string& active_key, int64_t ram_bytes=10*1024*1024, int64_t stake_net=100000, int64_t stake_cpu=1000000);
     std::shared_ptr<JsonObject> get_account(const string& account);

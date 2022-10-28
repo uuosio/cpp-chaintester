@@ -22,8 +22,8 @@ namespace chaintester {
 class ApplyRequestIf {
  public:
   virtual ~ApplyRequestIf() {}
-  virtual int32_t apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action) = 0;
-  virtual int32_t apply_end() = 0;
+  virtual int32_t apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action, const int32_t chainTesterId) = 0;
+  virtual int32_t apply_end(const int32_t chainTesterId) = 0;
 };
 
 class ApplyRequestIfFactory {
@@ -53,21 +53,22 @@ class ApplyRequestIfSingletonFactory : virtual public ApplyRequestIfFactory {
 class ApplyRequestNull : virtual public ApplyRequestIf {
  public:
   virtual ~ApplyRequestNull() {}
-  int32_t apply_request(const Uint64& /* receiver */, const Uint64& /* firstReceiver */, const Uint64& /* action */) override {
+  int32_t apply_request(const Uint64& /* receiver */, const Uint64& /* firstReceiver */, const Uint64& /* action */, const int32_t /* chainTesterId */) override {
     int32_t _return = 0;
     return _return;
   }
-  int32_t apply_end() override {
+  int32_t apply_end(const int32_t /* chainTesterId */) override {
     int32_t _return = 0;
     return _return;
   }
 };
 
 typedef struct _ApplyRequest_apply_request_args__isset {
-  _ApplyRequest_apply_request_args__isset() : receiver(false), firstReceiver(false), action(false) {}
+  _ApplyRequest_apply_request_args__isset() : receiver(false), firstReceiver(false), action(false), chainTesterId(false) {}
   bool receiver :1;
   bool firstReceiver :1;
   bool action :1;
+  bool chainTesterId :1;
 } _ApplyRequest_apply_request_args__isset;
 
 class ApplyRequest_apply_request_args {
@@ -75,13 +76,15 @@ class ApplyRequest_apply_request_args {
 
   ApplyRequest_apply_request_args(const ApplyRequest_apply_request_args&);
   ApplyRequest_apply_request_args& operator=(const ApplyRequest_apply_request_args&);
-  ApplyRequest_apply_request_args() noexcept {
+  ApplyRequest_apply_request_args() noexcept
+                                  : chainTesterId(0) {
   }
 
   virtual ~ApplyRequest_apply_request_args() noexcept;
   Uint64 receiver;
   Uint64 firstReceiver;
   Uint64 action;
+  int32_t chainTesterId;
 
   _ApplyRequest_apply_request_args__isset __isset;
 
@@ -91,6 +94,8 @@ class ApplyRequest_apply_request_args {
 
   void __set_action(const Uint64& val);
 
+  void __set_chainTesterId(const int32_t val);
+
   bool operator == (const ApplyRequest_apply_request_args & rhs) const
   {
     if (!(receiver == rhs.receiver))
@@ -98,6 +103,8 @@ class ApplyRequest_apply_request_args {
     if (!(firstReceiver == rhs.firstReceiver))
       return false;
     if (!(action == rhs.action))
+      return false;
+    if (!(chainTesterId == rhs.chainTesterId))
       return false;
     return true;
   }
@@ -121,6 +128,7 @@ class ApplyRequest_apply_request_pargs {
   const Uint64* receiver;
   const Uint64* firstReceiver;
   const Uint64* action;
+  const int32_t* chainTesterId;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -182,19 +190,31 @@ class ApplyRequest_apply_request_presult {
 
 };
 
+typedef struct _ApplyRequest_apply_end_args__isset {
+  _ApplyRequest_apply_end_args__isset() : chainTesterId(false) {}
+  bool chainTesterId :1;
+} _ApplyRequest_apply_end_args__isset;
 
 class ApplyRequest_apply_end_args {
  public:
 
   ApplyRequest_apply_end_args(const ApplyRequest_apply_end_args&) noexcept;
   ApplyRequest_apply_end_args& operator=(const ApplyRequest_apply_end_args&) noexcept;
-  ApplyRequest_apply_end_args() noexcept {
+  ApplyRequest_apply_end_args() noexcept
+                              : chainTesterId(0) {
   }
 
   virtual ~ApplyRequest_apply_end_args() noexcept;
+  int32_t chainTesterId;
 
-  bool operator == (const ApplyRequest_apply_end_args & /* rhs */) const
+  _ApplyRequest_apply_end_args__isset __isset;
+
+  void __set_chainTesterId(const int32_t val);
+
+  bool operator == (const ApplyRequest_apply_end_args & rhs) const
   {
+    if (!(chainTesterId == rhs.chainTesterId))
+      return false;
     return true;
   }
   bool operator != (const ApplyRequest_apply_end_args &rhs) const {
@@ -214,6 +234,7 @@ class ApplyRequest_apply_end_pargs {
 
 
   virtual ~ApplyRequest_apply_end_pargs() noexcept;
+  const int32_t* chainTesterId;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -300,11 +321,11 @@ class ApplyRequestClient : virtual public ApplyRequestIf {
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  int32_t apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action) override;
-  void send_apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action);
+  int32_t apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action, const int32_t chainTesterId) override;
+  void send_apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action, const int32_t chainTesterId);
   int32_t recv_apply_request();
-  int32_t apply_end() override;
-  void send_apply_end();
+  int32_t apply_end(const int32_t chainTesterId) override;
+  void send_apply_end(const int32_t chainTesterId);
   int32_t recv_apply_end();
  protected:
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
@@ -356,22 +377,22 @@ class ApplyRequestMultiface : virtual public ApplyRequestIf {
     ifaces_.push_back(iface);
   }
  public:
-  int32_t apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action) override {
+  int32_t apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action, const int32_t chainTesterId) override {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->apply_request(receiver, firstReceiver, action);
+      ifaces_[i]->apply_request(receiver, firstReceiver, action, chainTesterId);
     }
-    return ifaces_[i]->apply_request(receiver, firstReceiver, action);
+    return ifaces_[i]->apply_request(receiver, firstReceiver, action, chainTesterId);
   }
 
-  int32_t apply_end() override {
+  int32_t apply_end(const int32_t chainTesterId) override {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->apply_end();
+      ifaces_[i]->apply_end(chainTesterId);
     }
-    return ifaces_[i]->apply_end();
+    return ifaces_[i]->apply_end(chainTesterId);
   }
 
 };
@@ -406,11 +427,11 @@ class ApplyRequestConcurrentClient : virtual public ApplyRequestIf {
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
-  int32_t apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action) override;
-  int32_t send_apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action);
+  int32_t apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action, const int32_t chainTesterId) override;
+  int32_t send_apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action, const int32_t chainTesterId);
   int32_t recv_apply_request(const int32_t seqid);
-  int32_t apply_end() override;
-  int32_t send_apply_end();
+  int32_t apply_end(const int32_t chainTesterId) override;
+  int32_t send_apply_end(const int32_t chainTesterId);
   int32_t recv_apply_end(const int32_t seqid);
  protected:
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;

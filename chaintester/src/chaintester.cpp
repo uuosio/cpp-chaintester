@@ -28,6 +28,10 @@ void ChainTester::enable_debug_contract(name contract, bool enable) {
     tester->enable_debug_contract(contract.to_string().c_str(), enable);
 }
 
+void ChainTester::set_native_apply(name contract, fn_native_apply apply) {
+    tester->set_native_apply(contract.to_string(), apply);
+}
+
 bool ChainTester::import_key(const string& pub_key, const string& priv_key) {
     return tester->import_key(pub_key, priv_key);    
 }

@@ -13,12 +13,10 @@ struct TestArgs {
 
 TEST_CASE( "test_new_intrinsics", "[new intrinsics]" ) {
     // load_native_contract(HELLO_SO);
-    set_native_apply("hello"_n, new_intrinsics_native_apply);
-
     ChainTester tester(true);
-    tester.enable_debug_contract("hello"_n, is_coverage_enabled());
-
     tester.deploy_contract("hello"_n, TEST_NEW_INTRINSICS_WASM, TEST_NEW_INTRINSICS_ABI);
+    tester.set_native_apply("hello"_n, new_intrinsics_native_apply);
+
     auto info = tester.get_info();
     // WARN(info->to_string());
     WARN(info->get_uint64("head_block_num"));

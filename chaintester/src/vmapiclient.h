@@ -13,7 +13,7 @@ private:
 
 public:
     bool is_in_apply();
-    void on_apply(uint64_t receiver, uint64_t first_receiver, uint64_t action);
+    void on_apply(uint64_t receiver, uint64_t first_receiver, uint64_t action, int chain_tester_id);
     static VMAPIClient* get_instance();
     ApplyClient* operator->() const;
 

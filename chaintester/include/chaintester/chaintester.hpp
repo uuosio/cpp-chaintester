@@ -8,7 +8,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "jsonobject.hpp"
-#include "loader.h"
+#include "native.h"
 #include "utils.hpp"
 
 using namespace eosio;
@@ -34,6 +34,8 @@ public:
     bool set_native_contract(name contract, const string& dylib);
     void enable_debugging(bool enable);
     void enable_debug_contract(name contract, bool enable);
+    void set_native_apply(name contract, fn_native_apply apply);
+
     bool import_key(const string& pub_key, const string& priv_key);
     std::shared_ptr<JsonObject> create_account(const name creator, const name account, const string& owner_key, const string& active_key, int64_t ram_bytes=10*1024*1024, int64_t stake_net=100000, int64_t stake_cpu=1000000);
     std::shared_ptr<JsonObject> get_account(const name account);

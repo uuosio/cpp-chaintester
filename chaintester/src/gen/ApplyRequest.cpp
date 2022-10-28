@@ -58,6 +58,14 @@ uint32_t ApplyRequest_apply_request_args::read(::apache::thrift::protocol::TProt
           xfer += iprot->skip(ftype);
         }
         break;
+      case 4:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->chainTesterId);
+          this->__isset.chainTesterId = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -87,6 +95,10 @@ uint32_t ApplyRequest_apply_request_args::write(::apache::thrift::protocol::TPro
   xfer += this->action.write(oprot);
   xfer += oprot->writeFieldEnd();
 
+  xfer += oprot->writeFieldBegin("chainTesterId", ::apache::thrift::protocol::T_I32, 4);
+  xfer += oprot->writeI32(this->chainTesterId);
+  xfer += oprot->writeFieldEnd();
+
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -112,6 +124,10 @@ uint32_t ApplyRequest_apply_request_pargs::write(::apache::thrift::protocol::TPr
 
   xfer += oprot->writeFieldBegin("action", ::apache::thrift::protocol::T_STRUCT, 3);
   xfer += (*(this->action)).write(oprot);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("chainTesterId", ::apache::thrift::protocol::T_I32, 4);
+  xfer += oprot->writeI32((*(this->chainTesterId)));
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -251,7 +267,20 @@ uint32_t ApplyRequest_apply_end_args::read(::apache::thrift::protocol::TProtocol
     if (ftype == ::apache::thrift::protocol::T_STOP) {
       break;
     }
-    xfer += iprot->skip(ftype);
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->chainTesterId);
+          this->__isset.chainTesterId = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
     xfer += iprot->readFieldEnd();
   }
 
@@ -264,6 +293,10 @@ uint32_t ApplyRequest_apply_end_args::write(::apache::thrift::protocol::TProtoco
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
   xfer += oprot->writeStructBegin("ApplyRequest_apply_end_args");
+
+  xfer += oprot->writeFieldBegin("chainTesterId", ::apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32(this->chainTesterId);
+  xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
@@ -279,6 +312,10 @@ uint32_t ApplyRequest_apply_end_pargs::write(::apache::thrift::protocol::TProtoc
   uint32_t xfer = 0;
   ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
   xfer += oprot->writeStructBegin("ApplyRequest_apply_end_pargs");
+
+  xfer += oprot->writeFieldBegin("chainTesterId", ::apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32((*(this->chainTesterId)));
+  xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
@@ -393,13 +430,13 @@ uint32_t ApplyRequest_apply_end_presult::read(::apache::thrift::protocol::TProto
   return xfer;
 }
 
-int32_t ApplyRequestClient::apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action)
+int32_t ApplyRequestClient::apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action, const int32_t chainTesterId)
 {
-  send_apply_request(receiver, firstReceiver, action);
+  send_apply_request(receiver, firstReceiver, action, chainTesterId);
   return recv_apply_request();
 }
 
-void ApplyRequestClient::send_apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action)
+void ApplyRequestClient::send_apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action, const int32_t chainTesterId)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("apply_request", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -408,6 +445,7 @@ void ApplyRequestClient::send_apply_request(const Uint64& receiver, const Uint64
   args.receiver = &receiver;
   args.firstReceiver = &firstReceiver;
   args.action = &action;
+  args.chainTesterId = &chainTesterId;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -453,18 +491,19 @@ int32_t ApplyRequestClient::recv_apply_request()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "apply_request failed: unknown result");
 }
 
-int32_t ApplyRequestClient::apply_end()
+int32_t ApplyRequestClient::apply_end(const int32_t chainTesterId)
 {
-  send_apply_end();
+  send_apply_end(chainTesterId);
   return recv_apply_end();
 }
 
-void ApplyRequestClient::send_apply_end()
+void ApplyRequestClient::send_apply_end(const int32_t chainTesterId)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("apply_end", ::apache::thrift::protocol::T_CALL, cseqid);
 
   ApplyRequest_apply_end_pargs args;
+  args.chainTesterId = &chainTesterId;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -555,7 +594,7 @@ void ApplyRequestProcessor::process_apply_request(int32_t seqid, ::apache::thrif
 
   ApplyRequest_apply_request_result result;
   try {
-    result.success = iface_->apply_request(args.receiver, args.firstReceiver, args.action);
+    result.success = iface_->apply_request(args.receiver, args.firstReceiver, args.action, args.chainTesterId);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != nullptr) {
@@ -609,7 +648,7 @@ void ApplyRequestProcessor::process_apply_end(int32_t seqid, ::apache::thrift::p
 
   ApplyRequest_apply_end_result result;
   try {
-    result.success = iface_->apply_end();
+    result.success = iface_->apply_end(args.chainTesterId);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != nullptr) {
@@ -647,13 +686,13 @@ void ApplyRequestProcessor::process_apply_end(int32_t seqid, ::apache::thrift::p
   return processor;
 }
 
-int32_t ApplyRequestConcurrentClient::apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action)
+int32_t ApplyRequestConcurrentClient::apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action, const int32_t chainTesterId)
 {
-  int32_t seqid = send_apply_request(receiver, firstReceiver, action);
+  int32_t seqid = send_apply_request(receiver, firstReceiver, action, chainTesterId);
   return recv_apply_request(seqid);
 }
 
-int32_t ApplyRequestConcurrentClient::send_apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action)
+int32_t ApplyRequestConcurrentClient::send_apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action, const int32_t chainTesterId)
 {
   int32_t cseqid = this->sync_->generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
@@ -663,6 +702,7 @@ int32_t ApplyRequestConcurrentClient::send_apply_request(const Uint64& receiver,
   args.receiver = &receiver;
   args.firstReceiver = &firstReceiver;
   args.action = &action;
+  args.chainTesterId = &chainTesterId;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -733,19 +773,20 @@ int32_t ApplyRequestConcurrentClient::recv_apply_request(const int32_t seqid)
   } // end while(true)
 }
 
-int32_t ApplyRequestConcurrentClient::apply_end()
+int32_t ApplyRequestConcurrentClient::apply_end(const int32_t chainTesterId)
 {
-  int32_t seqid = send_apply_end();
+  int32_t seqid = send_apply_end(chainTesterId);
   return recv_apply_end(seqid);
 }
 
-int32_t ApplyRequestConcurrentClient::send_apply_end()
+int32_t ApplyRequestConcurrentClient::send_apply_end(const int32_t chainTesterId)
 {
   int32_t cseqid = this->sync_->generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
   oprot_->writeMessageBegin("apply_end", ::apache::thrift::protocol::T_CALL, cseqid);
 
   ApplyRequest_apply_end_pargs args;
+  args.chainTesterId = &chainTesterId;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();

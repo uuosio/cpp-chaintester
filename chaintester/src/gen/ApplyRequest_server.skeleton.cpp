@@ -20,12 +20,12 @@ class ApplyRequestHandler : virtual public ApplyRequestIf {
     // Your initialization goes here
   }
 
-  int32_t apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action) {
+  int32_t apply_request(const Uint64& receiver, const Uint64& firstReceiver, const Uint64& action, const int32_t chainTesterId) {
     // Your implementation goes here
     printf("apply_request\n");
   }
 
-  int32_t apply_end() {
+  int32_t apply_end(const int32_t chainTesterId) {
     // Your implementation goes here
     printf("apply_end\n");
   }

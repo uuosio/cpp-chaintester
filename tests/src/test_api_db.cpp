@@ -6,9 +6,9 @@
 extern "C" __attribute__ ((visibility ("default"))) void test_api_db_native_apply( uint64_t receiver, uint64_t code, uint64_t action );
 
 TEST_CASE( "test api db", "[api_db]" ) {
-    set_native_apply("testapi"_n, test_api_db_native_apply);
 
     ChainTester t(true);
+    t.set_native_apply("testapi"_n, test_api_db_native_apply);
 
     auto key = t.create_key();
     auto pub_key = key->get_string("public");

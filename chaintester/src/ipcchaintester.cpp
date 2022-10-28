@@ -54,7 +54,7 @@ class ApplyRequestHandler : virtual public ApplyRequestIf {
     // Your initialization goes here
   }
 
-  int32_t apply_request(const Uint64& receiver, const Uint64& first_receiver, const Uint64& action) {
+  int32_t apply_request(const Uint64& receiver, const Uint64& first_receiver, const Uint64& action, int chain_tester_id) {
     uint64_t _receiver;
     uint64_t _first_receiver;
     uint64_t _action;
@@ -64,11 +64,11 @@ class ApplyRequestHandler : virtual public ApplyRequestIf {
 
     std::lock_guard<std::mutex> guard(g_apply_mutex);
 
-    GetApplyClient().on_apply(_receiver, _first_receiver, _action);
+    GetApplyClient().on_apply(_receiver, _first_receiver, _action, chain_tester_id);
     return 1;
   }
 
-  int32_t apply_end() {
+  int32_t apply_end(int chainTesterId) {
     return 1;
   }
 };
@@ -160,13 +160,28 @@ std::shared_ptr<ChainTesterClient> GetChainTesterClient() {
     return gChainTesterClient;
 }
 
+static map<int, map<string, fn_native_apply>> s_chain_tester_apply_map;
+
+bool call_native_apply(uint64_t receiver, uint64_t first_receiver, uint64_t action, int chain_tester_id) {
+    auto it_apply_map = s_chain_tester_apply_map.find(chain_tester_id);
+    auto it_apply = it_apply_map->second.find(n2s(receiver));
+    if (it_apply != it_apply_map->second.end()) {
+        it_apply->second(receiver, first_receiver, action);
+        return true;
+    }
+    return false;
+}
+
 IPCChainTester::IPCChainTester(bool initialize) {
     client = GetChainTesterClient();
     id = client->new_chain(initialize);
+    s_chain_tester_apply_map[id] = map<string, fn_native_apply>();
 }
 
 IPCChainTester::~IPCChainTester() {
     client->free_chain(id);
+    auto it = s_chain_tester_apply_map.find(id);
+    s_chain_tester_apply_map.erase(it);
 }
 
 std::shared_ptr<JsonObject> IPCChainTester::get_info() {
@@ -191,6 +206,20 @@ void IPCChainTester::enable_debugging(bool enable) {
 
 void IPCChainTester::enable_debug_contract(const string& contract, bool enable) {
     client->enable_debug_contract(id, contract, enable);
+}
+
+void IPCChainTester::set_native_apply(const string& contract, fn_native_apply apply) {
+    if (apply) {
+        enable_debug_contract(contract, true);
+        s_chain_tester_apply_map[id][contract] = apply;
+    } else {
+        enable_debug_contract(contract, false);
+        auto& apply_map = s_chain_tester_apply_map[id];
+        auto it = apply_map.find(contract);
+        if (it != apply_map.end()) {
+            apply_map.erase(it);
+        }
+    }
 }
 
 bool IPCChainTester::import_key(const string& pub_key, const string& priv_key) {

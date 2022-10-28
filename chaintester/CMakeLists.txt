@@ -1,6 +1,5 @@
 add_library(utils
     src/utils.cpp
-    src/loader.cpp
 )
 
 target_compile_options(utils PRIVATE -DEOSIO_NATIVE -Wno-attributes)

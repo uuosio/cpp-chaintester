@@ -5,10 +5,8 @@
 
 TEST_CASE( "test hello", "[hello]" ) {
     // load_native_contract(HELLO_SO);
-    set_native_apply("testapi"_n, hello_native_apply);
-
     ChainTester tester(true);
-    tester.enable_debug_contract("hello"_n, is_coverage_enabled());
+    tester.set_native_apply("hello"_n, hello_native_apply);
 
     tester.deploy_contract("hello"_n, HELLO_WASM, HELLO_ABI);
 
@@ -33,8 +31,22 @@ TEST_CASE( "test hello", "[hello]" ) {
 
 TEST_CASE( "test hello shared native lib", "[hello]" ) {
     // load_native_contract(HELLO_SO);
-    // set_native_apply(hello_native_apply);
+{
+    ChainTester tester(true);
+    tester.set_native_apply("hello"_n, hello_native_apply);
+    tester.enable_debugging(true);
+    tester.deploy_contract("hello"_n, HELLO_WASM, HELLO_ABI);
 
+    auto args = R""""(
+    {
+        "nm": "alice"
+    }
+    )"""";
+
+    tester.push_action_ex("hello"_n, "hi"_n, args, "hello"_n);
+    tester.produce_block();    
+}
+return;
     ChainTester tester(true);
     tester.enable_debugging(true);
     tester.set_native_contract("hello"_n, HELLO_NATIVE_LIB);

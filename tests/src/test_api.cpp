@@ -39,7 +39,7 @@ void update_auth(ChainTester& t, string pub_key) {
 }
 
 void init_test(ChainTester& t) {
-    set_native_apply("testapi"_n, test_api_native_apply);
+    t.set_native_apply("testapi"_n, test_api_native_apply);
 
     const char * TEST_COVERAGE = std::getenv("TEST_COVERAGE");
     if (TEST_COVERAGE == nullptr || string("") == TEST_COVERAGE || string("0") == TEST_COVERAGE || string("FALSE") == TEST_COVERAGE) {
@@ -63,7 +63,7 @@ void init_test(ChainTester& t) {
 }
 
 void init_test2(ChainTester& t) {
-    set_native_apply("testapi"_n, test_api_native_apply);
+    t.set_native_apply("testapi"_n, test_api_native_apply);
 
     t.enable_debug_contract("testapi"_n, is_coverage_enabled());
 
@@ -113,9 +113,9 @@ TEST_CASE( "test api", "[api]" ) {
 
 TEST_CASE( "test crypto", "[crypto]" ) {
     // load_native_contract(TEST_API_SO);
-    set_native_apply("testapi"_n, test_api_native_apply);
     bool debug = true;
     ChainTester t(true);
+    t.set_native_apply("testapi"_n, test_api_native_apply);
     init_test(t);
 
     CALL_TEST_FUNCTION( t, "test_crypto", "test_sha1", {} );
@@ -461,7 +461,7 @@ TEST_CASE( "test transaction", "[transaction]" ) {
 
 TEST_CASE( "test chain", "[chain]" ) {
     ChainTester t(false);
-    set_native_apply("testapi"_n, test_api_native_apply);
+    t.set_native_apply("testapi"_n, test_api_native_apply);
 
     t.enable_debug_contract("testapi"_n, is_coverage_enabled());
 
