@@ -2,7 +2,7 @@
 #include <thrift/transport/TSocket.h>
 #include <thrift/transport/TTransportUtils.h>
 
-#include <chaintester/loader.h>
+// #include <chaintester/loader.h>
 #include <chaintester/utils.hpp>
 
 #include "gen/IPCChainTester.h"
@@ -45,21 +45,15 @@ bool VMAPIClient::is_in_apply() {
 
 VMAPIClient* VMAPIClient::_instance = nullptr;
 
-fn_apply get_native_apply();
-
+bool call_native_apply(uint64_t receiver, uint64_t first_receiver, uint64_t action);
 void VMAPIClient::on_apply(uint64_t receiver, uint64_t first_receiver, uint64_t action) {
     in_apply = true;
-
-    fn_apply apply = get_native_apply();
     try {
-        if (apply != nullptr) {
-            apply(receiver, first_receiver, action);
-        }
+        call_native_apply(receiver, first_receiver, action);
         client->end_apply();
     } catch (apache::thrift::TException ex) {
         printf("+++++++exception on apply(%s, %s, %s):%s\n", n2s(receiver).c_str(), n2s(first_receiver).c_str(), n2s(action).c_str(), ex.what());
         client->end_apply();
     }
-
     in_apply = false;
 }

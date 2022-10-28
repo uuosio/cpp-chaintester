@@ -9,6 +9,7 @@
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
+#include "rapidjson/prettywriter.h"
 
 using namespace ::rapidjson;
 using namespace ::std;
@@ -103,6 +104,13 @@ public:
 
     const string& to_string() const {
         return raw;
+    }
+
+    string to_pretty_string() const {
+        StringBuffer sb;
+        PrettyWriter<StringBuffer> writer(sb);
+        this->Accept(writer);    // Accept() traverses the DOM and generates Handler events.
+        return string(sb.GetString());
     }
 };
 

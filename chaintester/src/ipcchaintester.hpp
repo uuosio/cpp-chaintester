@@ -1,7 +1,7 @@
 #pragma once
 
 #include <chaintester/jsonobject.hpp>
-#include <chaintester/loader.h>
+//#include <chaintester/loader.h>
 #include <chaintester/utils.hpp>
 
 namespace chaintester {

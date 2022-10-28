@@ -1,11 +1,13 @@
 add_library(utils
     src/utils.cpp
+    src/loader.cpp
 )
 
 target_compile_options(utils PRIVATE -DEOSIO_NATIVE -Wno-attributes)
 
 target_include_directories(utils PRIVATE
     ${CDT_INCLUDE_PATH}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 add_library ( ipcchaintester 
@@ -17,7 +19,6 @@ add_library ( ipcchaintester
     src/ipcchaintester.cpp
     src/vmapiclient.cpp
     src/intrinsics.cpp
-    src/loader.cpp
 
     src/TServerFramework.cpp
     src/TSimpleServer.cpp

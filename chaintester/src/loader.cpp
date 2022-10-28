@@ -1,45 +1,28 @@
-#include <intrinsics.h>
-
+#include <map>
 #include <chaintester/loader.h>
+
+using namespace eosio;
+std::map<uint64_t, fn_apply> g_apply_map;
 
 fn_apply g_apply = nullptr;
 
-void set_native_apply(fn_apply fn) {
-    g_apply = fn;
+void set_native_apply(name contract, fn_apply fn) {
+    g_apply_map[contract.value] = fn;
 }
 
-fn_apply get_native_apply() {
+fn_apply get_native_apply(name contract) {
+    auto it = g_apply_map.find(contract.value);
+    if (it == g_apply_map.end()) {
+        return nullptr;
+    }
     return g_apply;
 }
 
-#ifndef __MINGW32__
-
-#include <dlfcn.h>
-bool load_native_contract(const char *native_contract_path) {
-    void *handle = dlopen(native_contract_path, RTLD_LAZY | RTLD_LOCAL);
-    if (handle == 0) {
-        printf("loading %s failed! error: %s\n", native_contract_path, dlerror());
-        exit(-1);
-        return false;
+bool call_native_apply(uint64_t receiver, uint64_t first_receiver, uint64_t action) {
+    auto apply = get_native_apply(name(receiver));
+    if (apply) {
+        apply(receiver, first_receiver, action);
+        return true;
     }
-
-    fn_native_init native_init = (fn_native_init)dlsym(handle, "native_init");
-    if (native_init == nullptr) {
-        printf("++++loading native_init failed! error: %s\n", dlerror());
-        exit(-1);
-        return false;
-    }
-    native_init(get_intrinsics());
-
-    fn_native_apply native_apply = (fn_native_apply)dlsym(handle, "native_apply");
-    if (native_apply == nullptr) {
-        printf("++++loading native_apply failed! error: %s\n", dlerror());
-        exit(-1);
-        return false;
-    }
-    set_native_apply(native_apply);
-    return true;
+    return false;
 }
-
-#endif
-

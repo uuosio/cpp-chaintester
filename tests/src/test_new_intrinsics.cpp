@@ -13,7 +13,7 @@ struct TestArgs {
 
 TEST_CASE( "test_new_intrinsics", "[new intrinsics]" ) {
     // load_native_contract(HELLO_SO);
-    set_native_apply(new_intrinsics_native_apply);
+    set_native_apply("hello"_n, new_intrinsics_native_apply);
 
     ChainTester tester(true);
     tester.enable_debug_contract("hello"_n, is_coverage_enabled());
