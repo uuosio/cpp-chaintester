@@ -48,9 +48,9 @@ jobs:
       - name: Install EOS test framework
         run: |
           python3 -m pip install ipyeos
-      - name: Run eos-debugger
+      - name: Run eosdebugger
         run: |
-          PYTHON_SHARED_LIB_PATH=${{ env.pythonLocation }}/lib/libpython3.9.so eos-debugger &
+          PYTHON_SHARED_LIB_PATH=${{ env.pythonLocation }}/lib/libpython3.9.so eosdebugger &
       - name: build
         run: |
           mkdir build

@@ -23,10 +23,10 @@ python3 -m pip install -U ipyeos
 Then run the debugging server:
 
 ```bash
-eos-debugger
+eosdebugger
 ```
 
-Also, you can run eos-debugger in a docker container. Just follow the steps below.
+Also, you can run eosdebugger in a docker container. Just follow the steps below.
 
 ```bash
 docker pull ghcr.io/uuosio/ipyeos:latest
@@ -87,7 +87,7 @@ TEST_CASE( "test hello", "[hello]" ) {
 
 ### Debugging Example 2
 
-Enable debugging by setting a shared native contract lib.
+Enable debugging by setting a shared native contract lib. Debugging a shared native contract require attach to the debugging server.
 
 ```C++
 TEST_CASE( "test hello", "[hello]" ) {
