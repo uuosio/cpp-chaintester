@@ -53,7 +53,7 @@ public:
 
     std::shared_ptr<JsonObject> push_action(const string& account, const string& action, const TxActionArguments& arguments="", const Permissions& permissions="");
     std::shared_ptr<JsonObject> push_actions(const std::vector<TxAction> & actions);
-    std::shared_ptr<JsonObject> deploy_contract(const string& account, const string& wasmFile, const string& abiFile);
+    std::shared_ptr<JsonObject> deploy_contract(const string& account, const string& wasm_file, const string& abi_file);
 
     /*
         key_type: "i64"|"i128"|"i256"|"float64"|"float128"|"sha256"|"ripemd160"

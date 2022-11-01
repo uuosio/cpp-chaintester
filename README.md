@@ -12,7 +12,7 @@ C++ Smart Contracts Test Framework for EOS
 
 ## Installing `ipyeos`
 
-`cpp-chaintester` depends on [ipyeos](https://github.com/uuosio/ipyeos) to run your test code.
+`cpp-chaintester` depends on [ipyeos](https://github.com/uuosio/ipyeos) to run the test code.
 
 Install it with the following command:
 
@@ -40,12 +40,12 @@ docker run -it --rm -p 9090:9090 -p 9092:9092 -t ghcr.io/uuosio/ipyeos
 
 ## Debugging
 
-In order to support debugging, your project needs to compile with `Debug` mode
+In order to support debugging, the contract project needs to compile with `Debug` mode
 
 ```bash
 mkdir build
 cd build
-cmake -DENABLE_COVERAGE=TRUE -DBUILD_TESTS=TRUE -DCMAKE_BUILD_TYPE=Debug -Dcdt_DIR=`cdt-get-dir` -GNinja ..
+cmake -DENABLE_COVERAGE=TRUE -DCMAKE_BUILD_TYPE=Debug -Dcdt_DIR=`cdt-get-dir` -GNinja ..
 ```
 
 ### A Simple Example
@@ -108,7 +108,7 @@ TEST_CASE( "test hello", "[hello]" ) {
 
 ## Generating Code Coverage Report
 
-Add `-fprofile-arcs -ftest-coverage` options to native library like below to support generating  coverage report for your code.
+Add `-fprofile-arcs -ftest-coverage` options to native library like below to support generating  coverage report for smart contract code.
 
 ```cmake
 target_compile_options(hello_native PRIVATE 
@@ -121,10 +121,46 @@ target_link_options(hello_native PRIVATE -fprofile-arcs -ftest-coverage)
 
 ## C++ Smart Contracts Test Example
 
-[cpp-coverage-example](https://github.com/uuosio/cpp-coverage-example) shows how to integrating cpp-chaintester in your smart contract project for debugging and generating code coverage report.
-
+[cpp-coverage-example](https://github.com/uuosio/cpp-coverage-example) shows how to integrating cpp-chaintester in a smart contract project for debugging and generating code coverage report.
 
 ## Common ChainTester methods
+
+### ChainTester(bool initialize=true);
+
+constructor, if `initialize` set to `true`, ChainTester will initialize test chain for you so you don't need to deploy contracts such as `eosio.system` and `eosio.token` any more. The process includes:
+
+- Creates accounts such as `eosio.bpay`, `eosio.msig`, `eosio.names`, `eosio.ram`, `eosio.ramfee`, `eosio.saving`, `eosio.stake`, `eosio.token`, `eosio.vpay`, `eosio.rex`, `eosio.reserv`, `hello`, `alice`, `bob`,
+- deploy contracts to `eosio.token`, `eosio`, `eosio.msig`
+- activate all the features:
+    ```
+    ONLY_LINK_TO_EXISTING_PERMISSION
+    FORWARD_SETCODE
+    WTMSIG_BLOCK_SIGNATURES
+    GET_BLOCK_NUM
+    REPLACE_DEFERRED
+    NO_DUPLICATE_DEFERRED_ID
+    RAM_RESTRICTIONS
+    WEBAUTHN_KEY
+    BLOCKCHAIN_PARAMETERS
+    DISALLOW_EMPTY_PRODUCER_SCHEDULE
+    CRYPTO_PRIMITIVES
+    ONLY_BILL_FIRST_AUTHORIZER
+    RESTRICT_ACTION_TO_SELF
+    GET_CODE_HASH
+    ACTION_RETURN_VALUE
+    CONFIGURABLE_WASM_LIMITS2
+    FIX_LINKAUTH_RESTRICTION
+    GET_SENDER
+    ```
+- issue token to `eosio`, `hello`, `alice`, `bob`
+
+The initialization code locate at [chaintester.py](https://github.com/uuosio/ipyeos/blob/ea64a599974e0633be2fced96a349611f8d4b1c2/pysrc/chaintester.py#L133)
+
+Set `initialize ` to `false` for implementing custom initialization code
+
+```C++
+ChainTester(bool initialize=true);
+```
 
 ### push_action
 
@@ -148,8 +184,10 @@ std::shared_ptr<JsonObject> push_actions(const std::vector<action>& actions);
 
 ### deploy_contract
 
+deploy an wasm contract to the test chain
+
 ```C++
-std::shared_ptr<JsonObject> deploy_contract(const name account, const string& wasmFile, const string& abiFile);
+std::shared_ptr<JsonObject> deploy_contract(const name account, const string& wasm_file, const string& abi_file);
 ```
 
 ### import_key
@@ -178,7 +216,7 @@ void produce_block(int64_t next_block_delay_seconds = 0);
 
 ### produce_blocks
 
-produce n block
+produce n blocks
 
 ```C++
 void produce_blocks(int n);
@@ -333,7 +371,7 @@ std::shared_ptr<JsonObject> get_table_rows(bool json,
 
 ### get_balance
 
-get token balance of an account
+get account token balance
 
 ```C++
 int64_t get_balance(const name account, const name token_account="eosio.token"_n, const string& symbol="EOS");
@@ -363,7 +401,7 @@ string s = ret->get_string("rows", 0, "data");
 
 ### to_string
 
-get json string
+convert JsonObject to a json string
 
 ```C++
 const string& to_string() const
@@ -371,7 +409,7 @@ const string& to_string() const
 
 ### to_pretty_string
 
-get pretty formatted json string
+convert JsonObject to a pretty formatted json string
 
 ```C++
 string to_pretty_string() const

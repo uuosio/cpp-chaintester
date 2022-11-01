@@ -106,8 +106,8 @@ std::shared_ptr<JsonObject> ChainTester::push_actions(const std::vector<action>&
     return tester->push_actions(aa);
 }
 
-std::shared_ptr<JsonObject> ChainTester::deploy_contract(const name account, const string& wasmFile, const string& abiFile) {
-    return tester->deploy_contract(account.to_string(), wasmFile, abiFile);
+std::shared_ptr<JsonObject> ChainTester::deploy_contract(const name account, const string& wasm_file, const string& abi_file) {
+    return tester->deploy_contract(account.to_string(), wasm_file, abi_file);
 }
 
 ActionSender ChainTester::new_action_sender() {

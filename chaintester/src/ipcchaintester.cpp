@@ -329,10 +329,10 @@ std::shared_ptr<JsonObject> IPCChainTester::push_actions(const std::vector<TxAct
     return _ret;
 }
 
-std::shared_ptr<JsonObject> IPCChainTester::deploy_contract(const string& account, const string& wasmFile, const string& abiFile) {
+std::shared_ptr<JsonObject> IPCChainTester::deploy_contract(const string& account, const string& wasm_file, const string& abi_file) {
     string ret;
-    std::ifstream wasm(wasmFile, std::ios::binary);
-    std::ifstream abi(abiFile, std::ios::binary);
+    std::ifstream wasm(wasm_file, std::ios::binary);
+    std::ifstream abi(abi_file, std::ios::binary);
 
     string hex_wasm_data;
     string str_abi_data;
