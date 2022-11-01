@@ -108,7 +108,7 @@ TEST_CASE( "test hello", "[hello]" ) {
 
 ## Generating Code Coverage Report
 
-Add `-fprofile-arcs -ftest-coverage` options to native library as show below to support generating  coverage report for your code.
+Add `-fprofile-arcs -ftest-coverage` options to native library like below to support generating  coverage report for your code.
 
 ```cmake
 target_compile_options(hello_native PRIVATE 
@@ -126,6 +126,64 @@ target_link_options(hello_native PRIVATE -fprofile-arcs -ftest-coverage)
 
 ## Common ChainTester methods
 
+### push_action
+
+push an action to the test chain
+
+```C++
+template<typename... Ts>
+std::shared_ptr<JsonObject> push_action(const vector<permission_level>& permissions, const name account, const name action, Ts... arguments);
+
+template<typename... Ts>
+std::shared_ptr<JsonObject> push_action(const name signer, const name account, const name action, Ts... arguments);
+```
+
+### push_actions
+
+push actions to test chain
+
+```C++
+std::shared_ptr<JsonObject> push_actions(const std::vector<action>& actions);
+```
+
+### deploy_contract
+
+```C++
+std::shared_ptr<JsonObject> deploy_contract(const name account, const string& wasmFile, const string& abiFile);
+```
+
+### import_key
+
+import private key for signing transaction
+
+```C++
+bool import_key(const string& pub_key, const string& priv_key);
+```
+
+### create_account
+
+create an account
+
+```C++
+std::shared_ptr<JsonObject> create_account(const name creator, const name account, const string& owner_key, const string& active_key, int64_t ram_bytes=10*1024*1024, int64_t stake_net=100000, int64_t stake_cpu=1000000);
+```
+
+### produce_block
+
+produce one block
+
+```C++
+void produce_block(int64_t next_block_delay_seconds = 0);
+```
+
+### produce_blocks
+
+produce n block
+
+```C++
+void produce_blocks(int n);
+```
+
 ### get_info
 
 Get test chain information
@@ -135,6 +193,7 @@ Get test chain information
 ```
 
 return value looks like below:
+
 ```json
 {
       "server_version": "00000000",
@@ -274,6 +333,8 @@ std::shared_ptr<JsonObject> get_table_rows(bool json,
 
 ### get_balance
 
+get token balance of an account
+
 ```C++
 int64_t get_balance(const name account, const name token_account="eosio.token"_n, const string& symbol="EOS");
 ```
@@ -316,3 +377,42 @@ get pretty formatted json string
 string to_pretty_string() const
 ```
 
+## ActionSender
+
+Example:
+
+```C++
+    ChainTester tester(true);
+    tester.set_native_apply("hello"_n, hello_native_apply);
+    tester.deploy_contract("hello"_n, HELLO_WASM, HELLO_ABI);
+    
+    ActionSender sender = tester.new_action_sender();
+    sender.add_action(
+        "hello"_n,
+        "hello"_n,
+        "sum"_n,
+        std::make_tuple(uint64_t(1), uint64_t(2))
+    );
+    sender.send();
+    tester.produce_block();
+```
+
+### add_action
+
+add an action to the ActionSender
+
+```C++
+template<typename... Ts>
+ActionSender& add_action(const name signer, name account, name action, Ts... args);
+
+template<typename... Ts>
+ActionSender& add_action(const vector<permission_level>& permissions, name account, name action, Ts... args);
+```
+
+### send
+
+call `ChainTester.push_actions` to send the action(s)
+
+```C++
+    std::shared_ptr<JsonObject> send()
+```
