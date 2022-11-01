@@ -11,7 +11,7 @@ chaintester.chain_config['contracts_console'] = True
 def test_hello():
     eos.enable_debug(True)
     t = ChainTester(True)
-    print('++++pid:', os.getpid())
+    print(f'++++set breakpoint in hello.cpp and attach pid {os.getpid()} for debugging:')
     input('press Enter to continue...')
     with open('../build/tests/test-contracts/hello/hello/hello.wasm', 'rb') as f:
         code = f.read()
