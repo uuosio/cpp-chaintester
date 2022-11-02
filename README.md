@@ -38,17 +38,9 @@ Run the debugging server:
 docker run -it --rm -p 9090:9090 -p 9092:9092 -t ghcr.io/uuosio/ipyeos
 ```
 
-## Debugging
+## Test Case Example
 
-In order to support debugging, the contract project needs to compile with `Debug` mode
-
-```bash
-mkdir build
-cd build
-cmake -DENABLE_COVERAGE=TRUE -DCMAKE_BUILD_TYPE=Debug -Dcdt_DIR=`cdt-get-dir` -GNinja ..
-```
-
-### A Simple Example
+a simple test case example
 
 ```C++
 TEST_CASE( "test hello", "[hello]" ) {
@@ -63,6 +55,16 @@ TEST_CASE( "test hello", "[hello]" ) {
     );
     tester.produce_block();
 }
+```
+
+## Debugging
+
+In order to support debugging, the contract project needs to compile with `Debug` mode
+
+```bash
+mkdir build
+cd build
+cmake -DENABLE_COVERAGE=TRUE -DCMAKE_BUILD_TYPE=Debug -Dcdt_DIR=`cdt-get-dir` -GNinja ..
 ```
 
 ### Debugging Example
@@ -184,7 +186,7 @@ std::shared_ptr<JsonObject> push_actions(const std::vector<action>& actions);
 
 ### deploy_contract
 
-deploy an wasm contract to the test chain
+deploy a wasm contract to the test chain
 
 ```C++
 std::shared_ptr<JsonObject> deploy_contract(const name account, const string& wasm_file, const string& abi_file);
@@ -230,7 +232,7 @@ Get test chain information
     std::shared_ptr<JsonObject> get_info();
 ```
 
-return value looks like below:
+return value likes below:
 
 ```json
 {
@@ -265,7 +267,7 @@ return a crypto key pair
 std::shared_ptr<JsonObject> create_key(const char* key_type="K1");
 ```
 
-return value like below:
+return value likes below:
 
 ```json
 {
@@ -282,7 +284,7 @@ get account information
 std::shared_ptr<JsonObject> get_account(const name account);
 ```
 
-return value like below:
+return value likes below:
 
 ```json
 {
