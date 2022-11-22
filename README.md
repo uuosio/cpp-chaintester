@@ -89,7 +89,7 @@ TEST_CASE( "test hello", "[hello]" ) {
 
 ### Debugging Example 2
 
-Enable debugging by setting a shared native contract lib. Debugging a shared native contract require attach to the debugging server.
+Enable debugging by setting a shared native contract lib. Debugging a shared native contract require attaching to the debugging server.
 
 ```C++
 TEST_CASE( "test hello", "[hello]" ) {
@@ -131,7 +131,7 @@ target_link_options(hello_native PRIVATE -fprofile-arcs -ftest-coverage)
 
 constructor, if `initialize` set to `true`, ChainTester will initialize test chain for you so you don't need to deploy contracts such as `eosio.system` and `eosio.token` any more. The process includes:
 
-- Creates accounts such as `eosio.bpay`, `eosio.msig`, `eosio.names`, `eosio.ram`, `eosio.ramfee`, `eosio.saving`, `eosio.stake`, `eosio.token`, `eosio.vpay`, `eosio.rex`, `eosio.reserv`, `hello`, `alice`, `bob`,
+- Create accounts such as `eosio.bpay`, `eosio.msig`, `eosio.names`, `eosio.ram`, `eosio.ramfee`, `eosio.saving`, `eosio.stake`, `eosio.token`, `eosio.vpay`, `eosio.rex`, `eosio.reserv`, `hello`, `alice`, `bob`,
 - deploy contracts to `eosio.token`, `eosio`, `eosio.msig`
 - activate all the features:
     ```
@@ -164,6 +164,23 @@ Set `initialize ` to `false` for implementing custom initialization code
 ChainTester(bool initialize=true);
 ```
 
+### set_native_apply
+
+specifies a native apply function for a contract
+
+```C++
+void set_native_apply(name contract, fn_native_apply apply);
+```
+
+### set_native_contract
+
+specifies a native shared library for a contract for debugging and profiling.
+attaching to the debugging server for debugging.
+
+```C++
+    bool set_native_contract(name contract, const string& dylib);
+```
+
 ### push_action
 
 push an action to the test chain
@@ -178,7 +195,7 @@ std::shared_ptr<JsonObject> push_action(const name signer, const name account, c
 
 ### push_actions
 
-push actions to test chain
+push actions to the test chain
 
 ```C++
 std::shared_ptr<JsonObject> push_actions(const std::vector<action>& actions);
