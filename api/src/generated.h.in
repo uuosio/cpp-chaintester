@@ -1,0 +1,37 @@
+
+#define APP_PATH "@CMAKE_CURRENT_BINARY_DIR@"
+
+#define TEST_API_SO "@CMAKE_BINARY_DIR@/tests/test-contracts/test_api/native/libtest_api_native@CMAKE_SHARED_LIBRARY_SUFFIX@"
+#define HELLO_SO "@CMAKE_BINARY_DIR@/tests/test-contracts/hello/native/libhello_native@CMAKE_SHARED_LIBRARY_SUFFIX@"
+
+#define TEST_API_WASM "@CMAKE_BINARY_DIR@/tests/test-contracts/test_api/testapi.wasm"
+#define TEST_API_ABI "@CMAKE_BINARY_DIR@/tests/test-contracts/test_api/testapi.abi"
+
+
+#define HELLO_WASM "@CMAKE_BINARY_DIR@/tests/test-contracts/hello/hello/hello.wasm"
+#define HELLO_ABI "@CMAKE_BINARY_DIR@/tests/test-contracts/hello/hello/hello.abi"
+
+
+#define TEST_API_DB_WASM "@CMAKE_SOURCE_DIR@/tests/test-contracts/test_api_db/test_api_db.wasm"
+#define TEST_API_DB_ABI "@CMAKE_SOURCE_DIR@/tests/test-contracts/test_api_db/test_api_db.abi"
+
+#define TEST_MULTI_INDEX_EXAMPLE_WASM "@CMAKE_BINARY_DIR@/tests/test-contracts/multi_index_example/multi_index_example/multi_index_example.wasm"
+#define TEST_MULTI_INDEX_EXAMPLE_ABI "@CMAKE_BINARY_DIR@/tests/test-contracts/multi_index_example/multi_index_example/multi_index_example.abi"
+
+#define TEST_API_MULTI_INDEX_WASM "@CMAKE_BINARY_DIR@/tests/test-contracts/test_api_multi_index/test_api_multi_index.wasm"
+#define TEST_API_MULTI_INDEX_ABI "@CMAKE_BINARY_DIR@/tests/test-contracts/test_api_multi_index/test_api_multi_index.abi"
+
+#define TEST_NEW_INTRINSICS_WASM "@CMAKE_BINARY_DIR@/tests/test-contracts/new_intrinsics/new_intrinsics/new_intrinsics.wasm"
+#define TEST_NEW_INTRINSICS_ABI "@CMAKE_BINARY_DIR@/tests/test-contracts/new_intrinsics/new_intrinsics/new_intrinsics.abi"
+
+#define BIOS_WASM "@CMAKE_BINARY_DIR@/tests/test-contracts/eosio.bios/eosio.bios.wasm"
+#define BIOS_ABI "@CMAKE_BINARY_DIR@/tests/test-contracts/eosio.bios/eosio.bios.abi"
+
+#define ACTIVATE_WASM "@CMAKE_BINARY_DIR@/tests/test-contracts/activate/activate.wasm"
+#define ACTIVATE_ABI "@CMAKE_BINARY_DIR@/tests/test-contracts/activate/activate.abi"
+
+#ifdef __APPLE__
+    #define HELLO_NATIVE_LIB "@CMAKE_BINARY_DIR@/tests/test-contracts/hello/native/libhello_native_sharedd.dylib"
+#else
+    #define HELLO_NATIVE_LIB "@CMAKE_BINARY_DIR@/tests/test-contracts/hello/native/libhello_native_sharedd.so"
+#endif

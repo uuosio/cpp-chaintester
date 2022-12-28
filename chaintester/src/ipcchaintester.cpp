@@ -359,6 +359,16 @@ std::shared_ptr<JsonObject> IPCChainTester::deploy_contract(const string& accoun
     return _ret;
 }
 
+std::shared_ptr<JsonObject> IPCChainTester::deploy_contract_ex(const string& account, const string& hex_wasm, const string& abi) {
+    string ret;
+    client->deploy_contract(ret, id, account, hex_wasm, abi);
+    auto _ret = std::make_shared<JsonObject>(ret);
+    if (_ret->has_value("except")) {
+        throw ChainException(ret);
+    }
+    return _ret;
+}
+
 std::shared_ptr<JsonObject> IPCChainTester::get_table_rows(bool json,
                                 const string& code, const string& scope, const string& table,
                                 const string& lower_bound, const string& upper_bound,

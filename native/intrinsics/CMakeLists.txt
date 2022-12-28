@@ -3,7 +3,7 @@ add_library( intrinsics_native
     src/intrinsics.cpp
 )
 
-set_target_properties(intrinsics_native PROPERTIES CXX_VISIBILITY_PRESET hidden)
+# set_target_properties(intrinsics_native PROPERTIES CXX_VISIBILITY_PRESET hidden)
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     set(PLATFORM_OPTIONS "-fPIC")

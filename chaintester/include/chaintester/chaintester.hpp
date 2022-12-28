@@ -54,6 +54,7 @@ public:
 
     std::shared_ptr<JsonObject> push_actions(const std::vector<action>& actions);
     std::shared_ptr<JsonObject> deploy_contract(const name account, const string& wasm_file, const string& abi_file);
+    std::shared_ptr<JsonObject> deploy_contract_ex(const string& account, const string& hex_wasm, const string& abi);
 
     ActionSender new_action_sender();
 //     /*
